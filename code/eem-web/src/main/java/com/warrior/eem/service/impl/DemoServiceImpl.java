@@ -31,7 +31,7 @@ public class DemoServiceImpl extends AbstractServiceImpl<DemoDo> implements Demo
 	}
 
 	@Override
-	SqlRequest buildListSqlRequest(Serializable condition) {
+	SqlRequest buildListSqlRequest(Serializable... condition) {
 		SqlRequest req = new SqlRequest();
 
 		// 选择要返回的字段
@@ -62,7 +62,7 @@ public class DemoServiceImpl extends AbstractServiceImpl<DemoDo> implements Demo
 	}
 
 	@Override
-	SqlRequest buildCountSqlRequest(Serializable condition) {
+	SqlRequest buildCountSqlRequest(Serializable... condition) {
 		SqlRequest req = new SqlRequest();
 
 		// 选择要返回的字段

@@ -63,15 +63,15 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<?> listEntities(Serializable condition) {
-		return getDao().listDos(buildListSqlRequest(condition));
+	public List<?> listEntities(Serializable... conditions) {
+		return getDao().listDos(buildListSqlRequest(conditions));
 	}
 	
 
 	@Override
 	@Transactional(readOnly = true)
-	public long countEntity(Serializable condition) {
-		return getDao().countDos(buildCountSqlRequest(condition));
+	public long countEntity(Serializable... conditions) {
+		return getDao().countDos(buildCountSqlRequest(conditions));
 	}
 	
 	/**
@@ -85,13 +85,13 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 	 * @param condition
 	 * @return
 	 */
-	abstract SqlRequest buildListSqlRequest(Serializable condition);
+	abstract SqlRequest buildListSqlRequest(Serializable... conditions);
 	
 	/**
 	 * 构建count sql request
 	 * @param condition
 	 * @return
 	 */
-	abstract SqlRequest buildCountSqlRequest(Serializable condition);
+	abstract SqlRequest buildCountSqlRequest(Serializable... conditions);
 
 }

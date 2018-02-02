@@ -39,13 +39,13 @@ public interface IService {
 	 * 获取列表
 	 * @return
 	 */
-	public List<?> listEntities(Serializable condition);
+	public List<?> listEntities(Serializable... conditions);
 	
 	/**
 	 * 获取列表
 	 * @return
 	 */
-	public long countEntity(Serializable condition);
+	public long countEntity(Serializable... conditions);
 	
 	
 }

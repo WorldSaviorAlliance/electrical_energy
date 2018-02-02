@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
+import com.warrior.eem.dao.support.LogicalCondition;
+import com.warrior.eem.dao.support.Page;
+import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.service.PowerCustomerService;
 
 
@@ -29,12 +33,29 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 	}
 
 	@Override
-	SqlRequest buildListSqlRequest(Serializable condition) {
-		return null;
+	SqlRequest buildListSqlRequest(Serializable... conditions) {
+		PowerCustomerOrSupplierCdtVo cdt = (PowerCustomerOrSupplierCdtVo)conditions[0];
+		Page page = new Page((int)conditions[1], (int)conditions[2]);
+		SqlRequest req = new SqlRequest();
+		req.setPage(page);
+		if(cdt != null) {
+			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
+			if(cdt.getName() != null && cdt.getName().trim().length() > 0) {
+				sqlCdt = sqlCdt.and(SimpleCondition.like("name", cdt.getName() + "%"));
+			}
+			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
+				sqlCdt = sqlCdt.and(SimpleCondition.equal("province", cdt.getProvince()));
+			}
+			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
+				sqlCdt = sqlCdt.and(SimpleCondition.equal("city", cdt.getCity()));
+			}
+			req.setCdt(sqlCdt);
+		}
+		return req;
 	}
 
 	@Override
-	SqlRequest buildCountSqlRequest(Serializable condition) {
+	SqlRequest buildCountSqlRequest(Serializable... condition) {
 		return null;
 	}
 }
