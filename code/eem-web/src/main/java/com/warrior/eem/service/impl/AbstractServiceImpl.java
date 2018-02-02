@@ -11,13 +11,14 @@ import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.IService;
 import com.warrior.eem.util.EntityValidator;
 
-@SuppressWarnings("unchecked")
+
 /**
  * 抽象服务
  * @author seangan
  *
  * @param <T>
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractServiceImpl<T extends Serializable> implements IService {
 	
 	@Override

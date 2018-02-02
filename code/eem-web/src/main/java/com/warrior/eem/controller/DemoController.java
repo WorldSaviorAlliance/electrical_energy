@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.DemoDo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.DemoService;
 
 /**
@@ -30,8 +31,9 @@ public class DemoController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> createDemo(@RequestBody DemoDo demoVo) {
-		dService.createEntity(demoVo);
-		return Result.success();
+		throw new EemException("测试");
+//		dService.createEntity(demoVo);
+//		return Result.success();
 	}
 	
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
