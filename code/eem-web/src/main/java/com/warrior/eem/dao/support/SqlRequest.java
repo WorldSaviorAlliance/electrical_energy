@@ -15,6 +15,11 @@ public class SqlRequest implements Condition {
 	private MultiSelector select;
 	
 	/**
+	 * 连接
+	 */
+	private Joiner joiner;
+	
+	/**
 	 * 查询条件， 可以为null
 	 */
 	private Condition cdt;
@@ -103,6 +108,14 @@ public class SqlRequest implements Condition {
 
 	public Page getPage() {
 		return page;
+	}
+
+	public Joiner getJoiner() {
+		return joiner;
+	}
+
+	public void setJoiner(Joiner joiner) {
+		this.joiner = joiner;
 	}
 
 	public void setSelect(MultiSelector select) {

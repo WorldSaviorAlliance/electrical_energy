@@ -66,6 +66,13 @@ public interface IDao<T> {
 	 * @param cdt
 	 */
 	List<?> listDos(SqlRequest req);
+	
+	/**
+	 * 通过sql语句获取实体
+	 * @param sql
+	 * @return
+	 */
+	List<?> listDosBySql(String sql);
 
 	/**
 	 * 根据条件统计实体个数
