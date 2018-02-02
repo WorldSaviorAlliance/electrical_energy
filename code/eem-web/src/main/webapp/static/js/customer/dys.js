@@ -1,6 +1,7 @@
 //@ sourceURL=dys.js
 $(function()
 {
+	var g_page_dys_detail = null;
 	init();
 	/**
 	 * 初始化界面
@@ -20,7 +21,8 @@ $(function()
 			
 		});
 		$('#add').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
+			var height = 610 + (WINDOW_HEIGHT - 700);
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + height + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
@@ -39,12 +41,13 @@ $(function()
 		            	return false;
 		            },
 		            afterShow : function(){
+		            	g_page_dys_detail = new DysDetail();
 		            }
 		        });	
 			});
 		});
 		
-		jQuery(".select2").select2({
+		$(".select2").select2({
 		    width: '100%',
 		    minimumResultsForSearch: -1
 		});
@@ -63,7 +66,8 @@ $(function()
 		});
 		
 		$('a[flag="modify"]').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
+			var height = 610 + (WINDOW_HEIGHT - 700);
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + height + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
@@ -74,6 +78,7 @@ $(function()
 		            	return true;
 		            },
 		            afterShow : function(){
+		            	g_page_dys_detail = new DysDetail();
 		            }
 		        });	
 			});
