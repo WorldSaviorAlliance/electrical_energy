@@ -1,4 +1,4 @@
-package com.warrior.eem.controller;
+package com.warrior.eem.controller.rest;
 
 
 import org.apache.shiro.SecurityUtils;
