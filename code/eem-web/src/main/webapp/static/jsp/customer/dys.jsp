@@ -24,40 +24,28 @@
 					<div class="form-group">
 	                  <label class="col-sm-2 control-label">所在城市</label>
 	                  <div class="col-sm-5">
-		                   <select class="select2" required
-							data-placeholder="Choose One">
+		                   <select class="select2" data-placeholder="请选择省份" id="province">
 							<option value=""></option>
-							<option value="apple">Apple</option>
-							<option value="orange">Orange</option>
-							<option value="grapes">Grapes</option>
-							<option value="strawberry">Strawberry</option>
+							<option value="apple">四川</option>
+							<option value="orange">北京</option>
+							<option value="grapes">上海</option>
+							<option value="strawberry">云南</option>
 						</select> 
 					</div>
 					<div class="col-sm-5">	
-						<select class="select2" required data-placeholder="Choose One">
+						<select class="select2" data-placeholder="请选择市区" id="city">
 							<option value=""></option>
-							<option value="apple">Apple</option>
-							<option value="orange">Orange</option>
-							<option value="grapes">Grapes</option>
-							<option value="strawberry">Strawberry</option>
+							<option value="apple">成都</option>
+							<option value="orange">德阳</option>
+							<option value="grapes">绵阳</option>
+							<option value="strawberry">宜宾</option>
 						</select>
 	                  </div>
 	                </div>
 				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-	                  <label class="col-sm-3 control-label">显示顺序</label>
-	                  <div class="col-sm-9">
-		                   <select class="select2" style="width:100%;">
-								<option value="0">录入时间 降序</option>
-								<option value="1">录入时间 升序</option>
-							</select>
-	                  </div>
-	                </div>
-				</div>
 				<div class="col-md-2">
-					<button class="btn btn-primary" id="searchPs">查询</button>
-					<button class="btn btn-info" id="addPs">添加</button>
+					<button class="btn btn-primary" id="search" type="button">查询</button>
+					<button class="btn btn-info" id="add" type="button">添加</button>
 				</div>
 			</div>
 
@@ -78,7 +66,7 @@
 						<th>操作</th>
 					</tr>
 				</thead>
-				<tbody id="ps_table">
+				<tbody id="datas">
 					<tr>
 						<td>测试电源商1</td>
 						<td>电源商1</td>
@@ -92,8 +80,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -109,8 +97,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -126,8 +114,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -143,8 +131,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -160,8 +148,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -177,8 +165,8 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 					<tr>
@@ -194,17 +182,15 @@
 						<td>test@tttt.com</td>
 						<td>2017-04-17 15:11:05</td>
 						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_ps">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del_ps">删除</a>
+							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
+							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<div id="page2Ps">
+			<div id="page">
 			</div>	
 		</div>
 	</div>
 </form>
 <script type="text/javascript" src="<%=basePath%>static/js/customer/dys.js"></script>
-
-
