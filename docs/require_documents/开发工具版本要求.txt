@@ -1,0 +1,7 @@
+Jdk：1.8
+mysql：5.6+
+Hibernate：5.2.12
+eclipse：java ee
+web主框架：springmvc，spring：4.3.10
+权限控制：shiro
+界面元素：jsp，JavaScript，JQuery，bootstrap

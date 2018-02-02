@@ -1,0 +1,8 @@
+”√ªß∂À£∫http://rdny-service.24kwh.com/index.php/system/index/
+console∂À£∫http://rdny-business.24kwh.com/index.php/syslog/syslog_list/init
+account: admin1
+password:24kwh.com
+
+http://blog.csdn.net/zhaohongjuan/article/details/52327261
+
+http://blog.csdn.net/xiangxiezhuren/article/details/70570246

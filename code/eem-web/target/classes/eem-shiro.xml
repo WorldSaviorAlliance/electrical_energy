@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<description>shiro配置信息</description>
+
+<!-- Shiro security -->
+	<bean id="secAuthc"
+		class="com.warrior.eem.shiro.filter.EemAuthFilter"></bean>
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="filterChainDefinitions">
+			<value>
+				/login = anon
+				/static/** = anon
+				/demo/login_launcher = anon
+				/** = anon
+			</value>
+		</property>
+	</bean>
+
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager" />
+	<bean id="secRealm" class="com.warrior.eem.shiro.realm.EemRealm" />
+	<bean id="memCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="sessionManager" ref="sessionManager"/>
+		<property name="realm" ref="secRealm" />
+		<property name="cacheManager" ref="memCacheManager"/> 
+	</bean>
+
+</beans>
