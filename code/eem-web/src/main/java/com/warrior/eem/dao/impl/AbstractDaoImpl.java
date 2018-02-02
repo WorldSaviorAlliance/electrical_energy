@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -16,14 +18,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.support.Condition;
 import com.warrior.eem.dao.support.GroupBy;
+import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.MultiSelector;
 import com.warrior.eem.dao.support.Order;
@@ -91,30 +95,39 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 	public List<?> listDos(SqlRequest req) {
 		CriteriaQuery<?> cq = cb.createQuery(getEntityClass());
 		boolean isTuple = false;
-		if(req.getSelect() != null && req.getSelect().getPropNames().size() > 0) {
-			cq = cb.createTupleQuery();
-			isTuple = true;
-		}
-		final Root<T> root = cq.from(getEntityClass());
+		Root<T> root = cq.from(getEntityClass());
 		Page page = new Page();
 		if (req != null) {
+			if (req.getSelect() != null && req.getSelect().getPropNames().size() > 0) {
+				cq = cb.createTupleQuery();
+				root = cq.from(getEntityClass());
+				isTuple = true;
+			}
+			// join
+			Map<String, Join<?, ?>> mj = new HashMap<String, Join<?, ?>>();
+			if (req.getJoiner() != null && req.getJoiner().getJs().size() > 0) {
+				for (Joiner join : req.getJoiner().getJs()) {
+					mj.put(join.getJoinPorpName(), root.join(join.getJoinPorpName(), join.getType().getJoinType()));
+				}
+			}
+			// selector
 			MultiSelector ms = req.getSelect();
 			Condition cdt = req.getCdt();
 			Order order = req.getOrder();
 			page = req.getPage() == null ? page : req.getPage();
 			if (ms != null) {
 				List<Selection<?>> ls = new ArrayList<Selection<?>>();
+				Path<Object> sn = null;
 				for (String propName : ms.getPropNames()) {
-					ls.add(root.get(propName));
+					ls.add((sn = getJoinPath(mj, propName)) == null ? root.get(propName) : sn);
 				}
 				if (ls.size() > 0) {
 					cq.multiselect(ls);
 				}
 			}
-			Predicate predicate = parseCondition(cdt, root);
-			if (predicate != null) {
-				cq.where(predicate);
-			}
+			// where
+			cq.where(parseCondition(cdt, root, mj));
+			// order
 			if (order != null) {
 				List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
 				int i = 0;
@@ -128,31 +141,37 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				}
 			}
 		}
+		// group
 		GroupBy gb = req.getGroupBy();
-		if(gb != null && gb.getGroupPropNames().size() > 0) {
+		if (gb != null && gb.getGroupPropNames().size() > 0) {
 			List<Expression<?>> groupNames = new ArrayList<Expression<?>>();
-			for(String gbName : gb.getGroupPropNames()) {
+			for (String gbName : gb.getGroupPropNames()) {
 				groupNames.add(root.get(gbName));
 			}
-			if(groupNames.size() > 0) {
+			if (groupNames.size() > 0) {
 				cq.groupBy(groupNames);
 			}
 		}
-//		cq.having(restrictions);
+		// cq.having(restrictions);
 		TypedQuery<?> tq = em.createQuery(cq);
 		if (page != null) {
 			tq.setFirstResult((page.getStartPageNum() - 1) * page.getPerPageNum());
 			tq.setMaxResults(page.getPerPageNum());
 		}
 		List<?> resDb = tq.getResultList();
-		if(isTuple) {
+		if (isTuple) {
 			List<Object[]> res = new LinkedList<Object[]>();
-			for(Tuple t : (List<Tuple>)resDb) {
+			for (Tuple t : (List<Tuple>) resDb) {
 				res.add(t.toArray());
 			}
 			resDb = res;
 		}
 		return resDb;
+	}
+
+	@Override
+	public List<?> listDosBySql(String sql) {
+		return em.createNamedQuery(sql, getEntityClass()).getResultList();
 	}
 
 	/**
@@ -163,36 +182,49 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Predicate parseCondition(Condition cdt, Root<T> root) {
+	private Predicate parseCondition(Condition cdt, Root<T> root, Map<String, Join<?, ?>> joins) {
 		if (cdt != null) {
 			if (cdt instanceof LogicalCondition) {
 				LogicalCondition lcdt = (LogicalCondition) cdt;
 				if (lcdt.getOperator().equals(Sql_Operator.AND)) {
-					return cb.and(parseCondition(lcdt.getLc(), root), parseCondition(lcdt.getRc(), root));
+					return cb.and(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
 				} else if (lcdt.getOperator().equals(Sql_Operator.OR)) {
-					return cb.or(parseCondition(lcdt.getLc(), root), parseCondition(lcdt.getRc(), root));
+					return cb.or(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
 				} else {
 					throw new EemException("无效的sql条件:" + lcdt.getOperator().getOptName());
 				}
 			} else if (cdt instanceof SimpleCondition) {
 				SimpleCondition scdt = (SimpleCondition) cdt;
 				try {
+					if (scdt.getPropName() == null || scdt.getPropName().trim().length() == 0) {
+						throw new EemException("sql where属性名不能为空");
+					}
+					Path<Object> attrPath = getJoinPath(joins, scdt.getPropName().trim());
+					if (attrPath == null) {
+						attrPath = root.get(scdt.getPropName());
+					}
+					if (joins != null && scdt.getPropName().trim().contains(".")
+							&& scdt.getPropName().trim().split(".").length == 2
+							&& joins.get(scdt.getPropName().trim().split(".")[0]) != null) {
+						attrPath = joins.get(scdt.getPropName().trim().split(".")[0])
+								.get(scdt.getPropName().trim().split(".")[1]);
+					}
 					Method m = cb.getClass().getDeclaredMethod(scdt.getOperator().getDbMethodName(),
 							scdt.getOperator().getMethodParamClasses());
 					m.setAccessible(true);
 					try {
-						if(Sql_Operator.IN.equals(scdt.getOperator()) || Sql_Operator.NOT_IN.equals(scdt.getOperator())) {
-							In in = cb.in(root.get(scdt.getPropName()));
-							for(Object obj : (Object[])scdt.getPropVal()) {
+						if (Sql_Operator.IN.equals(scdt.getOperator())
+								|| Sql_Operator.NOT_IN.equals(scdt.getOperator())) {
+							In in = cb.in(attrPath);
+							for (Object obj : (Object[]) scdt.getPropVal()) {
 								in = in.value(obj);
 							}
 							return Sql_Operator.IN.equals(scdt.getOperator()) ? in : cb.not(in);
-						} else if(Sql_Operator.BETWEEN.equals(scdt.getOperator())) {
-							return (Predicate) m.invoke(cb,
-									new Object[] { root.get(scdt.getPropName()), ((Object[])scdt.getPropVal())[0], ((Object[])scdt.getPropVal())[1] });
+						} else if (Sql_Operator.BETWEEN.equals(scdt.getOperator())) {
+							return (Predicate) m.invoke(cb, new Object[] { attrPath, ((Object[]) scdt.getPropVal())[0],
+									((Object[]) scdt.getPropVal())[1] });
 						} else {
-							return (Predicate) m.invoke(cb,
-									new Object[] { root.get(scdt.getPropName()), scdt.getPropVal() });
+							return (Predicate) m.invoke(cb, new Object[] { attrPath, scdt.getPropVal() });
 						}
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 						e.printStackTrace();
@@ -203,6 +235,17 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				}
 			}
 		}
+		return cb.conjunction();
+	}
+
+	private Path<Object> getJoinPath(Map<String, Join<?, ?>> joins, String propName) {
+		if(propName == null || propName.trim().length() == 0) {
+			throw new EemException("sql属性名不能为空");
+		}
+		String[] jn = propName.split("\\.");
+		if (joins != null && joins.size() > 0 && (jn.length == 2) && joins.get(jn[0]) != null) {
+			return joins.get(jn[0]).get(jn[1]);
+		}
 		return null;
 	}
 
@@ -210,7 +253,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 	public long countDos(Condition cdt) {
 		final CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
 		final Root<T> root = cq.from(getEntityClass());
-		cq.where(parseCondition(cdt, root));
+		cq.where(parseCondition(cdt, root, null));
 		TypedQuery<T> res = em.createQuery(cq);
 		res.getResultList();
 		return 0;

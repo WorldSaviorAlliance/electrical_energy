@@ -1,5 +1,7 @@
 package com.warrior.eem.entity;
 
-public class Demo {
+import java.io.Serializable;
+
+public class Demo implements Serializable {
 
 }

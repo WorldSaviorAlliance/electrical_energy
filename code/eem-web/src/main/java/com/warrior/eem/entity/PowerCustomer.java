@@ -3,14 +3,18 @@ package com.warrior.eem.entity;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * 电力用户
  * @author seangan
  *
  */
+@Entity
+@Table(name = "power_customer")
 public class PowerCustomer extends AbstractEntity {
 
 	private static final long serialVersionUID = 8531812174486012714L;
