@@ -13,7 +13,7 @@ import com.warrior.eem.service.PowerCustomerService;
 
 
 /**
- * 
+ * 电力客户服务
  * @author seangan
  *
  */
