@@ -30,3 +30,4 @@
 <script type="text/javascript"  src="<%=basePath%>static/js/control/jquery.EemWizard.js?version=<%= Constant.getCurTime()%>"></script>
 <script type="text/javascript"  src="<%=basePath%>static/js/control/jquery.EemMessageWindow.js?version=<%= Constant.getCurTime()%>"></script>
 <script type="text/javascript"  src="<%=basePath%>static/js/control/jquery.EemPage.js?version=<%= Constant.getCurTime()%>"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/jquery/jquery.validate.min.js"></script>

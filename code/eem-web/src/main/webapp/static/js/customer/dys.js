@@ -1,54 +1,74 @@
-/**
- * 针对我的电源商、所有电源和我的电力客户、所有的电力客户的一个统一界面
- */
-console.log(11);
+//@ sourceURL=dys.js
 $(function()
 {
-	initPc();
-	
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initPc()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchPc').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
-		$('#addPc').unbind('click').click(function(){
-			
+		$('#add').unbind('click').click(function(){
+			var addDiv = $('<div></div>');
+			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改电源商',
+		            content: addDiv,
+		            onOkBtnFn : function(){
+		            	$("#basicForm").validate({
+		            	    highlight: function(element) {
+		            	      $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		            	    },
+		            	    success: function(element) {
+		            	      $(element).closest('.form-group').removeClass('has-error');
+		            	    }
+		            	});
+		            	return false;
+		            },
+		            afterShow : function(){
+		            }
+		        });	
+			});
 		});
 		
-		 jQuery(".select2").select2({
-			    width: '100%',
-			    minimumResultsForSearch: -1
-			  });
+		jQuery(".select2").select2({
+		    width: '100%',
+		    minimumResultsForSearch: -1
+		});
 		 
-		$('#page2Pc').empty();
+		$('#page').empty();
 		var opts = {
 			totalPage : 100,
 			curPage : 1
 		};
-		$('#page2Pc').EemPage(opts);
+		$('#page').EemPage(opts);
 		
-		$('a[flag="del_pc"]').unbind('click').click(function(){
-			confirm('是否删除该客户？', function(){
+		$('a[flag="del"]').unbind('click').click(function(){
+			confirm('是否删除该电源商？', function(){
 				return true;
 			});
 		});
 		
-		$('a[flag="modify_pc"]').unbind('click').click(function(){
+		$('a[flag="modify"]').unbind('click').click(function(){
 			var addDiv = $('<div></div>');
-			addDiv.load(rootpath + '/static/jsp/customer/pcDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改客户',
+		            title: '修改电源商',
 		            content: addDiv,
 		            onOkBtnFn : function(){
 		            	return true;
@@ -60,6 +80,9 @@ $(function()
 		});
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
