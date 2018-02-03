@@ -21,7 +21,7 @@ $(function()
 			
 		});
 		$('#add').unbind('click').click(function(){
-			var height = 610 + (WINDOW_HEIGHT - 700);
+			var height = 655 + (WINDOW_HEIGHT - 700);
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + height + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
@@ -29,17 +29,7 @@ $(function()
 					width : WINDOW_WIDTH,
 		            title: '修改电源商',
 		            content: addDiv,
-		            onOkBtnFn : function(){
-		            	$("#basicForm").validate({
-		            	    highlight: function(element) {
-		            	      $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-		            	    },
-		            	    success: function(element) {
-		            	      $(element).closest('.form-group').removeClass('has-error');
-		            	    }
-		            	});
-		            	return false;
-		            },
+		            hasBottomBtn : false,
 		            afterShow : function(){
 		            	g_page_dys_detail = new DysDetail();
 		            }
@@ -71,6 +61,7 @@ $(function()
 					width : WINDOW_WIDTH,
 		            title: '修改电源商',
 		            content: addDiv,
+		            hasBottomBtn : false,
 		            onOkBtnFn : function(){
 		            	return true;
 		            },

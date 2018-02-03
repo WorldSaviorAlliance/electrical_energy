@@ -4,7 +4,7 @@
 <%
 	String basePath = ToolUtil.getBasePath(request);
 %>
-<form id="detail_form" class="form-horizontal" style="margin-top: 15px;" onsubmit="return false;">
+<form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电源商名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-9">
@@ -43,15 +43,13 @@
 		</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">地址 <span
-				class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">地址 <span	class="asterisk">*</span></label>
 			<div class="col-sm-9">
 				<input type="text" class="form-control" placeholder="请输入地址" required id="address" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">电源类型<span
-				class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">电源类型<span	class="asterisk">*</span></label>
 			<div class="col-sm-9">
 				<select class="select" data-placeholder="请选择电源类型" id="power_type">
 						<option value="0">火电</option>
@@ -65,17 +63,16 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">年均发电量<span class="asterisk">*</span></label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control"
-					placeholder="请输入年均发电量" required id="capacity" />
+				<input type="text" class="form-control" placeholder="请输入年均发电量" required id="capacity" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">企业性质<span class="asterisk">*</span></label>
 			<div class="col-sm-9">
 				<select class="select" data-placeholder="请选择企业性质" id="nature_type">
-						<option value="0">国营企业</option>
-						<option value="1">民营企业</option>
-					</select>
+					<option value="0">国营企业</option>
+					<option value="1">民营企业</option>
+				</select>
 			</div>
 		</div>
 		<div class="form-group">
@@ -99,7 +96,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">联系邮箱</label>
 			<div class="col-sm-9">
-				<input type="text" class="form-control" id="contact_email" />
+				<input type="email" class="form-control" id="contact_email" />
 			</div>
 		</div>
 		<div class="form-group">
@@ -108,7 +105,12 @@
 				<input type="text" class="form-control" id="fax" />
 			</div>
 		</div>
-	<button class="btn btn-primary">Submit</button>
+		<div class="form-group">
+			<div class="col-sm-4 col-sm-offset-4">
+				<button class="btn btn-primary">Submit</button>
+				<button class="btn btn-default" type="button">Cancel</button>
+			</div>
+		</div>	
 </form>
 <script type="text/javascript"
 	src="<%=basePath%>static/js/customer/dysDetail.js"></script>

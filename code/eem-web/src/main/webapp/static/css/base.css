@@ -148,3 +148,26 @@ h4, .h4 {
 .form-horizontal{
 	margin: 15px;
 }
+
+label.error , .has-error .control-label{
+    color: red;
+}
+
+label.error:empty {
+    display: none !important;    
+}
+
+label{
+	color: black;
+}
+.asterisk {
+    color: red;
+}
+
+.has-error .form-control{
+	border-color: red;
+}
+
+.form-control{
+	color: black;
+}
