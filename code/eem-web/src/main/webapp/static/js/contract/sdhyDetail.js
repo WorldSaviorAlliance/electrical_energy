@@ -1,5 +1,5 @@
-//@ sourceURL=dysDetail.js
-function DysDetail()
+//@ sourceURL=sdhyDetail.js
+function SdhyDetail()
 {
 	init();
 	function init()

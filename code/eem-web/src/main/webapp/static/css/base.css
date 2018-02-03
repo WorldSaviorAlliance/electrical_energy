@@ -104,9 +104,11 @@ h4, .h4 {
 	margin: 15px 0px;
 }
 
-.table th {
+.table > thead >tr > th {
     border-left: 1px solid #d3dbde;
     background-color: #F3F7F8;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .dropdown-menu > li > a, .dropdown-menu > li > a{
@@ -147,4 +149,57 @@ h4, .h4 {
 
 .form-horizontal{
 	margin: 15px;
+}
+
+label.error , .has-error .control-label{
+    color: red;
+}
+
+label.error:empty {
+    display: none !important;    
+}
+
+label{
+	color: black;
+}
+.asterisk {
+    color: red;
+}
+
+.has-error .form-control{
+	border-color: red;
+}
+
+.form-control{
+	color: black;
+}
+
+
+.a-upload {
+    padding: 7px 12px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
 }

@@ -1,69 +1,82 @@
-/**
- * 针对我的电源商、所有电源和我的电力客户、所有的电力客户的一个统一界面
- */
-console.log(11);
+//@ sourceURL=dlyh.js
 $(function()
 {
-	initPs();
-	
+	var g_page_dlyh_detail = null;
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initPs()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchPs').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
-		$('#addPs').unbind('click').click(function(){
-			
+		$('#add').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/customer/dlyhDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改电力用户',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            afterShow : function(){
+		            	g_page_dlyh_detail = new DlyhDetail();
+		            }
+		        });	
+			});
 		});
 		
-		$('#psRangTime').daterangepicker({
-		    "startDate": "01/20/2018",
-		    "endDate": "01/26/2018"
-		});
+		$('.select').niceSelect();
 		
-		
-		$('#page2Ps').empty();
+		$('#page').empty();
 		var opts = {
 			totalPage : 100,
 			curPage : 1
 		};
-		$('#page2Ps').EemPage(opts);
+		$('#page').EemPage(opts);
 		
-		$('a[flag="del_ps"]').unbind('click').click(function(){
-			confirm('是否删除该客户？', function(){
+		$('a[flag="del"]').unbind('click').click(function(){
+			confirm('是否删除该电力用户？', function(){
 				return true;
 			});
 		});
 		
-		$('a[flag="modify_ps"]').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
-			addDiv.load(rootpath + '/static/jsp/customer/psDetail.jsp', function(){
+		$('a[flag="modify"]').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/customer/dlyhDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改客户',
+		            title: '修改电力用户',
 		            content: addDiv,
+		            hasBottomBtn : false,
 		            onOkBtnFn : function(){
 		            	return true;
 		            },
 		            afterShow : function(){
+		            	g_page_dlyh_detail = new DlyhDetail();
 		            }
 		        });	
 			});
 		});
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
 	}
-	return this;	
+	return this;
 });

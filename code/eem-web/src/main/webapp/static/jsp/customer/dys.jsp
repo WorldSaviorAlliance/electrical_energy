@@ -8,47 +8,46 @@
 </h4>
 <div class="divider" style="margin-top: 6px;margin-bottom: 6px;"></div>
 <form class="form-horizontal">
-	<div>
-		<div class="tab-content detail_content">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-	                  <label class="col-sm-3 control-label">名称</label>
-	                  <div class="col-sm-9">
-	                   <input type="text" class="form-control" id="name">
-	                  </div>
-	                </div>
-				</div>
-				
-				<div class="col-md-4">
-					<div class="form-group">
-	                  <label class="col-sm-2 control-label">所在城市</label>
-	                  <div class="col-sm-5">
-		                   <select class="select2" data-placeholder="请选择省份" id="province">
-							<option value=""></option>
-							<option value="apple">四川</option>
-							<option value="orange">北京</option>
-							<option value="grapes">上海</option>
-							<option value="strawberry">云南</option>
-						</select> 
-					</div>
-					<div class="col-sm-5">	
-						<select class="select2" data-placeholder="请选择市区" id="city">
-							<option value=""></option>
-							<option value="apple">成都</option>
-							<option value="orange">德阳</option>
-							<option value="grapes">绵阳</option>
-							<option value="strawberry">宜宾</option>
-						</select>
-	                  </div>
-	                </div>
-				</div>
-				<div class="col-md-2">
-					<button class="btn btn-primary" id="search" type="button">查询</button>
-					<button class="btn btn-info" id="add" type="button">添加</button>
-				</div>
+	<div class="form-group">
+		<div class="col-sm-12" style="padding: 0px;">
+			<div class="col-md-3">
+				<div class="form-group">
+                  <label class="col-sm-3 control-label">名称</label>
+                  <div class="col-sm-9">
+                   <input type="text" class="form-control" id="name">
+                  </div>
+                </div>
 			</div>
-
+			
+			<div class="col-md-4">
+				<div class="form-group">
+                  <label class="col-sm-2 control-label">所在城市</label>
+                  <div class="col-sm-5">
+	                   <select class="select" data-placeholder="请选择省份" id="province">
+						<option value=""></option>
+						<option value="apple">四川</option>
+						<option value="orange">北京</option>
+						<option value="grapes">上海</option>
+						<option value="strawberry">云南</option>
+					</select> 
+				</div>
+				<div class="col-sm-5">	
+					<select class="select medium m-wrap" style="width:100%;" data-placeholder="请选择市区" id="city">
+						<option value=""></option>
+						<option value="apple">成都</option>
+						<option value="orange">德阳</option>
+						<option value="grapes">绵阳</option>
+						<option value="strawberry">宜宾</option>
+					</select>
+                  </div>
+                </div>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-info" id="add" type="button">添加</button>
+			</div>
+		</div>
+		<div class="col-sm-12" style="padding: 0px;">
 			<table class="table table-striped table-hover" style="margin-bottom:10px;border: 1px solid #ddd;background-color: #FFFFFF;">
 				<thead>
 					<tr>
@@ -188,9 +187,9 @@
 					</tr>
 				</tbody>
 			</table>
-			<div id="page">
+			</div>
+			<div id="page" class="col-sm-12" style="padding: 0px;">
 			</div>	
 		</div>
-	</div>
 </form>
 <script type="text/javascript" src="<%=basePath%>static/js/customer/dys.js"></script>

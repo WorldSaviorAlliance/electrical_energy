@@ -1,4 +1,6 @@
 $(function(){
+	$('#username').focus();
+	
 	$('#loginBtn').click(function(){
 		doLoginAction();
 	});

@@ -9,6 +9,26 @@ jQuery(window).load(function() {
    });
 });
 
+jQuery.extend(jQuery.validator.messages, {
+	  required: "必选字段",
+	  remote: "请修正该字段",
+	  email: "请输入正确格式的电子邮件",
+	  url: "请输入合法的网址",
+	  date: "请输入合法的日期",
+	  dateISO: "请输入合法的日期 (ISO).",
+	  number: "请输入合法的数字",
+	  digits: "只能输入整数",
+	  creditcard: "请输入合法的信用卡号",
+	  equalTo: "请再次输入相同的值",
+	  accept: "请输入拥有合法后缀名的字符串",
+	  maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+	  minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+	  rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+	  range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+	  max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+	  min: jQuery.validator.format("请输入一个最小为{0} 的值")
+});
+
 function getRootPath() {
 	return location.pathname.substring(0, location.pathname.substr(1).indexOf('/') + 1);
 }
@@ -18,6 +38,7 @@ var urlRootPath = getRootPath() + '/';
 var WINDOW_WIDTH = 900; //窗口的宽度
 var WINDOW_HEIGHT = 700; //窗口的高度
 var WINDOW_SUB_CONTENT_HEIGHT = 605; //窗口的内容的高度
+var WINDOW_NO_BOTTOM_HEIGHT = WINDOW_HEIGHT - 45;;//没有底部按钮的高度
 $(function(){
 	getWindowSize();
 	$(window).resize(function() {
@@ -88,6 +109,8 @@ function getWindowSize()
 		WINDOW_HEIGHT = 500;
 		WINDOW_SUB_CONTENT_HEIGHT = 405;
 	}
+	
+	WINDOW_NO_BOTTOM_HEIGHT = WINDOW_HEIGHT - 45;
 }
 
 var g_params = null;  //全局监控Url参数的变量
@@ -136,4 +159,87 @@ function getAdBrowserDateTime(date)
 	{
 		return Date.parse(date.replace(/-/g,"/"));
 	}	
+}
+
+
+/**
+ * 显示进度
+ * @param msg
+ * @returns
+ */
+function showProgress(msg)
+{
+	var id = $.gritter.add({
+        title:  '提示' ,
+        text: msg,
+        image: rootpath + '/static/images/loading/loading_32.gif',
+        sticky: true,
+        class_name : 'gritter-light',
+        class_name: 'my-sticky-class'
+    });	
+	return id;
+}
+
+/**
+ * 隐藏进度
+ * @param id
+ */
+function hideProgress(id)
+{
+	if($('#gritter-item-' + id).length == 0)
+	{
+		return;
+	}
+	$.gritter.remove(id, {
+        fade: true,
+        speed: 'slow'
+    });
+}
+
+/**
+ * @param title 
+ * @param content
+ * @param type
+ */
+function showDynamicMessage(title, content, type)
+{
+	setTimeout(function () {
+		var image = '';
+		switch(type)
+		{
+		case 0:
+			image = rootpath + '/static/js/gritter/error.png';
+			break;
+		case 1:
+			image = rootpath + '/static/js/gritter/info.png';
+			break;
+		case 2:
+			image = rootpath + '/static/js/gritter/question.png';
+			break;
+		case 3:
+			image = rootpath + '/static/js/gritter/warning.png';
+			break;
+		case 4 :
+			image = rootpath + '/static/images/loading/loading_32.gif';
+			break;
+		default :
+			image = rootpath + '/static/js/gritter/info.png';
+			break;
+		}
+		var unique_id = $.gritter.add({
+	        title: title,
+	        text: content,
+	        image: image,
+	        sticky: true,
+	        time: '',
+	        class_name : 'gritter-light',
+	        class_name: 'my-sticky-class'
+	    });
+		setTimeout(function () {
+	        $.gritter.remove(unique_id, {
+	            fade: true,
+	            speed: 'slow'
+	        });
+	    }, 10000);
+	}, 100);
 }
