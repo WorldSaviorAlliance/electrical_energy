@@ -87,4 +87,10 @@ public class DemoServiceImpl extends AbstractServiceImpl<DemoDo> implements Demo
 		return req;
 	}
 
+	@Override
+	DemoDo convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

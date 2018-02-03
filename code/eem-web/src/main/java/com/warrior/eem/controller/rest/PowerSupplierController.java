@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.DemoDo;
+import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerSupplierService;
@@ -29,7 +30,7 @@ public class PowerSupplierController extends AbstractController {
 	
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createDemo(@RequestBody DemoDo demoVo) {
+	public Result<Object> createEntity(@RequestBody DemoDo demoVo) {
 		throw new EemException("测试");
 //		dService.createEntity(demoVo);
 //		return Result.success();
@@ -37,25 +38,26 @@ public class PowerSupplierController extends AbstractController {
 	
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> modifyDemo(@RequestBody DemoDo demoVo) {
+	public Result<Object> updateEntity(@RequestBody DemoDo demoVo) {
 		return Result.success();
 	}
 	
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteDemo(String id) {
+	public Result<Object> deleteEntity(String id) {
+		pssService.deleteEntity(convertId(id));
 		return Result.success();
 	}
 	
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<DemoDo> getDemo(String id) {
-		return Result.success((DemoDo)pssService.getEntity(Long.valueOf(id)));
+	public Result<PowerSupplier> getEntity(String id) {
+		return Result.success((PowerSupplier)pssService.getEntity(convertId(id)));
 	}
 	
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listDemos(@RequestBody PowerCustomerOrSupplierCdtVo cdt,
+	public Result<Object> listEntities(@RequestBody PowerCustomerOrSupplierCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
 		Integer pageNum = 1;

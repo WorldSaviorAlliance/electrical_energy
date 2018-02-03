@@ -15,9 +15,9 @@ import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.service.PowerCustomerService;
 
-
 /**
  * 电力客户服务
+ * 
  * @author seangan
  *
  */
@@ -26,7 +26,7 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 
 	@Autowired
 	private PowerCustomerDao pctDao;
-	
+
 	@Override
 	IDao<PowerCustomer> getDao() {
 		return pctDao;
@@ -34,19 +34,19 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 
 	@Override
 	SqlRequest buildListSqlRequest(Serializable... conditions) {
-		PowerCustomerOrSupplierCdtVo cdt = (PowerCustomerOrSupplierCdtVo)conditions[0];
-		Page page = new Page((int)conditions[1], (int)conditions[2]);
+		PowerCustomerOrSupplierCdtVo cdt = (PowerCustomerOrSupplierCdtVo) conditions[0];
+		Page page = new Page((int) conditions[1], (int) conditions[2]);
 		SqlRequest req = new SqlRequest();
 		req.setPage(page);
-		if(cdt != null) {
+		if (cdt != null) {
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
-			if(cdt.getName() != null && cdt.getName().trim().length() > 0) {
+			if (cdt.getName() != null && cdt.getName().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.like("name", cdt.getName() + "%"));
 			}
-			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
+			if (cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.equal("province", cdt.getProvince()));
 			}
-			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
+			if (cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.equal("city", cdt.getCity()));
 			}
 			req.setCdt(sqlCdt);
@@ -56,6 +56,11 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 
 	@Override
 	SqlRequest buildCountSqlRequest(Serializable... condition) {
+		return null;
+	}
+
+	@Override
+	PowerCustomer convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		return null;
 	}
 }

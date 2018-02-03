@@ -58,4 +58,9 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 	SqlRequest buildCountSqlRequest(Serializable... condition) {
 		return null;
 	}
+
+	@Override
+	PowerSupplier convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
+		return null;
+	}
 }

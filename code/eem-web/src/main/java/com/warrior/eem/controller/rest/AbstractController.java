@@ -50,4 +50,22 @@ public class AbstractController {
 		} catch (IOException e1) {
 		}
 	}
+	
+	/**
+	 * id转换器
+	 * @param id
+	 * @return
+	 */
+	Long convertId(String id) {
+		Long idNum = 0L;
+		if (id == null || id.trim().length() == 0) {
+			throw new EemException("id不能为空");
+		}
+		try {
+			idNum = Long.valueOf(id);
+		} catch (NumberFormatException e) {
+			throw new EemException("id格式不对");
+		}
+		return idNum;
+	}
 }

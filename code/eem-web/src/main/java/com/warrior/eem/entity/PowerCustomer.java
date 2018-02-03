@@ -1,12 +1,17 @@
 package com.warrior.eem.entity;
 
-import java.time.LocalTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 电力用户
@@ -69,11 +74,13 @@ public class PowerCustomer extends AbstractEntity {
 	
 	// 录入时间
 	@Column(name = "create_time")
-	private LocalTime createTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createTime;
 	
 	// 录入人
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User creator;
 	
 	public PowerCustomer() {
@@ -124,7 +131,7 @@ public class PowerCustomer extends AbstractEntity {
 		return fax;
 	}
 
-	public LocalTime getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
@@ -176,7 +183,7 @@ public class PowerCustomer extends AbstractEntity {
 		this.fax = fax;
 	}
 
-	public void setCreateTime(LocalTime createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
