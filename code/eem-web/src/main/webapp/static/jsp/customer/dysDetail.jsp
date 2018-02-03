@@ -110,7 +110,7 @@
 				<input type="text" class="form-control" id="fax" />
 			</div>
 		</div>
-	<button class="btn btn-primary" style="display: none;">Submit</button>
+	<button class="btn btn-primary">Submit</button>
 </form>
 <script type="text/javascript"
 	src="<%=basePath%>static/js/customer/dysDetail.js"></script>
