@@ -11,8 +11,8 @@
 <meta http-equiv="Expires" content="0" />
 <link rel="shortcut icon" href="<%=basePath%>static/images/favicon.ico">
 <script type="text/javascript" src="<%=basePath%>static/js/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>static/js/select/select2.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>static/js/select/select2.css">
+<script src="<%=basePath%>static/js/niceSelect/js/jquery.nice-select.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/niceSelect/css/nice-select.css?version=<%= Constant.getCurTime()%>">
 <link rel="stylesheet" href="<%=basePath%>static/js/bootstrap/css/bootstrap.min.css?version=<%= Constant.getCurTime()%>">
 <link rel="stylesheet" href="<%=basePath%>static/js/bootstrap/css/bootstrap-override.css?version=<%= Constant.getCurTime()%>">
 <link rel="stylesheet" href="<%=basePath%>static/css/base.css?version=<%= Constant.getCurTime()%>">

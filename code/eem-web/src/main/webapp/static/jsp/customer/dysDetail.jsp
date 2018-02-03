@@ -22,19 +22,17 @@
 		<label class="col-sm-2 control-label">所在城市 <span
 			class="asterisk">*</span></label>
 		<div class="col-sm-9">
-			<div class="form-group">
-				<div class="col-sm-6">
-					<select class="select2" data-placeholder="请选择省份" id="province">
-						<option value=""></option>
-						<option value="apple">四川33</option>
+			<div class="form-group" style="margin: 0px;">
+				<div class="col-sm-6" style="padding-left: 0px;">
+					<select class="select" data-placeholder="请选择省份" id="province">
+						<option value="apple">四川</option>
 						<option value="orange">北京</option>
 						<option value="grapes">上海</option>
 						<option value="strawberry">云南</option>
 					</select>
 				</div>
-				<div class="col-sm-6">
-					<select class="select2" data-placeholder="请选择市区" id="city">
-						<option value=""></option>
+				<div class="col-sm-6" style="padding-right: 0px;">
+					<select class="select" data-placeholder="请选择市区" id="city">
 						<option value="apple">成都</option>
 						<option value="orange">德阳</option>
 						<option value="grapes">绵阳</option>
@@ -55,7 +53,7 @@
 			<label class="col-sm-2 control-label">电源类型<span
 				class="asterisk">*</span></label>
 			<div class="col-sm-9">
-				<select class="select2" data-placeholder="请选择电源类型" id="power_type">
+				<select class="select" data-placeholder="请选择电源类型" id="power_type">
 						<option value="0">火电</option>
 						<option value="1">水电</option>
 						<option value="2">风电</option>
@@ -74,7 +72,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">企业性质<span class="asterisk">*</span></label>
 			<div class="col-sm-9">
-				<select class="select2" data-placeholder="请选择企业性质" id="nature_type">
+				<select class="select" data-placeholder="请选择企业性质" id="nature_type">
 						<option value="0">国营企业</option>
 						<option value="1">民营企业</option>
 					</select>

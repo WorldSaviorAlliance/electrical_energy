@@ -47,11 +47,8 @@ $(function()
 			});
 		});
 		
-		$(".select2").select2({
-		    width: '100%',
-		    minimumResultsForSearch: -1
-		});
-		 
+		$('.select').niceSelect();
+		
 		$('#page').empty();
 		var opts = {
 			totalPage : 100,
