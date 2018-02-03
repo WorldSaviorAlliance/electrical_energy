@@ -105,11 +105,9 @@
 				<input type="text" class="form-control" id="fax" />
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="col-sm-2 col-sm-offset-5">
-				<button class="btn btn-primary">Submit</button>
-				<button class="btn btn-default" type="button">Cancel</button>
-			</div>
+		<div class="form-group" style="text-align: center;">
+			<button class="btn btn-primary">保存</button>
+		    <button class="btn btn-default" type="button">取消</button>
 		</div>	
 </form>
 <script type="text/javascript"
