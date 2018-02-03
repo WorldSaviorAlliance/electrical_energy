@@ -106,7 +106,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-4 col-sm-offset-4">
+			<div class="col-sm-2 col-sm-offset-5">
 				<button class="btn btn-primary">Submit</button>
 				<button class="btn btn-default" type="button">Cancel</button>
 			</div>

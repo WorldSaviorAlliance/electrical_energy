@@ -35,11 +35,8 @@
 			var isPreDisabled = opts.curPage <= 1 ? 'disabled' : '';
 			var isNextDisabled = opts.curPage == opts.totalPage ? 'disabled' : '';
 				
-			var table = '<table class="table table-fixed eem_page" style="float:right;">'+
-				'<tr>'+
-					'<td style="border-top: none;padding-right: 0px;">'+
-						'<div class="pull-right" style="margin-right: 0px;">'+
-							'<ul class="pagination ng-isolate-scope">'+
+			var table = '<div class="pull-right" style="margin-right: 0px;">'+
+								'<ul class="pagination ng-isolate-scope">'+
 								'<li class="ng-scope ' + isFirstDisabled + '">'+
 									'<a href="javascript:void(1)" class="ng-binding ' + isFirstDisabled + '" type="0">首页</a>'+
 								'</li>'+
@@ -54,10 +51,7 @@
 									'<a href="javascript:void(4)" class="ng-binding ' + isLastDisabled + '" type="4">末页</a>'+
 								'</li>'+
 							'</ul>'+
-						'</div>'+
-					'</td>'+
-				'</tr>'+
-			'</table>';
+						'</div>';
 			
 			$EemPage.append($(table));
 			$('.eem_page a').click(function(){
