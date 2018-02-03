@@ -30,6 +30,7 @@
 <script type="text/javascript" src="<%=basePath%>static/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/bootstrap/js/bootstrap.min.js?version=<%= Constant.getCurTime()%>" ></script>
 <script type="text/javascript" src="<%=basePath%>static/js/constants.js?version=<%= Constant.getCurTime()%>"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/jquery/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/base.js?version=<%= Constant.getCurTime()%>"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/login.js?version=<%= Constant.getCurTime()%>"></script>
 </body>

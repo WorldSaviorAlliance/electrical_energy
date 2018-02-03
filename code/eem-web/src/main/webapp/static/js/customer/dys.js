@@ -21,8 +21,7 @@ $(function()
 			
 		});
 		$('#add').unbind('click').click(function(){
-			var height = 655 + (WINDOW_HEIGHT - 700);
-			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + height + 'px;"></div>');
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
@@ -53,8 +52,7 @@ $(function()
 		});
 		
 		$('a[flag="modify"]').unbind('click').click(function(){
-			var height = 655 + (WINDOW_HEIGHT - 700);
-			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + height + 'px;"></div>');
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,

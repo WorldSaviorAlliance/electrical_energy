@@ -1,40 +1,104 @@
 <%@page import="com.warrior.eem.util.ToolUtil"%>
-<!-- 联系人详细的模板 -->
-<%@ page language="java"  pageEncoding="utf-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%
 	String basePath = ToolUtil.getBasePath(request);
 %>
-
-<div class="row" style="margin:15px;">
-	<div class="col-md-6">
+<form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
+	<div class="form-group">
+		<label class="col-sm-2 control-label">电力用户名称 <span class="asterisk">*</span></label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" placeholder="请输入电力用户名称" required id="name" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">电力用户简称 <span
+			class="asterisk">*</span></label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" placeholder="请输入电力用户简称" required id="nick_name" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">所在城市 <span
+			class="asterisk">*</span></label>
+		<div class="col-sm-9">
+			<div class="form-group" style="margin: 0px;">
+				<div class="col-sm-6" style="padding-left: 0px;">
+					<select class="select" data-placeholder="请选择省份" id="province">
+						<option value="apple">四川</option>
+						<option value="orange">北京</option>
+						<option value="grapes">上海</option>
+						<option value="strawberry">云南</option>
+					</select>
+				</div>
+				<div class="col-sm-6" style="padding-right: 0px;">
+					<select class="select" data-placeholder="请选择市区" id="city">
+						<option value="apple">成都</option>
+						<option value="orange">德阳</option>
+						<option value="grapes">绵阳</option>
+						<option value="strawberry">宜宾</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		</div>
 		<div class="form-group">
-            <label class="control-label"><font style="color:red">*</font>姓名</label>
-            <input type="text" name="name" class="form-control">
-          </div>
-	</div>
-	<div class="col-md-6">
+			<label class="col-sm-2 control-label">地址 <span class="asterisk">*</span></label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="请输入地址" required id="address" />
+			</div>
+		</div>
 		<div class="form-group">
-            <label class="control-label">职位</label>
-            <input type="text" class="form-control">
-          </div>
-	</div>
-	<div class="col-md-6">
+			<label class="col-sm-2 control-label">所属行业<span	class="asterisk">*</span></label>
+			<div class="col-sm-9">
+				<select class="select" data-placeholder="请选择所属行业" id="industry_type">
+						<option value="0">石油化工</option>
+						<option value="1">机械制造</option>
+						<option value="2">电器设备</option>
+					</select>
+			</div>
+		</div>
 		<div class="form-group">
-            <label class="control-label">性别</label>
-           	<select class="m-wrap" style="width: 100%;">
-				<option value="0">男</option>
-				<option value="1">女</option>
-			</select>
-          </div>
-	</div>
-	<div class="col-md-6">
+			<label class="col-sm-2 control-label">企业性质<span class="asterisk">*</span></label>
+			<div class="col-sm-9">
+				<select class="select" data-placeholder="请选择企业性质" id="nature_type">
+					<option value="0">国营企业</option>
+					<option value="1">民营企业</option>
+				</select>
+			</div>
+		</div>
 		<div class="form-group">
-            <label class="control-label">籍贯</label>
-            <input type="text" class="form-control">
-          </div>
-	</div>
-	<div style="height: 500px;">
-	
-	</div>
-	未写完
-</div>
+			<label class="col-sm-2 control-label">联系人</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="contact_name" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">联系电话</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="contact_phone" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">联系人职务</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="contact_position" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">联系邮箱</label>
+			<div class="col-sm-9">
+				<input type="email" class="form-control" id="contact_email" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">传真</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="fax" />
+			</div>
+		</div>
+		<div class="form-group" style="text-align: center;">
+			<button class="btn btn-primary">保存</button>
+		    <button class="btn btn-default" type="button">取消</button>
+		</div>	
+</form>
+<script type="text/javascript" src="<%=basePath%>static/js/customer/dlyhDetail.js"></script>

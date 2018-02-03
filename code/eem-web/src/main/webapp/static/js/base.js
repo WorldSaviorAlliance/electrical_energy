@@ -38,6 +38,7 @@ var urlRootPath = getRootPath() + '/';
 var WINDOW_WIDTH = 900; //窗口的宽度
 var WINDOW_HEIGHT = 700; //窗口的高度
 var WINDOW_SUB_CONTENT_HEIGHT = 605; //窗口的内容的高度
+var WINDOW_NO_BOTTOM_HEIGHT = WINDOW_HEIGHT - 45;;//没有底部按钮的高度
 $(function(){
 	getWindowSize();
 	$(window).resize(function() {
@@ -108,6 +109,8 @@ function getWindowSize()
 		WINDOW_HEIGHT = 500;
 		WINDOW_SUB_CONTENT_HEIGHT = 405;
 	}
+	
+	WINDOW_NO_BOTTOM_HEIGHT = WINDOW_HEIGHT - 45;
 }
 
 var g_params = null;  //全局监控Url参数的变量
