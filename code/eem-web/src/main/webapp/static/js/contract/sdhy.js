@@ -1,69 +1,82 @@
-/**
- * 购电合约界面
- */
-console.log(11);
+//@ sourceURL=sdhy.js
 $(function()
 {
-	initSc();
-	
+	var g_page_sdhy_detail = null;
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initSc()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchSc').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
-		$('#addSc').unbind('click').click(function(){
-			
-		});
-		
-		$('#scRangTime').daterangepicker({
-		    "startDate": "01/20/2018",
-		    "endDate": "01/26/2018"
-		});
-		
-		
-		$('#page2Sc').empty();
-		var opts = {
-			totalPage : 100,
-			curPage : 1
-		};
-		$('#page2Sc').EemPage(opts);
-		
-		$('a[flag="del_sc"]').unbind('click').click(function(){
-			confirm('是否删除该售电合约？', function(){
-				return true;
-			});
-		});
-		
-		$('a[flag="modify_sc"]').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/scDetail.jsp', function(){
+		$('#add').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
 		            title: '修改售电合约',
 		            content: addDiv,
+		            hasBottomBtn : false,
+		            afterShow : function(){
+		            	g_page_sdhy_detail = new SdhyDetail();
+		            }
+		        });	
+			});
+		});
+		
+		$('.select').niceSelect();
+		
+		$('#page').empty();
+		var opts = {
+			totalPage : 100,
+			curPage : 1
+		};
+		$('#page').EemPage(opts);
+		
+		$('a[flag="del"]').unbind('click').click(function(){
+			confirm('是否删除该售电合约？', function(){
+				return true;
+			});
+		});
+		
+		$('a[flag="modify"]').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改售电合约',
+		            content: addDiv,
+		            hasBottomBtn : false,
 		            onOkBtnFn : function(){
 		            	return true;
 		            },
 		            afterShow : function(){
+		            	g_page_sdhy_detail = new SdhyDetail();
 		            }
 		        });	
 			});
 		});
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
 	}
-	return this;	
+	return this;		
 });
