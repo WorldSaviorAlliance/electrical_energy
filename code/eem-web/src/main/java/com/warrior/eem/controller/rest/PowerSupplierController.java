@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.DemoDo;
 import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
+import com.warrior.eem.entity.vo.PowerSupplierUpdaterVo;
+import com.warrior.eem.entity.vo.PowerSupplierVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerSupplierService;
 
@@ -30,15 +31,15 @@ public class PowerSupplierController extends AbstractController {
 	
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody DemoDo demoVo) {
-		throw new EemException("测试");
-//		dService.createEntity(demoVo);
-//		return Result.success();
+	public Result<Object> createEntity(@RequestBody PowerSupplierVo psv) {
+		pssService.createEntity(psv);
+		return Result.success();
 	}
 	
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody DemoDo demoVo) {
+	public Result<Object> updateEntity(@RequestBody PowerSupplierUpdaterVo psuv) {
+		pssService.updateEntity(psuv);
 		return Result.success();
 	}
 	

@@ -479,10 +479,16 @@ public class EntityValidator {
 				if (fv.length() < fc.minLen() || fv.length() > fc.maxLen()) {
 					throw new EemException(fc.name() + "文本长度必须在（" + fc.minLen() + "~" + fc.maxLen() + "）之间");
 				}
-				Pattern pattern = Pattern.compile(fc.pattern());
-				Matcher matcher = pattern.matcher(fv);
-				if (matcher.find()) {
-					throw new EemException(fc.name() + "不能包含特殊字符");
+				if (fc.pattern() == null || fc.pattern().trim().length() == 0
+						|| ".*(\\\"|'|<|>|&|%).*".equals(fc.pattern())) {
+					Matcher matcher = Pattern.compile(".*(\\\"|'|<|>|&|%).*").matcher(fv);
+					if (matcher.find()) {
+						throw new EemException(fc.name() + "不能包含特殊字符");
+					}
+				} else {
+					if (!Pattern.matches(fc.pattern(), fv)) {
+						throw new EemException(fc.name() + "必须为" + fc.pattern());
+					}
 				}
 			}
 		} else if (customType == PARAM_TYPE.DATE.getValue()) {
@@ -514,7 +520,7 @@ public class EntityValidator {
 						fv = Double.valueOf(String.valueOf(fvO));
 					}
 					if (fv < fc.minVal() || fv > fc.maxVal()) {
-						throw new EemException(fc.name() + "必须在（" + BigDecimal.valueOf(fc.minVal()).toString() + "-"
+						throw new EemException(fc.name() + "（" + fv + "）必须在（" + BigDecimal.valueOf(fc.minVal()).toString() + "-"
 								+ BigDecimal.valueOf(fc.maxVal()) + "）范围内");
 					}
 				} else if ("long".equalsIgnoreCase(paramTypeSimpleName) || "int".equalsIgnoreCase(paramTypeSimpleName)
@@ -524,7 +530,7 @@ public class EntityValidator {
 						fv = Long.valueOf(String.valueOf(fvO));
 					}
 					if (fv < fc.minVal() || fv > fc.maxVal()) {
-						throw new EemException(fc.name() + "必须在（" + BigDecimal.valueOf(fc.minVal()).toString() + "-"
+						throw new EemException(fc.name() + "（" + fv + "）必须在（" + BigDecimal.valueOf(fc.minVal()).toString() + "-"
 								+ BigDecimal.valueOf(fc.maxVal()) + "）范围内");
 					}
 				}

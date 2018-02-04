@@ -1,10 +1,11 @@
 package com.warrior.eem.entity.vo;
 
 import java.io.Serializable;
-
+import java.math.BigDecimal;
+import java.util.Date;
 
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.interfaces.EntityConvertor;
 
 /**
@@ -16,14 +17,17 @@ public class PowerSupplierVo implements EntityConvertor, Serializable {
 
 	private static final long serialVersionUID = 8531812174486012714L;
 	
-	@FieldChecker(name = "电力用户名称", minLen = 1, maxLen = 30)
+	@FieldChecker(name = "电源商名称", minLen = 1, maxLen = 30)
 	private String name;
 	
 	@FieldChecker(name = "简称", minLen = 1, maxLen =10)
 	private String nickName;
 	
-	@FieldChecker(name = "所属行业", maxVal = 10)
-	private int industryType;
+	@FieldChecker(name = "电源类型", maxVal = 10)
+	private int powerType; 
+	
+	@FieldChecker(name = "年均发电量", maxVal = Double.MAX_VALUE)
+	private BigDecimal capacity;
 	
 	@FieldChecker(name = "所在省份", minLen = 1, maxLen = 10)
 	private String province;
@@ -99,6 +103,22 @@ public class PowerSupplierVo implements EntityConvertor, Serializable {
 		return fax;
 	}
 
+	public int getPowerType() {
+		return powerType;
+	}
+
+	public BigDecimal getCapacity() {
+		return capacity;
+	}
+
+	public void setPowerType(int powerType) {
+		this.powerType = powerType;
+	}
+
+	public void setCapacity(BigDecimal capacity) {
+		this.capacity = capacity;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -150,19 +170,23 @@ public class PowerSupplierVo implements EntityConvertor, Serializable {
 
 	@Override
 	public Serializable convertToDo() {
-		PowerCustomer pc = new PowerCustomer();
-		pc.setAddress(this.getAddress());
-		pc.setCity(this.getCity());
-		pc.setContactEmail(this.getContactEmail());
-		pc.setContactName(this.getContactName());
-		pc.setContactPhone(this.getContactPhone());
-		pc.setContactPosition(this.getContactPosition());
-		pc.setFax(this.getFax());
-		pc.setName(this.getName());
-		pc.setNatureType(this.getNatureType());
-		pc.setNickName(this.getNickName());
-		pc.setProvince(this.getProvince());
-		return pc;
+		PowerSupplier ps = new PowerSupplier();
+		ps.setAddress(this.getAddress());
+		ps.setCity(this.getCity());
+		ps.setContactEmail(this.getContactEmail());
+		ps.setContactName(this.getContactName());
+		ps.setContactPhone(this.getContactPhone());
+		ps.setContactPosition(this.getContactPosition());
+		ps.setFax(this.getFax());
+		ps.setName(this.getName());
+		ps.setNatureType(this.getNatureType());
+		ps.setNickName(this.getNickName());
+		ps.setProvince(this.getProvince());
+		ps.setPowerType(this.getPowerType());
+		ps.setCapacity(this.getCapacity());
+		ps.setCreateTime(new Date());
+		ps.setCreator(null);
+		return ps;
 	}
 
 	@Override

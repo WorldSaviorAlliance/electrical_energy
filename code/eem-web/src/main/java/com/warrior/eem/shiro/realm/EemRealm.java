@@ -25,10 +25,10 @@ public class EemRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SimpleAuthorizationInfo az = new SimpleAuthorizationInfo();
 		// TODO 具体权限
-		Set<String> ps = new HashSet<String>();
-		ps.add("demo:create");
-		ps.add("demo:get");
-		az.addStringPermissions(ps);
+//		Set<String> ps = new HashSet<String>();
+//		ps.add("demo:create");
+//		ps.add("demo:get");
+//		az.addStringPermissions(ps);
 		return az;
 	}
 

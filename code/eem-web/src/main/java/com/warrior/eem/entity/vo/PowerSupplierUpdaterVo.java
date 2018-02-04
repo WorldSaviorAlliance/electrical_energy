@@ -2,9 +2,8 @@ package com.warrior.eem.entity.vo;
 
 import java.io.Serializable;
 
-
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerSupplier;
 
 /**
  * 电力提供商vo更新对象
@@ -35,13 +34,25 @@ public class PowerSupplierUpdaterVo extends PowerSupplierVo {
 
 	@Override
 	public Serializable convertToDo() {
-		PowerCustomer pc = (PowerCustomer)super.convertToDo();
-		pc.setId(this.getId());
-		return pc;
+		return null;
 	}
 	
 	@Override
 	public Serializable mergeProps(Serializable targetEntity) {
-		return null;
+		PowerSupplier ps = (PowerSupplier)targetEntity;
+		ps.setAddress(this.getAddress());
+		ps.setCity(this.getCity());
+		ps.setContactEmail(this.getContactEmail());
+		ps.setContactName(this.getContactName());
+		ps.setContactPhone(this.getContactPhone());
+		ps.setContactPosition(this.getContactPosition());
+		ps.setFax(this.getFax());
+		ps.setName(this.getName());
+		ps.setNatureType(this.getNatureType());
+		ps.setNickName(this.getNickName());
+		ps.setProvince(this.getProvince());
+		ps.setPowerType(this.getPowerType());
+		ps.setCapacity(this.getCapacity());
+		return ps;
 	}
 }

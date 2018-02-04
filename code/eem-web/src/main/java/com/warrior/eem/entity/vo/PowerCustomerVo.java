@@ -1,7 +1,7 @@
 package com.warrior.eem.entity.vo;
 
 import java.io.Serializable;
-
+import java.util.Date;
 
 import com.warrior.eem.annotation.FieldChecker;
 import com.warrior.eem.entity.PowerCustomer;
@@ -162,6 +162,9 @@ public class PowerCustomerVo implements EntityConvertor, Serializable {
 		pc.setNatureType(this.getNatureType());
 		pc.setNickName(this.getNickName());
 		pc.setProvince(this.getProvince());
+		pc.setCreateTime(new Date());
+		// 待用户完善
+		pc.setCreator(null);
 		return pc;
 	}
 
