@@ -69,6 +69,25 @@ $(function()
 		        });	
 			});
 		});
+		
+		$('a[flag="modify_p"]').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/sddjDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改电价',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            onOkBtnFn : function(){
+		            	return true;
+		            },
+		            afterShow : function(){
+		            	g_page_sdhy_detail = new SdhyDetail();
+		            }
+		        });	
+			});
+		});
 	}
 	
 	/**
