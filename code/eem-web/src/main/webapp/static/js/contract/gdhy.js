@@ -1,69 +1,82 @@
-/**
- * 购电合约界面
- */
-console.log(11);
+//@ sourceURL=gdhy.js
 $(function()
 {
-	initEa();
-	
+	var g_page_gdhy_detail = null;
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initEa()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchEa').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
-		$('#addEa').unbind('click').click(function(){
-			
+		$('#add').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/gdhyDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改购电合约',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            afterShow : function(){
+		            	g_page_gdhy_detail = new GdhyDetail();
+		            }
+		        });	
+			});
 		});
 		
-		$('#eaRangTime').daterangepicker({
-		    "startDate": "01/20/2018",
-		    "endDate": "01/26/2018"
-		});
+		$('.select').niceSelect();
 		
-		
-		$('#page2Ea').empty();
+		$('#page').empty();
 		var opts = {
 			totalPage : 100,
 			curPage : 1
 		};
-		$('#page2Ea').EemPage(opts);
+		$('#page').EemPage(opts);
 		
-		$('a[flag="del_ea"]').unbind('click').click(function(){
-			confirm('是否删除该电量调整？', function(){
+		$('a[flag="del"]').unbind('click').click(function(){
+			confirm('是否删除该购电合约？', function(){
 				return true;
 			});
 		});
 		
-		$('a[flag="modify_ea"]').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/eaDetail.jsp', function(){
+		$('a[flag="modify"]').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/gdhyDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电量调整',
+		            title: '修改购电合约',
 		            content: addDiv,
+		            hasBottomBtn : false,
 		            onOkBtnFn : function(){
 		            	return true;
 		            },
 		            afterShow : function(){
+		            	g_page_gdhy_detail = new GdhyDetail();
 		            }
 		        });	
 			});
 		});
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
 	}
-	return this;	
+	return this;		
 });
