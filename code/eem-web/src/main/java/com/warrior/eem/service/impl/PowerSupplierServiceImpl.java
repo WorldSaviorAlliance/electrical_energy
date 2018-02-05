@@ -13,7 +13,9 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerSupplierService;
+import com.warrior.eem.util.EntityValidator;
 
 
 /**
@@ -39,6 +41,11 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 		SqlRequest req = new SqlRequest();
 		req.setPage(page);
 		if(cdt != null) {
+			try {
+				EntityValidator.checkEntity(cdt);
+			} catch (IllegalAccessException | SecurityException e) {
+				throw new EemException("解析电力供应商查询条件失败");
+			}
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 			if(cdt.getName() != null && cdt.getName().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.like("name", cdt.getName() + "%"));
