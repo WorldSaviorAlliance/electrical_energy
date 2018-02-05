@@ -243,3 +243,41 @@ function showDynamicMessage(title, content, type)
 	    }, 10000);
 	}, 100);
 }
+
+function getPowerTypeStr(powerType)
+{
+	var str = '';
+	if(powerType != null)
+	{
+		switch (powerType) {
+		case 0:
+			str = '火电';
+			break;
+		case 1:
+			str = '水电';
+			break;
+		case 2:
+			str = '风电';
+			break;
+		case 3:
+			str = '核电';
+			break;
+		case 4:
+			str = '其他';
+			break;
+		default:
+			break;
+		}
+	}
+	return str;
+}
+
+/**
+ * 获取对应的字符串
+ * @param obj
+ * @returns
+ */
+function getObjStr(obj)
+{
+	return obj == null ? '' : obj;
+}

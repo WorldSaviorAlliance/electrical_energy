@@ -207,3 +207,8 @@ label{
 .dropdown-menu>li>a{
 	padding: 0px 20px;
 }
+
+.input_msg {
+	color: gray;	
+	display: none;
+}

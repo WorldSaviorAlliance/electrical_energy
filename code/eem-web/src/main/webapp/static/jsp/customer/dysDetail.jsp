@@ -6,21 +6,26 @@
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电源商名称 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入电源商名称" required id="name" />
 		</div>
+		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="name">
+			设置后不可更改，最长30个字符
+		</label>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">电源商简称 <span
-			class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<label class="col-sm-2 control-label">电源商简称 <span class="asterisk">*</span></label>
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入电源商简称" required id="nick_name" />
 		</div>
+		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="nick_name">
+			最长10个字符
+		</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">所在城市 <span
 			class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<div class="form-group" style="margin: 0px;">
 				<div class="col-sm-6" style="padding-left: 0px;">
 					<select class="select" data-placeholder="请选择省份" id="province">
@@ -43,13 +48,13 @@
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">地址 <span	class="asterisk">*</span></label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" placeholder="请输入地址" required id="address" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">电源类型<span	class="asterisk">*</span></label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<select class="select" data-placeholder="请选择电源类型" id="power_type">
 						<option value="0">火电</option>
 						<option value="1">水电</option>
@@ -61,13 +66,13 @@
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">年均发电量<span class="asterisk">*</span></label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" placeholder="请输入年均发电量" required id="capacity" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">企业性质<span class="asterisk">*</span></label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<select class="select" data-placeholder="请选择企业性质" id="nature_type">
 					<option value="0">国营企业</option>
 					<option value="1">民营企业</option>
@@ -76,31 +81,31 @@
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">联系人</label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" id="contact_name" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">联系电话</label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" id="contact_phone" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">联系人职务</label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" id="contact_position" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">联系邮箱</label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="email" class="form-control" id="contact_email" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">传真</label>
-			<div class="col-sm-9">
+			<div class="col-sm-7">
 				<input type="text" class="form-control" id="fax" />
 			</div>
 		</div>

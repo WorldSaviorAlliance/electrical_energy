@@ -16,7 +16,6 @@
 <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/niceSelect/css/nice-select.css?version=<%= Constant.getCurTime()%>">
 <link rel="stylesheet" href="<%=basePath%>static/js/bootstrap/css/bootstrap.min.css?version=<%= Constant.getCurTime()%>">
 <link rel="stylesheet" href="<%=basePath%>static/js/bootstrap/css/bootstrap-override.css?version=<%= Constant.getCurTime()%>">
-<link rel="stylesheet" href="<%=basePath%>static/css/base.css?version=<%= Constant.getCurTime()%>">
 <script type="text/javascript" src="<%=basePath%>static/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/constants.js?version=<%= Constant.getCurTime()%>"></script>
 <link rel="stylesheet" href="<%=basePath%>static/js/datarangepicker/daterangepicker.css?version=<%= Constant.getCurTime()%>">
@@ -32,3 +31,4 @@
 <script type="text/javascript"  src="<%=basePath%>static/js/control/jquery.EemPage.js?version=<%= Constant.getCurTime()%>"></script>
 <link rel="stylesheet" href="<%=basePath%>static/js/gritter/jquery.gritter.min.css?version=<%= Constant.getCurTime()%>">
 <script type="text/javascript" src="<%=basePath%>static/js/gritter/jquery.gritter.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>static/css/base.css?version=<%= Constant.getCurTime()%>">
