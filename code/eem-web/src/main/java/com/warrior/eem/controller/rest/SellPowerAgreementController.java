@@ -32,15 +32,17 @@ public class SellPowerAgreementController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody SellPowerAgreementVo sellPowerAgreementVo, MultipartFile file) {
-		spaService.createEntity(sellPowerAgreementVo);
+	public Result<Object> createEntity(SellPowerAgreementVo sellPowerAgreementVo,
+			@RequestParam(name = "att_file") MultipartFile attrFile) {
+		spaService.saveAndCreateAgreement(attrFile, sellPowerAgreementVo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody SellPowerAgreementUpdateVo sellPowerAgreementVo) {
-		spaService.updateEntity(sellPowerAgreementVo);
+	public Result<Object> updateEntity(SellPowerAgreementUpdateVo sellPowerAgreementUpdateVo,
+			@RequestParam(name = "att_file") MultipartFile attrFile) {
+		spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementUpdateVo);
 		return Result.success();
 	}
 

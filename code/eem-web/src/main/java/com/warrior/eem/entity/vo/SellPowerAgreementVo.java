@@ -3,6 +3,7 @@ package com.warrior.eem.entity.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
 import com.warrior.eem.annotation.FieldChecker;
 import com.warrior.eem.entity.constant.Constant;
 
@@ -32,9 +33,7 @@ public class SellPowerAgreementVo implements Serializable {
 	@FieldChecker(name = "合约有效年份", minLen = 1, maxLen = 4)
 	private String validYear; // 有效年
 
-	// TODO 附件
-	@FieldChecker(name = "附件名", minLen = 1, maxLen = 30)
-	private String attachment; // 附件路径名
+	private String attachment; // 附件名
 	
 	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
 	private String voltageType; // 电压类型

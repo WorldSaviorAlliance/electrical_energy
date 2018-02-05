@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author seangan
  *
  */
+@Entity
+@Table(name = "sell_power_agreement")
 public class SellPowerAgreement extends AbstractEntity {
 
 	private static final long serialVersionUID = 7741791027666246628L;

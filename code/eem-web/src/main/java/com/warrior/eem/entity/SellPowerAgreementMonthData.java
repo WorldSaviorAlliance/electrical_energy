@@ -2,8 +2,10 @@ package com.warrior.eem.entity;
 
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * 售电合约
@@ -11,6 +13,8 @@ import javax.persistence.OneToOne;
  * @author seangan
  *
  */
+@Entity
+@Table(name = "sell_power_agreement_month_data")
 public class SellPowerAgreementMonthData extends AbstractEntity {
 
 	private static final long serialVersionUID = 7741791027666246628L;
