@@ -38,4 +38,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		return null;
 	}
 
+	@Override
+	User convertVoToDoForCreate(Serializable vo) {
+		return null;
+	}
+
 }

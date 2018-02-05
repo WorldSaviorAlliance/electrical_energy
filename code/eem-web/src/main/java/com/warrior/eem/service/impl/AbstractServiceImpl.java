@@ -31,7 +31,13 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 		} catch (IllegalAccessException | SecurityException e1) {
 			throw new EemException("创建实体解析参数失败");
 		}
-		getDao().createDo((T) (e instanceof EntityConvertor ? ((EntityConvertor) e).convertToDo() : e));
+		Serializable targetEntity = e;
+		if(e instanceof EntityConvertor) {
+			targetEntity = ((EntityConvertor) e).convertToDo();
+		} else if(e.getClass().getName().contains("com.warrior.eem.entity.vo")) {
+			targetEntity = convertVoToDoForCreate(e);
+		} 
+		getDao().createDo((T)targetEntity);
 	}
 
 	@Override
@@ -135,4 +141,16 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 	 * @return
 	 */
 	abstract T convertVoToDoForUpdate(Serializable dbo, Serializable vo);
+	
+	/**
+	 * 仅仅当需要在service里
+	 * 将vo转为do对象时才实现，当vo对象实现了entityconvertor时，可以不实现此方法，或调用create方法的实体本来就是do对象
+	 * 
+	 * @param dbo
+	 *            数据库对象
+	 * @param vo
+	 *            ui对象
+	 * @return
+	 */
+	abstract T convertVoToDoForCreate(Serializable vo);
 }

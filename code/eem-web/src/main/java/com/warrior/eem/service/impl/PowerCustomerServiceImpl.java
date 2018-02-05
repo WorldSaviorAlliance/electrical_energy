@@ -63,4 +63,9 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 	PowerCustomer convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		return null;
 	}
+
+	@Override
+	PowerCustomer convertVoToDoForCreate(Serializable vo) {
+		return null;
+	}
 }

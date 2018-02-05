@@ -63,4 +63,9 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 	PowerSupplier convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		return null;
 	}
+
+	@Override
+	PowerSupplier convertVoToDoForCreate(Serializable vo) {
+		return null;
+	}
 }
