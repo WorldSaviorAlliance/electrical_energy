@@ -10,8 +10,8 @@
 		<div class="col-sm-12" style="padding: 0px;">
 			<div class="col-md-3">
 				<div class="form-group">
-                  <label class="col-sm-3 control-label">电源商名称</label>
-                  <div class="col-sm-9">
+                  <label class="col-sm-4 control-label">电源商名称</label>
+                  <div class="col-sm-8">
                    <input type="text" class="form-control" id="name">
                   </div>
                 </div>
