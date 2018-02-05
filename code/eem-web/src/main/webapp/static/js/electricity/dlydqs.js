@@ -1,66 +1,42 @@
-console.log(11);
+//@ sourceURL=dlydqs.js
 $(function()
 {
-	initBm();
-	
+	var g_page_dlydqs_detail = null;
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initBm()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchBm').unbind('click').click(function(){
-			
-		});
-		$('#addBm').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
 		
-		$('#bmRangTime').daterangepicker({
-		    "startDate": "01/20/2018",
-		    "endDate": "01/26/2018"
-		});
+		$('.select').niceSelect();
 		
-		
-		$('#page2Bm').empty();
+		$('#page').empty();
 		var opts = {
 			totalPage : 100,
 			curPage : 1
 		};
-		$('#page2Bm').EemPage(opts);
-		
-		$('a[flag="del_bm"]').unbind('click').click(function(){
-			confirm('是否删除该月结算电量？', function(){
-				return true;
-			});
-		});
-		
-		$('a[flag="modify_bm"]').unbind('click').click(function(){
-			var addDiv = $('<div></div>');
-			addDiv.load(rootpath + '/static/jsp/customer/bmDetail.jsp', function(){
-				$(this).EemWindow({
-					height : WINDOW_HEIGHT,
-					width : WINDOW_WIDTH,
-		            title: '修改月结算电量',
-		            content: addDiv,
-		            onOkBtnFn : function(){
-		            	return true;
-		            },
-		            afterShow : function(){
-		            }
-		        });	
-			});
-		});
+		$('#page').EemPage(opts);
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
 	}
-	return this;	
+	return this;		
 });

@@ -1,43 +1,82 @@
-console.log(11);
+//@ sourceURL=yjsdl.js
 $(function()
 {
-	initLm();
-	
+	var g_page_yjsdl_detail = null;
+	init();
 	/**
 	 * 初始化界面
 	 */
-	function initLm()
+	function init()
 	{
 		initControlAction();
 		getAllData();
 	}
 	
+	/**
+	 * 初始化控件事件
+	 */
 	function initControlAction()
 	{
-		$('#searchLm').unbind('click').click(function(){
+		$('#search').unbind('click').click(function(){
 			
 		});
-		$('#addLm').unbind('click').click(function(){
-			
+		$('#add').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/electricity/yjsdlDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改月结算电量',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            afterShow : function(){
+		            	g_page_yjsdl_detail = new YjsdlDetail();
+		            }
+		        });	
+			});
 		});
 		
-		$('#lmRangTime').daterangepicker({
-		    "startDate": "01/20/2018",
-		    "endDate": "01/26/2018"
-		});
+		$('.select').niceSelect();
 		
-		
-		$('#page2Lm').empty();
+		$('#page').empty();
 		var opts = {
 			totalPage : 100,
 			curPage : 1
 		};
-		$('#page2Lm').EemPage(opts);
+		$('#page').EemPage(opts);
+		
+		$('a[flag="del"]').unbind('click').click(function(){
+			confirm('是否删除该月结算电量？', function(){
+				return true;
+			});
+		});
+		
+		$('a[flag="modify"]').unbind('click').click(function(){
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/electricity/yjsdlDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改月结算电量',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            onOkBtnFn : function(){
+		            	return true;
+		            },
+		            afterShow : function(){
+		            	g_page_yjsdl_detail = new YjsdlDetail();
+		            }
+		        });	
+			});
+		});
 	}
 	
+	/**
+	 * 获取所有的数据
+	 */
 	function getAllData()
 	{
 		
 	}
-	return this;	
+	return this;		
 });
