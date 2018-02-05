@@ -68,4 +68,48 @@ $(function(){
 			});*/
 		});
 	}
+	
+	var temp = {
+			"name": "客户",
+	        "nickName": "客户1",
+	        "province": "四川",
+	        "city": "城市",
+	        "address": "地址1",
+	        "natureType": 1,
+	        "contactName": "ganbin",
+	        "contactPhone": "13679085415",
+	        "contactPosition": "经理",
+	        "contactEmail": "8716@qq.com",
+	        "fax": "2222222"
+			};
+	$.ajax({
+		url: rootpath + '/power_customer/info',
+		type : 'POST',
+		dataType: 'json',
+	    contentType: 'application/json',
+		data : JSON.stringify(temp),
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);console.log(ar);
+			}
+		}
+	});
+	
+	var search = {
+			"name": "客户",
+	        "city": "城市",
+	        "province": "四川"
+			};
+	$.ajax({
+		url: rootpath + '/power_customer/list?page=0&per_page=10',
+		type : 'POST',
+		dataType: 'json',
+		data : JSON.stringify(search),
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);console.log(ar);
+			}
+		}
+	});
 });
