@@ -58,7 +58,7 @@ public class PowerCustomerController extends AbstractController {
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listEntities(@RequestBody PowerCustomerOrSupplierCdtVo cdt,
+	public Result<Object> listEntities(@RequestBody(required = false) PowerCustomerOrSupplierCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
 		Integer pageNum = 1;

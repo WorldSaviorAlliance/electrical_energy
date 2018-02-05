@@ -13,7 +13,7 @@
 		
 		function init()
 		{
-			if(opts.totalPage < 2)
+			if(opts.totalPage == null || opts.totalPage < 2)
 			{
 				return;
 			}

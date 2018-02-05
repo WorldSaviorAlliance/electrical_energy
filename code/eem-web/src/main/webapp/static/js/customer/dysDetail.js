@@ -9,6 +9,11 @@ function DysDetail()
 	
 	function initControlAction()
 	{
+		$('input').focus(function(){
+			$('label.input_msg').hide();
+			$('label.input_msg[for="' + $(this).attr('id')+ '"]').show();
+		});
+
 		$("#detail_form").validate({
 		    highlight: function(element) {
 		      $(element).closest('.form-group').removeClass('has-success').addClass('has-error');

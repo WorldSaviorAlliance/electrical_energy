@@ -13,7 +13,9 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerCustomerService;
+import com.warrior.eem.util.EntityValidator;
 
 /**
  * 电力客户服务
@@ -39,6 +41,11 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 		SqlRequest req = new SqlRequest();
 		req.setPage(page);
 		if (cdt != null) {
+			try {
+				EntityValidator.checkEntity(cdt);
+			} catch (IllegalAccessException | SecurityException e) {
+				throw new EemException("电力用户列表搜索条件解析失败");
+			}
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 			if (cdt.getName() != null && cdt.getName().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.like("name", cdt.getName() + "%"));

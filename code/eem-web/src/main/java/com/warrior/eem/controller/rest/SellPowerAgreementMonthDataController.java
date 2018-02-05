@@ -1,6 +1,5 @@
 package com.warrior.eem.controller.rest;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,62 +9,63 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.PowerSupplier;
-import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
-import com.warrior.eem.entity.vo.PowerSupplierUpdaterVo;
-import com.warrior.eem.entity.vo.PowerSupplierVo;
+import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.vo.PowerCustomerUpdaterVo;
+import com.warrior.eem.entity.vo.PowerCustomerVo;
+import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.exception.EemException;
-import com.warrior.eem.service.PowerSupplierService;
+import com.warrior.eem.service.PowerCustomerService;
 
 /**
- * power supperlier controller
+ * sell agreement month data controller
+ * 
  * @author seangan
  *
  */
 @Controller
-@RequestMapping("power_supperlier")
-public class PowerSupplierController extends AbstractController {
-	
+@RequestMapping("sell_agreement_month")
+public class SellPowerAgreementMonthDataController extends AbstractController {
+
 	@Autowired
-	private PowerSupplierService pssService;
-	
+	private PowerCustomerService pcsService;
+
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody PowerSupplierVo psv) {
-		pssService.createEntity(psv);
+	public Result<Object> createEntity(@RequestBody PowerCustomerVo powerCustomerVo) {
+		pcsService.createEntity(powerCustomerVo);
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody PowerSupplierUpdaterVo psuv) {
-		pssService.updateEntity(psuv);
+	public Result<Object> updateEntity(@RequestBody PowerCustomerUpdaterVo powerCustomerVo) {
+		pcsService.updateEntity(powerCustomerVo);
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
-		pssService.deleteEntity(convertId(id));
+		pcsService.deleteEntity(convertId(id));
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<PowerSupplier> getEntity(String id) {
-		return Result.success((PowerSupplier)pssService.getEntity(convertId(id)));
+	public Result<PowerCustomer> getEntity(String id) {
+		return Result.success((PowerCustomer) pcsService.getEntity(convertId(id)));
 	}
-	
+
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listEntities(@RequestBody(required = false) PowerCustomerOrSupplierCdtVo cdt,
+	public Result<Object> listEntities(@RequestBody SellAgreementCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
 		Integer pageNum = 1;
 		if (page != null && page.trim().length() == 0) {
 			try {
 				pageNum = Integer.valueOf(page);
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				throw new EemException("页码必须为数字");
 			}
 		}
@@ -74,11 +74,12 @@ public class PowerSupplierController extends AbstractController {
 		if (perPage != null && perPage.trim().length() == 0) {
 			try {
 				perPageNum = Integer.valueOf(perPage);
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
 
-		return Result.success(pssService.listEntities(cdt, pageNum, perPageNum));
+		return Result.success(pcsService.listEntities(cdt, pageNum, perPageNum));
 	}
+
 }
