@@ -95,6 +95,29 @@
 						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
 					</ul>
 				</li>
+				<li class="dropdown" id="header_change_password"> <!-- 这里后面指定为普通用户的Home -->
+					<a title="能效管理" href="<%=headerPath %>nx" >
+						<i class="fa fa-home fa-lg" title="能效管理"></i>
+						<span class="toptitle">能效管理</span>
+					</a>
+				</li>
+				<li class="dropdown" id="header_change_password">
+					<a title="我要办理" href="<%=headerPath %>wybl" >
+						<i class="fa fa-stack-exchange fa-lg" title="我要办理"></i>
+						<span class="toptitle">我要办理</span>
+					</a>
+				</li>
+				<li class="dropdown" id="header_change_password">
+					<a title="我的资料" href="#" >
+						<i class="fa fa-cog fa-lg" title="我的资料"></i>
+						<span class="toptitle">我的资料</span>
+					</a>
+					<ul class="dropdown-menu extended inbox eem-dropdown-menu" style="min-width: 150px;margin-left: 3px;height: auto;overflow: auto;">
+						<li class="eem-dropdown-menu"><a href="<%=headerPath%>jbxx"><i class="fa fa-american-sign-language-interpreting"></i><span style="margin-left:5px;">基本信息</span></a></li>
+						<li class="eem-dropdown-menu"><a href="<%=headerPath%>sdhy"><i class="fa fa-resistance"></i><span style="margin-left:5px;">我的合同</span></a></li>
+						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
+					</ul>
+				</li>
 				<li class="dropdown" id="header_exist">
 					<a title="注销" href="#" style="color: #FFFFFF;">
 						<i class="fa fa-sign-out fa-lg" title="注销"></i>

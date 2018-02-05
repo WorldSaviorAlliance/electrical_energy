@@ -194,5 +194,39 @@ public class DirectPatchController {
 		return ToolUtil.gotoDirect(model, Constant.DIR_JSGL, Constant.SETTING + Constant.DIR_JSGL);
 	}
 	
+	/**
+	 * 能效管理
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/nx")
+	public ModelAndView nx(Map<String, Object> model, HttpServletRequest request)
+	{
+		return ToolUtil.gotoDirect(model, Constant.DIR_NX, Constant.USER + Constant.DIR_NX);
+	}
 	
+	/**
+	 * 我要办理
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/wybl")
+	public ModelAndView wybl(Map<String, Object> model, HttpServletRequest request)
+	{
+		return ToolUtil.gotoDirect(model, Constant.DIR_WYBL, Constant.USER + Constant.DIR_WYBL);
+	}
+	
+	/**
+	 * 基本信息
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/jbxx")
+	public ModelAndView jbxx(Map<String, Object> model, HttpServletRequest request)
+	{
+		return ToolUtil.gotoDirect(model, Constant.DIR_JBXX, Constant.USER + Constant.DIR_JBXX);
+	}
 }

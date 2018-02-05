@@ -91,6 +91,7 @@
 			<div id="chart" style="width: 100%; height: 380px;" data-highcharts-chart="0">
 			</div>
 		</div>
+	</div>
 </form>
 <script type="text/javascript" src="<%=basePath%>static/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/electricity/yddlpc.js"></script>

@@ -58,5 +58,15 @@ public class Constant {
 	public static String NAME_JSGL = "角色管理";
 	public static String DIR_JSGL = "jsgl";
 	
+	public static String USER = "user/";
+	public static String NAME_NX = "能效";
+	public static String DIR_NX = "nx";
+	
+	public static String NAME_WYBL = "我要办理";
+	public static String DIR_WYBL = "wybl";
+	
+	public static String NAME_JBXX = "基本信息";
+	public static String DIR_JBXX = "jbxx";
+	
 	public static final String DIRECT = "direct";
 }
