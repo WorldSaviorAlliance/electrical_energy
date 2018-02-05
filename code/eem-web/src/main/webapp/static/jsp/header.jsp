@@ -92,7 +92,7 @@
 						<li class="eem-dropdown-menu"><a href="<%=headerPath%>djxs"><i class="fa fa-resistance"></i><span style="margin-left:5px;">电价系数</span></a></li>
 						<li class="eem-dropdown-menu"><a href="<%=headerPath%>yhgl"><i class="fa fa-user"></i><span style="margin-left:5px;">用户管理</span></a></li>
 						<li class="eem-dropdown-menu"><a href="<%=headerPath%>jsgl"><i class="fa fa-id-badge"></i><span style="margin-left:5px;">角色管理</span></a></li>
-						<li class="eem-dropdown-menu"><a href="#"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
+						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
 					</ul>
 				</li>
 				<li class="dropdown" id="header_exist">

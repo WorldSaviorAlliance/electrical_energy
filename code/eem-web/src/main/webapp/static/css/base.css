@@ -203,3 +203,7 @@ label{
     border-color: #ccc;
     text-decoration: none
 }
+
+.dropdown-menu>li>a{
+	padding: 0px 20px;
+}
