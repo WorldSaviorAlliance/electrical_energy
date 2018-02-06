@@ -7,7 +7,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电力用户名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-9">
-			<select class="select" data-placeholder="请选择合同有效年份" id="customer">
+			<select class="select detail_search" data-placeholder="请选择合同有效年份" id="customer">
 				<option value="apple">2022</option>
 				<option value="orange">2022</option>
 				<option value="grapes">2022</option>

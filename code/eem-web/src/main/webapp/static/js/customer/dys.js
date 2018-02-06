@@ -38,7 +38,7 @@ $(function()
 			});
 		});
 		
-		$('.select').niceSelect();
+		$('.search_select').niceSelect();
 	}
 	
 	/**
@@ -140,7 +140,9 @@ $(function()
 		$('#page').EemPage(opts);
 		
 		$('a[flag="del"]').unbind('click').click(function(){
+			var id = $(this).attr('id');
 			confirm('是否删除该电源商？', function(){
+				delDys(id);
 				return true;
 			});
 		});
@@ -156,7 +158,7 @@ $(function()
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
-		            	var curData = getCurDataById(id);
+		            	var curData = getCurDataById(id, g_all_datas);
 		            	g_page_dys_detail = new DysDetail(getAllData, curData);
 		            }
 		        });	
@@ -164,24 +166,38 @@ $(function()
 		});
 	}
 	
-	/**
-	 * 通过id获取对应的电源商的数据
+	/*
+	 * 删除对应的电源商
 	 */
-	function getCurDataById(id)
+	function delDys(id)
 	{
-		var data = null;
-		if(g_all_datas != null && g_all_datas.length != 0)
-		{
-			for(var i = 0; i < g_all_datas.length; i++)
-			{
-				if(id == g_all_datas[i].id)
+		$.ajax({
+			url: rootpath + '/' + PATH_DYS + '/info?id=' + id,
+			type : 'DELETE', 
+			dataType: 'json',
+		    contentType: 'application/json',
+			complete : function(XHR, TS) {
+				if (TS == "success") {
+					var ar = JSON.parse(XHR.responseText);
+					console.log(ar);
+					if(ar.code == 0)
+					{
+						showDynamicMessage(STR_CONFIRM, '删除电源商成功', MESSAGE_TYPE_INFO);
+						getAllData();
+					}
+					else
+					{
+						showDynamicMessage(STR_CONFIRM, '删除电源商失败', MESSAGE_TYPE_INFO);
+					}
+				}
+				else
 				{
-					data = g_all_datas[i];
-					break;
+					showSystemError();
 				}
 			}
-		}
-		return data;
+		});
 	}
+	
+
 	return this;	
 });

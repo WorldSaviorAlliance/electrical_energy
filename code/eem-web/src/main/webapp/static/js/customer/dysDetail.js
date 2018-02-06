@@ -36,7 +36,7 @@ function DysDetail(afterSaveCallbk, curData)
 		$('#cancel').unbind('click').click(function(){
 			$('div.eem_window_close').click();
 		});
-		$('.select').niceSelect();
+		$('.detail_search').niceSelect();
 	}
 	
 	function inintControlVal()
@@ -116,10 +116,9 @@ function DysDetail(afterSaveCallbk, curData)
 				hideProgress(progress);
 				if (TS == "success") {
 					var ar = JSON.parse(XHR.responseText);
-					console.log(ar);
 					if(ar.code == 0)
 					{
-						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO)
+						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
 						if(g_afterSaveCallbk != null)
 						{
 							g_afterSaveCallbk();
@@ -127,12 +126,12 @@ function DysDetail(afterSaveCallbk, curData)
 					}
 					else
 					{
-						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR)
+						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
 					}
 				}
 				else
 				{
-					showDynamicMessage(STR_CONFIRM, '系统错误，请联系管理员', MESSAGE_TYPE_ERROR)
+					showSystemError();
 				}
 			}
 		});

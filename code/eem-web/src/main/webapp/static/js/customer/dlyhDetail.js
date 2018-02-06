@@ -1,10 +1,16 @@
 //@ sourceURL=dlyhDetail.js
-function DlyhDetail()
+function DlyhDetail(afterSaveCallbk, curData)
 {
+	var g_afterSaveCallbk = afterSaveCallbk;
+	var g_curData = curData;
 	init();
 	function init()
 	{
 		initControlAction();
+		if(g_curData != null)
+		{
+			inintControlVal();
+		}
 	}
 	
 	function initControlAction()
@@ -17,14 +23,119 @@ function DlyhDetail()
 		      $(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
-		    	$('div.eem_window_close').click();
-		    	showProgress('测试提交进度');
-		    	showDynamicMessage('标题', '内容', 1);
+		    	doSaveAction();
 		    	return false;
 		    }
 		});
 		
-		$('.select').niceSelect();
+		$('#industryType').append(getIndustryTypeSelectStr());
+		$('.detail_search').niceSelect();
+		$('#cancel').unbind('click').click(function(){
+			$('div.eem_window_close').click();
+		})
+		
+		$('input').focus(function(){
+			$('label.input_msg').hide();
+			$('label.input_msg[for="' + $(this).attr('id')+ '"]').show();
+		});
+
+	}
+	
+	function inintControlVal()
+	{
+		if(g_curData != null)
+		{
+			$('#name').val(getObjStr(g_curData.name));
+			$('#nickName').val(getObjStr(g_curData.nickName));
+			
+			$('#province').val(g_curData.province);
+			$('#city').val(g_curData.city);
+			$('#province').niceSelect('update');
+			$('#city').niceSelect('update');
+			$('#address').val(getObjStr(g_curData.address));
+			$('#contactName').val(getObjStr(g_curData.contactName));
+			$('#contactPhone').val(getObjStr(g_curData.contactPhone));
+			$('#contactPosition').val(getObjStr(g_curData.contactPosition));
+			$('#contactEmail').val(getObjStr(g_curData.contactEmail));
+			$('#fax').val(getObjStr(g_curData.fax));
+			$('#natureType').val(g_curData.natureType);
+			$('#natureType').niceSelect('update');
+			$('#industryType').val(g_curData.industryType);
+			$('#industryType').niceSelect('update');
+		}
+	}
+	
+	function doSaveAction()
+	{
+		var name = $('#name').val();
+		var nickName = $('#nickName').val();
+		var industryType = $('#industryType').val();
+		var province = $('#province').val();
+		var city = $('#city').val();
+		var address = $('#address').val();
+		var natureType = $('#natureType').val();
+		var contactName = $('#contactName').val();
+		var contactPhone = $('#contactPhone').val();
+		var contactPosition = $('#contactPosition').val();
+		var contactEmail = $('#contactEmail').val();
+		var fax = $('#fax').val();
+
+		var temp = {
+			name : name,
+			nickName : nickName,
+			industryType : industryType, 
+			province : province,
+			city : city,
+			address : address,
+			natureType : natureType,
+			contactName : contactName,
+			contactPhone : contactPhone,
+			contactPosition : contactPosition,
+			contactEmail : contactEmail,
+			fax : fax
+		};
+		
+		var ajaxType = 'POST';
+		var msgTitle = '添加电力用户';
+		if(g_curData != null)
+		{
+			ajaxType = 'PUT';
+			msgTitle = '修改电力用户';
+			temp.id = g_curData.id;
+		}
+		
+		$('div.eem_window_close').click();
+    	var progress = showProgress('正在保存电力用户');
+    	
+		$.ajax({
+			url: rootpath + '/' + PATH_DLYH + '/info',
+			type : ajaxType,
+			dataType: 'json',
+		    contentType: 'application/json',
+			data : JSON.stringify(temp),
+			complete : function(XHR, TS) {
+				hideProgress(progress);
+				if (TS == "success") {
+					var ar = JSON.parse(XHR.responseText);
+					if(ar.code == 0)
+					{
+						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+						if(g_afterSaveCallbk != null)
+						{
+							g_afterSaveCallbk();
+						}
+					}
+					else
+					{
+						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
+					}
+				}
+				else
+				{
+					showSystemError();
+				}
+			}
+		});
 	}
 	
 	return this;

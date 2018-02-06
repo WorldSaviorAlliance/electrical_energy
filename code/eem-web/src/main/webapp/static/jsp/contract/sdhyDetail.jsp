@@ -35,7 +35,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合同有效年份<span class="asterisk">*</span></label>
 		<div class="col-sm-9">
-			<select class="select" data-placeholder="请选择合同有效年份" id="valid_year">
+			<select class="select detail_search" data-placeholder="请选择合同有效年份" id="valid_year">
 				<option value="apple">2022</option>
 				<option value="orange">2022</option>
 				<option value="grapes">2022</option>
@@ -58,7 +58,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电压等级<span class="asterisk">*</span></label>
 		<div class="col-sm-9">
-			<select class="select" data-placeholder="请选择电压等级" id="voltage_type">
+			<select class="select detail_search" data-placeholder="请选择电压等级" id="voltage_type">
 				<option value="apple">110KV</option>
 				<option value="orange">220KV</option>
 			</select>

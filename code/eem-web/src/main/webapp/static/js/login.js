@@ -69,7 +69,7 @@ $(function(){
 		});
 	}
 	
-	var temp = {
+	/*var temp = {
 			"name": "客户",
 	        "nickName": "客户1",
 	        "province": "四川",
@@ -111,5 +111,5 @@ $(function(){
 				var ar = JSON.parse(XHR.responseText);console.log(ar);
 			}
 		}
-	});
+	});*/
 });

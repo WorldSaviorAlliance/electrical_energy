@@ -23,7 +23,7 @@
 				<div class="form-group">
                   <label class="col-sm-2 control-label">所在城市</label>
                   <div class="col-sm-5">
-	                   <select class="select" data-placeholder="请选择省份" id="search_province">
+	                   <select class="select search_select" data-placeholder="请选择省份" id="search_province">
 						<option value=""></option>
 						<option value="四川">四川</option>
 						<option value="北京">北京</option>
@@ -32,7 +32,7 @@
 					</select> 
 				</div>
 				<div class="col-sm-5">	
-					<select class="select medium m-wrap" style="width:100%;" data-placeholder="请选择市区" id="search_city">
+					<select class="select search_select" data-placeholder="请选择市区" id="search_city">
 						<option value=""></option>
 						<option value="成都">成都</option>
 						<option value="德阳">德阳</option>

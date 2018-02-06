@@ -20,7 +20,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">月份</label>
 	                  <div class="col-sm-4">
-		                   <select class="select" data-placeholder="请选择开始月份" id="start_month">
+		                   <select class="select search_select" data-placeholder="请选择开始月份" id="start_month">
 							<option value="">201801</option>
 							<option value="apple">201802</option>
 							<option value="orange">201803</option>
@@ -29,7 +29,7 @@
 						</select> 
 					</div>
 					<div class="col-sm-4">
-		                   <select class="select" data-placeholder="请选择结束月份" id="end_month">
+		                   <select class="select search_select" data-placeholder="请选择结束月份" id="end_month">
 							<option value="">201801</option>
 							<option value="apple">201802</option>
 							<option value="orange">201803</option>

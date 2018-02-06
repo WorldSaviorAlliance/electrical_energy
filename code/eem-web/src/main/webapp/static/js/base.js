@@ -297,6 +297,52 @@ function getNatureType(natureType)
 	return str;
 }
 
+var industryTypeArray = ['石油化工', '煤炭采选', '冶炼铸造', '机械制造', '汽车制造', '船舶制造', '水泥建材', '玻璃陶瓷', 
+                         '纺织化纤', '精细化工', '电气设备', '电子电器', '食品饲料', '烟草加工', '酿酒行业', '医药行业', 
+                         '通讯信息', '航天航空', '交运物流', '港口水运', '造纸印刷', '包装装饰', '民用商业', '医疗卫生', '其他行业'];
+function getIndustryType(industryType)
+{
+	var str = '';
+	if(industryType != null)
+	{
+		str = industryTypeArray[industryType];
+	}
+	return str;
+}
+
+/**
+ * 获取行业下拉列表内容
+ */
+function getIndustryTypeSelectStr()
+{
+	var str = '';
+	for(var i = 0; i < industryTypeArray.length; i++)
+	{
+		str += '<option value="' + i + '">' + industryTypeArray[i] + '</option>';
+	}
+	return str;
+}
+
+/**
+ * 通过id获取对应的数据
+ */
+function getCurDataById(id, all_datas)
+{
+	var data = null;
+	if(all_datas != null && all_datas.length != 0)
+	{
+		for(var i = 0; i < all_datas.length; i++)
+		{
+			if(id == all_datas[i].id)
+			{
+				data = all_datas[i];
+				break;
+			}
+		}
+	}
+	return data;
+}
+
 /**
  * 获取对应的字符串
  * @param obj
@@ -305,4 +351,9 @@ function getNatureType(natureType)
 function getObjStr(obj)
 {
 	return obj == null ? '' : obj;
+}
+
+function showSystemError()
+{
+	showDynamicMessage(STR_CONFIRM, '系统错误，请联系管理员', MESSAGE_TYPE_ERROR);
 }

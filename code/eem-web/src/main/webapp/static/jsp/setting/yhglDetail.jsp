@@ -19,7 +19,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">用户类型<span	class="asterisk">*</span></label>
 		<div class="col-sm-9">
-			<select class="select" data-placeholder="请选择用户类型" id="industry_type">
+			<select class="select detail_search" data-placeholder="请选择用户类型" id="industry_type">
 					<option value="0">电力用户</option>
 					<option value="1">系统用户</option>
 				</select>
@@ -27,8 +27,8 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电力用户<span	class="asterisk">*</span></label>
-		<div class="col-sm-9">
-			<select class="select" data-placeholder="请选择电力用户" id="industry_type">
+		<div class="col-sm-9"> 
+			<select class="select detail_search" data-placeholder="请选择电力用户" id="industry_type">
 				<option value="0">石油化工</option>
 				<option value="1">机械制造</option>
 				<option value="2">电器设备</option>
