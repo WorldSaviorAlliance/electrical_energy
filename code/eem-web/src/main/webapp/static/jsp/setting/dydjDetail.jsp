@@ -12,7 +12,7 @@
 	</div>
 	<div class="form-group" style="text-align: center;">
 		<button class="btn btn-primary">保存</button>
-	    <button class="btn btn-default" type="button">取消</button>
+	    <button class="btn btn-default" type="button" style="margin-left: 15px;">取消</button>
 	</div>	
 </form>
 <script type="text/javascript" src="<%=basePath%>static/js/setting/dydjDetail.js"></script>

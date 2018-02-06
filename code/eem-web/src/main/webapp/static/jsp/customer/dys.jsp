@@ -14,7 +14,7 @@
 				<div class="form-group">
                   <label class="col-sm-3 control-label">名称</label>
                   <div class="col-sm-9">
-                   <input type="text" class="form-control" id="name">
+                   <input type="text" class="form-control" id="search_name">
                   </div>
                 </div>
 			</div>
@@ -23,7 +23,7 @@
 				<div class="form-group">
                   <label class="col-sm-2 control-label">所在城市</label>
                   <div class="col-sm-5">
-	                   <select class="select" data-placeholder="请选择省份" id="province">
+	                   <select class="select" data-placeholder="请选择省份" id="search_province">
 						<option value=""></option>
 						<option value="四川">四川</option>
 						<option value="北京">北京</option>
@@ -32,7 +32,7 @@
 					</select> 
 				</div>
 				<div class="col-sm-5">	
-					<select class="select medium m-wrap" style="width:100%;" data-placeholder="请选择市区" id="city">
+					<select class="select medium m-wrap" style="width:100%;" data-placeholder="请选择市区" id="search_city">
 						<option value=""></option>
 						<option value="成都">成都</option>
 						<option value="德阳">德阳</option>
@@ -43,7 +43,7 @@
                 </div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
 			</div>
 		</div>

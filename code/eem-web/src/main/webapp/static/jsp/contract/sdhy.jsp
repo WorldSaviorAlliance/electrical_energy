@@ -12,7 +12,7 @@
 				<div class="form-group">
                   <label class="col-sm-4 control-label">电力用户名称</label>
                   <div class="col-sm-8">
-                   <input type="text" class="form-control" id="name">
+                   <input type="text" class="form-control" id="search_name">
                   </div>
                 </div>
 			</div>
@@ -21,7 +21,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">年份</label>
 	                  <div class="col-sm-10">
-		                   <select class="select" data-placeholder="请选择年份" id="year">
+		                   <select class="select" data-placeholder="请选择年份" id="search_year">
 							<option value="">2018</option>
 							<option value="apple">2018</option>
 							<option value="orange">2018</option>

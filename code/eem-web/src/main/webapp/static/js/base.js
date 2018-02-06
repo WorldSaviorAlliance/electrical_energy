@@ -21,12 +21,12 @@ jQuery.extend(jQuery.validator.messages, {
 	  creditcard: "请输入合法的信用卡号",
 	  equalTo: "请再次输入相同的值",
 	  accept: "请输入拥有合法后缀名的字符串",
-	  maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-	  minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-	  rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-	  range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-	  max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-	  min: jQuery.validator.format("请输入一个最小为{0} 的值")
+	  maxlength: jQuery.validator.format("请输入一个长度最多是{0}的字符串"),
+	  minlength: jQuery.validator.format("请输入一个长度最少是{0}的字符串"),
+	  rangelength: jQuery.validator.format("请输入一个长度介于{0}和{1}之间的字符串"),
+	  range: jQuery.validator.format("请输入一个介于{0}和{1}之间的值"),
+	  max: jQuery.validator.format("请输入一个最大为{0}的值"),
+	  min: jQuery.validator.format("请输入一个最小为{0}的值")
 });
 
 function getRootPath() {
@@ -170,7 +170,7 @@ function getAdBrowserDateTime(date)
 function showProgress(msg)
 {
 	var id = $.gritter.add({
-        title:  '提示' ,
+        title:  STR_CONFIRM ,
         text: msg,
         image: rootpath + '/static/images/loading/loading_32.gif',
         sticky: true,
@@ -207,19 +207,19 @@ function showDynamicMessage(title, content, type)
 		var image = '';
 		switch(type)
 		{
-		case 0:
+		case MESSAGE_TYPE_ERROR:
 			image = rootpath + '/static/js/gritter/error.png';
 			break;
-		case 1:
+		case MESSAGE_TYPE_INFO:
 			image = rootpath + '/static/js/gritter/info.png';
 			break;
-		case 2:
+		case MESSAGE_TYPE_QUESTION:
 			image = rootpath + '/static/js/gritter/question.png';
 			break;
-		case 3:
+		case MESSAGE_TYPE_WARNING:
 			image = rootpath + '/static/js/gritter/warning.png';
 			break;
-		case 4 :
+		case MESSAGE_TYPE_LOADING :
 			image = rootpath + '/static/images/loading/loading_32.gif';
 			break;
 		default :
