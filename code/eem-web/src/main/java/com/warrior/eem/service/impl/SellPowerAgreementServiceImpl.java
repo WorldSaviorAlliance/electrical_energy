@@ -19,11 +19,13 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.SellPowerAgreementMonthData;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
+import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
+import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.exception.EemException;
-import com.warrior.eem.service.SellPowerAgreementMonthDataService;
 import com.warrior.eem.service.SellPowerAgreementService;
 import com.warrior.eem.util.EntityValidator;
 import com.warrior.eem.util.FileUtil;
@@ -43,9 +45,6 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 
 	@Autowired
 	private SellPowerAgreementDao spaDao;
-	
-	@Autowired
-	private SellPowerAgreementMonthDataService spamdService;
 
 	@Autowired
 	private PowerCustomerDao pcDao;
@@ -118,9 +117,16 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 
 	@Override
 	@Transactional
-	public void saveAndCreateAgreement(MultipartFile file, SellPowerAgreementVo e) {
-		if(file == null) {
+	public void saveAndCreateAgreement(MultipartFile file, SellPowerAgreementVo e,
+			SellPowerAgreementMonthDataVo sellPowerAgreementMonthVo) {
+		if (file == null) {
 			throw new EemException("附件信息不能为空");
+		}
+		try {
+			EntityValidator.checkEntity(e);
+			EntityValidator.checkEntity(sellPowerAgreementMonthVo);
+		} catch (IllegalAccessException | SecurityException e1) {
+			throw new EemException("解析参数失败");
 		}
 		try {
 			String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
@@ -128,21 +134,59 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		} catch (IOException e1) {
 			throw new EemException("读取附件失败，请联系管理员");
 		}
-		createEntity(e);
-		// TODO 月度信息
-//		spamdService.createEntity(e);
+		try {
+			SellPowerAgreement spa = convertVoToDoForCreate(e);
+			spa.setMonthData(convertMonthVoToDo(new SellPowerAgreementMonthData(), sellPowerAgreementMonthVo));
+			createEntity(spa);
+		} catch (Exception e2) { // 创建失败 删除附件
+			FileUtil.deleteFile(baseDir + ((SellPowerAgreementVo) e).getAttachment());
+		}
+	}
+
+	private SellPowerAgreementMonthData convertMonthVoToDo(SellPowerAgreementMonthData monthDo,
+			SellPowerAgreementMonthDataVo monthVo) {
+		if (monthVo == null) {
+			throw new EemException("售电合约月度信息不能为空");
+		}
+		monthDo.setApril(monthVo.getApril());
+		monthDo.setAugust(monthVo.getAugust());
+		monthDo.setDecember(monthVo.getDecember());
+		monthDo.setFebruary(monthVo.getFebruary());
+		monthDo.setJanuary(monthVo.getJanuary());
+		monthDo.setJuly(monthVo.getJuly());
+		monthDo.setJune(monthVo.getJune());
+		monthDo.setMarch(monthVo.getMarch());
+		monthDo.setMay(monthVo.getMay());
+		monthDo.setNovember(monthVo.getNovember());
+		monthDo.setOctober(monthVo.getOctober());
+		monthDo.setSeptember(monthVo.getSeptember());
+		return monthDo;
 	}
 
 	@Override
 	@Transactional
-	public void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementUpdateVo e) {
-		if(file == null) {
+	public void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementUpdateVo e,
+			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthUpdateVo) {
+		if (file == null) {
 			throw new EemException("附件不能为空");
 		}
+		try {
+			EntityValidator.checkEntity(e);
+			EntityValidator.checkEntity(sellPowerAgreementMonthUpdateVo);
+		} catch (IllegalAccessException | SecurityException e1) {
+			throw new EemException("解析参数失败");
+		}
 		String attamentName = "";
-		if(e.getId() != null) {
-			SellPowerAgreement sa = (SellPowerAgreement)getEntity(e.getId());
-			if(sa == null) {
+		SellPowerAgreement sa = null;
+		if (e.getId() != null) {
+			Long idNum = -1L;
+			try {
+				idNum = Long.valueOf(e.getId());
+			} catch (NumberFormatException e1) {
+				throw new EemException("id必须为数字");
+			}
+			sa = (SellPowerAgreement) getEntity(idNum);
+			if (sa == null) {
 				throw new EemException("无效的id（" + e.getId() + "）");
 			}
 			attamentName = sa.getAttachment();
@@ -150,16 +194,29 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			throw new EemException("id不能为空");
 		}
 		try {
-			String fileName = FileUtil.saveFile(baseDir, file.getName(), file.getInputStream());
+			String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
 			((SellPowerAgreementVo) e).setAttachment(fileName);
 		} catch (IOException e1) {
 			throw new EemException("读取附件失败，请联系管理员");
 		}
-		updateEntity(e);
-		// TODO 月度信息
-//		spamdService.updateEntity();
-		if(attamentName != null && attamentName.trim().length() > 0) {
+		try {
+			sa = convertVoToDoForUpdate(sa, e);
+			sa.setMonthData(convertMonthVoToDo(sa.getMonthData(), sellPowerAgreementMonthUpdateVo));
+			updateEntity(sa);
+		} catch (Exception e2) { // 更新失败 删除附件
+			FileUtil.deleteFile(baseDir + sa.getAttachment());
+		}
+		if (attamentName != null && attamentName.trim().length() > 0) {
 			FileUtil.deleteFile(baseDir + attamentName);
 		}
+	}
+
+	@Override
+	public void deleteAgreement(Serializable id) {
+		SellPowerAgreement spa = (SellPowerAgreement)getEntity(id);
+		if(spa != null) {
+			FileUtil.deleteFile(baseDir + spa.getAttachment()); 
+		}
+		deleteEntity(id);
 	}
 }

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
+import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
 
@@ -32,36 +32,34 @@ public class SellPowerAgreementController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(SellPowerAgreementVo sellPowerAgreementVo,
+	public Result<Object> createEntity(SellPowerAgreementUpdateVo sellPowerAgreementUpdateVo,
+			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthVo,
 			@RequestParam(name = "att_file") MultipartFile attrFile) {
-		spaService.saveAndCreateAgreement(attrFile, sellPowerAgreementVo);
-		return Result.success();
-	}
-
-	@RequestMapping(value = "info", method = RequestMethod.PUT)
-	@ResponseBody
-	public Result<Object> updateEntity(SellPowerAgreementUpdateVo sellPowerAgreementUpdateVo,
-			@RequestParam(name = "att_file") MultipartFile attrFile) {
-		spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementUpdateVo);
+		if (sellPowerAgreementUpdateVo != null && sellPowerAgreementUpdateVo.getId() != null
+				&& sellPowerAgreementUpdateVo.getId().trim().length() > 0) { // update
+			spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementUpdateVo, sellPowerAgreementMonthVo);
+		} else { // create
+			spaService.saveAndCreateAgreement(attrFile, sellPowerAgreementUpdateVo, sellPowerAgreementMonthVo);
+		}
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
-		spaService.deleteEntity(convertId(id));
+		spaService.deleteAgreement(convertId(id));
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<PowerCustomer> getEntity(String id) {
-		return Result.success((PowerCustomer) spaService.getEntity(convertId(id)));
+	public Result<SellPowerAgreement> getEntity(String id) {
+		return Result.success((SellPowerAgreement) spaService.getEntity(convertId(id)));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listEntities(@RequestBody SellAgreementCdtVo cdt,
+	public Result<Object> listEntities(@RequestBody(required = false) SellAgreementCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
 		Integer pageNum = 1;

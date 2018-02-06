@@ -16,7 +16,6 @@ public class SellPowerAgreementMonthDataVo implements Serializable {
 
 	private static final long serialVersionUID = 7741791027666246628L;
 
-	@FieldChecker(name = "售电合约id", minVal = 1, maxVal = Long.MAX_VALUE)
 	private Long sellPowerAgreementId;
 
 	@FieldChecker(name = "一月", minLen = 18, maxLen = 164)

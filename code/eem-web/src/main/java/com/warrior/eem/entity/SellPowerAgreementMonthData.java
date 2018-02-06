@@ -3,7 +3,6 @@ package com.warrior.eem.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,10 +18,9 @@ public class SellPowerAgreementMonthData extends AbstractEntity {
 
 	private static final long serialVersionUID = 7741791027666246628L;
 
-	@OneToOne
-	@JoinColumn(name = "sell_agreement_id")
-	private SellPowerAgreement sellPowerAgreement;
-
+//	@OneToOne
+//	private SellPowerAgreement sellPowerAgreement;
+	
 	@Column(name = "january")
 	private String january;
 
@@ -63,9 +61,9 @@ public class SellPowerAgreementMonthData extends AbstractEntity {
 
 	}
 
-	public SellPowerAgreement getSellPowerAgreement() {
-		return sellPowerAgreement;
-	}
+//	public SellPowerAgreement getSellPowerAgreement() {
+//		return sellPowerAgreement;
+//	}
 
 	public String getJanuary() {
 		return january;
@@ -115,9 +113,9 @@ public class SellPowerAgreementMonthData extends AbstractEntity {
 		return december;
 	}
 
-	public void setSellPowerAgreement(SellPowerAgreement sellPowerAgreement) {
-		this.sellPowerAgreement = sellPowerAgreement;
-	}
+//	public void setSellPowerAgreement(SellPowerAgreement sellPowerAgreement) {
+//		this.sellPowerAgreement = sellPowerAgreement;
+//	}
 
 	public void setJanuary(String january) {
 		this.january = january;

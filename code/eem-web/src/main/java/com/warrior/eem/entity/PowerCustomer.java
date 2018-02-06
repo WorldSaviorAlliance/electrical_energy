@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -139,6 +140,14 @@ public class PowerCustomer extends AbstractEntity {
 
 	public User getCreator() {
 		return creator;
+	}
+
+	public int getIndustryType() {
+		return industryType;
+	}
+
+	public void setIndustryType(int industryType) {
+		this.industryType = industryType;
 	}
 
 	public void setName(String name) {

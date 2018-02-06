@@ -3,6 +3,7 @@ package com.warrior.eem.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +38,7 @@ public class SellPowerAgreement extends AbstractEntity {
 	@Column(name = "name")
 	private String name; // 名称
 	
-	@Column(name = "No")
+	@Column(name = "number")
 	private String No; // 编号
 	
 	@Column(name = "valid_year")
@@ -74,7 +75,8 @@ public class SellPowerAgreement extends AbstractEntity {
 	@JsonIgnore
 	private User creator;
 	
-	@OneToOne(mappedBy = "sellPowerAgreement")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "month_data_id")
 	private SellPowerAgreementMonthData monthData;
 	
 	public SellPowerAgreement() {
@@ -135,6 +137,14 @@ public class SellPowerAgreement extends AbstractEntity {
 
 	public User getCreator() {
 		return creator;
+	}
+
+	public SellPowerAgreementMonthData getMonthData() {
+		return monthData;
+	}
+
+	public void setMonthData(SellPowerAgreementMonthData monthData) {
+		this.monthData = monthData;
 	}
 
 	public void setCustomer(PowerCustomer customer) {
