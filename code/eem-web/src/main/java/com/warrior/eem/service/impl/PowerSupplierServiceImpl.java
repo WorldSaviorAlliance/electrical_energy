@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerSupplierDao;
 import com.warrior.eem.dao.support.LogicalCondition;
+import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
+import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.exception.EemException;
@@ -40,6 +42,9 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 		Page page = new Page((int)conditions[1], (int)conditions[2]);
 		SqlRequest req = new SqlRequest();
 		req.setPage(page);
+		Order order = new Order();
+		order.addOrder("id", Order_Type.DESC);
+		req.setOrder(order);
 		if(cdt != null) {
 			try {
 				EntityValidator.checkEntity(cdt);

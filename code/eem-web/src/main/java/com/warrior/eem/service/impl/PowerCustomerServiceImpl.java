@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.support.LogicalCondition;
+import com.warrior.eem.dao.support.Order;
+import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
@@ -40,6 +42,9 @@ public class PowerCustomerServiceImpl extends AbstractServiceImpl<PowerCustomer>
 		Page page = new Page((int) conditions[1], (int) conditions[2]);
 		SqlRequest req = new SqlRequest();
 		req.setPage(page);
+		Order order = new Order();
+		order.addOrder("id", Order_Type.DESC);
+		req.setOrder(order);
 		if (cdt != null) {
 			try {
 				EntityValidator.checkEntity(cdt);

@@ -21,9 +21,11 @@ import com.warrior.eem.dao.SellPowerAgreementDao;
 import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.MultiSelector;
+import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
+import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.SellPowerAgreementMonthData;
@@ -71,6 +73,9 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		}
 		Page page = new Page((int) conditions[1], (int) conditions[2]);
 		SqlRequest req = new SqlRequest();
+		Order order = new Order();
+		order.addOrder("id", Order_Type.DESC);
+		req.setOrder(order);
 		Joiner joiner = new Joiner();
 		joiner.add("customer");
 		req.setJoiner(joiner);
