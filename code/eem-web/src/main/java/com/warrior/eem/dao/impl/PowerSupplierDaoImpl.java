@@ -6,7 +6,7 @@ import com.warrior.eem.dao.PowerSupplierDao;
 import com.warrior.eem.entity.PowerSupplier;
 
 @Repository
-public class PowerSupplierImpl extends AbstractDaoImpl<PowerSupplier> implements PowerSupplierDao {
+public class PowerSupplierDaoImpl extends AbstractDaoImpl<PowerSupplier> implements PowerSupplierDao {
 
 	@Override
 	protected Class<PowerSupplier> getEntityClass() {
