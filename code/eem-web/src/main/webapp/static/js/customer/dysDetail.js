@@ -1,10 +1,16 @@
 //@ sourceURL=dysDetail.js
-function DysDetail()
+function DysDetail(afterSaveCallbk, curData)
 {
+	var g_afterSaveCallbk = afterSaveCallbk;
+	var g_curData = curData;
 	init();
 	function init()
 	{
 		initControlAction();
+		if(g_curData != null)
+		{
+			inintControlVal();
+		}
 	}
 	
 	function initControlAction()
@@ -31,6 +37,29 @@ function DysDetail()
 			$('div.eem_window_close').click();
 		});
 		$('.select').niceSelect();
+	}
+	
+	function inintControlVal()
+	{
+		if(g_curData != null)
+		{
+			$('#name').val(getObjStr(g_curData.name));
+			$('#nickName').val(getObjStr(g_curData.nickName));
+			$('#powerType').val(g_curData.powerType);
+			$('#capacity').val(getObjStr(g_curData.capacity));
+			$('#province').val(g_curData.province);
+			$('#city').val(g_curData.city);
+			$('#province').niceSelect('update');
+			$('#city').niceSelect('update');
+			$('#address').val(getObjStr(g_curData.address));
+			$('#contactName').val(getObjStr(g_curData.contactName));
+			$('#contactPhone').val(getObjStr(g_curData.contactPhone));
+			$('#contactPosition').val(getObjStr(g_curData.contactPosition));
+			$('#contactEmail').val(getObjStr(g_curData.contactEmail));
+			$('#fax').val(getObjStr(g_curData.fax));
+			$('#natureType').val(g_curData.natureType);
+			$('#natureType').niceSelect('update');
+		}
 	}
 	
 	function doSaveAction()
@@ -65,12 +94,21 @@ function DysDetail()
 			fax : fax
 		};
 		
+		var ajaxType = 'POST';
+		var msgTitle = '添加电源商';
+		if(g_curData != null)
+		{
+			ajaxType = 'PUT';
+			msgTitle = '修改电源商';
+			temp.id = g_curData.id;
+		}
+		
 		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存电源商');
     	
 		$.ajax({
 			url: rootpath + '/' + PATH_DYS + '/info',
-			type : 'POST',
+			type : ajaxType,
 			dataType: 'json',
 		    contentType: 'application/json',
 			data : JSON.stringify(temp),
@@ -81,12 +119,20 @@ function DysDetail()
 					console.log(ar);
 					if(ar.code == 0)
 					{
-						showDynamicMessage(STR_CONFIRM, '保存电源商信息成功', MESSAGE_TYPE_INFO)
+						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO)
+						if(g_afterSaveCallbk != null)
+						{
+							g_afterSaveCallbk();
+						}
 					}
 					else
 					{
-						showDynamicMessage(STR_CONFIRM, '保存电源商信息失败:' + ar.msg, MESSAGE_TYPE_ERROR)
+						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR)
 					}
+				}
+				else
+				{
+					showDynamicMessage(STR_CONFIRM, '系统错误，请联系管理员', MESSAGE_TYPE_ERROR)
 				}
 			}
 		});

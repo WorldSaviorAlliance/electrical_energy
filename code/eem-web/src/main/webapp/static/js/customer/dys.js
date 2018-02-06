@@ -2,6 +2,7 @@
 $(function()
 {
 	var g_page_dys_detail = null;
+	var g_all_datas = null; //当前所有的数据
 	init();
 	/**
 	 * 初始化界面
@@ -17,10 +18,9 @@ $(function()
 	 */
 	function initControlAction()
 	{
-		$('#search').unbind('click').click(function(){
+		$('#do_search').unbind('click').click(function(){
 			getAllData(0);
 		});
-		
 		
 		$('#add').unbind('click').click(function(){
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
@@ -28,11 +28,11 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电源商',
+		            title: '添加电源商',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
-		            	g_page_dys_detail = new DysDetail();
+		            	g_page_dys_detail = new DysDetail(getAllData);
 		            }
 		        });	
 			});
@@ -46,14 +46,18 @@ $(function()
 	 */
 	function getAllData(curpage)
 	{
+		if(curpage == null)
+		{
+			curpage = 0;
+		}
 		$('#datas tr[type="loading_msg"]').show();
 		$('#datas tr[type="error_msg"]').hide();
 		$('#datas tr[type="empty_msg"]').hide();
 		$('#datas tr[type="data"]').remove();
 		var search = {
-			"name": $('#name').val(),
-	        "province": $('#province').val(),
-	        "city": $('#city').val()
+			"name": $('#search_name').val(),
+	        "province": $('#search_province').val(),
+	        "city": $('#search_city').val()
 			};
 		$.ajax({
 			url: rootpath + '/' + PATH_DYS + '/list?page=' + curpage + '&per_page=' + PAGE_COUNT,
@@ -92,6 +96,7 @@ $(function()
 		var totalpage = 0;
 		if(datas != null && datas.length != 0)
 		{
+			g_all_datas = datas;
 			var trs = '';
 			totalpage = datas.length / PAGE_COUNT + (datas.length % PAGE_COUNT != 0 ? 1 : 0);
 			for(var i = 0; i < datas.length; i++)
@@ -100,10 +105,10 @@ $(function()
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
 							'<td>' + getObjStr(temp.nickName) + '</td>'+
-							'<td>' + getObjStr(temp.province) + getObjStr(temp.city) + '</td>'+
+							'<td>' + getObjStr(temp.province) + '-' +getObjStr(temp.city) + '</td>'+
 							'<td>' + getPowerTypeStr(temp.powerType) + '</td>'+
 							'<td>' + getObjStr(temp.capacity) + '</td>'+
-							'<td>' + getObjStr(temp.natureType) + '</td>'+					
+							'<td>' + getNatureType(temp.natureType) + '</td>'+					
 							'<td>' + getObjStr(temp.contactName) + '</td>'+
 							'<td>' + getObjStr(temp.contactPhone) + '</td>'+
 							'<td>' + getObjStr(temp.contactPosition) + '</td>'+
@@ -141,6 +146,7 @@ $(function()
 		});
 		
 		$('a[flag="modify"]').unbind('click').click(function(){
+			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
 				$(this).EemWindow({
@@ -149,15 +155,33 @@ $(function()
 		            title: '修改电源商',
 		            content: addDiv,
 		            hasBottomBtn : false,
-		            onOkBtnFn : function(){
-		            	return true;
-		            },
 		            afterShow : function(){
-		            	g_page_dys_detail = new DysDetail();
+		            	var curData = getCurDataById(id);
+		            	g_page_dys_detail = new DysDetail(getAllData, curData);
 		            }
 		        });	
 			});
 		});
+	}
+	
+	/**
+	 * 通过id获取对应的电源商的数据
+	 */
+	function getCurDataById(id)
+	{
+		var data = null;
+		if(g_all_datas != null && g_all_datas.length != 0)
+		{
+			for(var i = 0; i < g_all_datas.length; i++)
+			{
+				if(id == g_all_datas[i].id)
+				{
+					data = g_all_datas[i];
+					break;
+				}
+			}
+		}
+		return data;
 	}
 	return this;	
 });

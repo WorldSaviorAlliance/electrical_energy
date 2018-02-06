@@ -244,6 +244,11 @@ function showDynamicMessage(title, content, type)
 	}, 100);
 }
 
+/**
+ * 获得电源类型
+ * @param powerType
+ * @returns {String}
+ */
 function getPowerTypeStr(powerType)
 {
 	var str = '';
@@ -266,6 +271,26 @@ function getPowerTypeStr(powerType)
 			str = '其他';
 			break;
 		default:
+			break;
+		}
+	}
+	return str;
+}
+
+/*
+ * 获得企业性质
+ */
+function getNatureType(natureType)
+{
+	var str = '';
+	if(natureType != null)
+	{
+		switch (natureType) {
+		case 0:
+			str = '国营企业';
+			break;
+		case 1:
+			str = '民营企业';
 			break;
 		}
 	}
