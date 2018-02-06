@@ -53,7 +53,7 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.equal("province", cdt.getProvince()));
 			}
-			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
+			if(cdt.getCity() != null && cdt.getCity().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.equal("city", cdt.getCity()));
 			}
 			req.setCdt(sqlCdt);
