@@ -2,7 +2,12 @@ package com.warrior.eem.service.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.SellPowerAgreementDao;
+import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
+import com.warrior.eem.dao.support.MultiSelector;
 import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
@@ -64,6 +71,20 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		}
 		Page page = new Page((int) conditions[1], (int) conditions[2]);
 		SqlRequest req = new SqlRequest();
+		Joiner joiner = new Joiner();
+		joiner.add("customer");
+		req.setJoiner(joiner);
+		MultiSelector ms = new MultiSelector();
+		ms.addSelectProp("id");
+		ms.addSelectProp("customer.name");
+		ms.addSelectProp("customerNo");
+		ms.addSelectProp("name");
+		ms.addSelectProp("No");
+		ms.addSelectProp("validYear");
+		ms.addSelectProp("voltageType");
+		ms.addSelectProp("tradePowerQuantity");
+		ms.addSelectProp("attachment");
+		req.setSelect(ms);
 		req.setPage(page);
 		LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 		sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
@@ -212,6 +233,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 	}
 
 	@Override
+	@Transactional
 	public void deleteAgreement(Serializable id) {
 		SellPowerAgreement spa = (SellPowerAgreement)getEntity(id);
 		if(spa != null) {
@@ -219,4 +241,34 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		}
 		deleteEntity(id);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<?> listEntities(Serializable... conditions) {
+		List<Object[]> arrList =  (List<Object[]>)super.listEntities(conditions);
+		List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+		List<String> propNames = new ArrayList<String>();
+		propNames.add("id");
+		propNames.add("customerName");
+		propNames.add("customerNo");
+		propNames.add("name");
+		propNames.add("No");
+		propNames.add("validYear");
+		propNames.add("voltageType");
+		propNames.add("tradePowerQuantity");
+		propNames.add("attachment");
+		Map<String, Object> resItem = null;
+		for(Object[] arr : arrList) {
+			int i = 0;
+			resItem = new HashMap<String, Object>();
+			for(Object obj : arr) {
+				resItem.put(propNames.get(i), obj);
+				i++;
+			}
+			res.add(resItem);
+		}
+		return res;
+	}
+	
+	
 }
