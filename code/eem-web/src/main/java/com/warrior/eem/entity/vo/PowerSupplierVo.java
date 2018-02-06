@@ -44,7 +44,7 @@ public class PowerSupplierVo implements EntityConvertor, Serializable {
 	@FieldChecker(name = "联系人", minLen = 1, maxLen = 10)
 	private String contactName;
 	
-	@FieldChecker(name = "联系人电话", minLen = 1, maxLen = 11)
+	@FieldChecker(name = "联系人电话", minLen = 1, maxLen = 64)
 	private String contactPhone;
 	
 	@FieldChecker(name = "联系人职位", minLen = 1, maxLen = 10)
