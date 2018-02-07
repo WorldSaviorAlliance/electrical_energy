@@ -1,6 +1,5 @@
 package com.warrior.eem.controller.rest;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,43 +18,44 @@ import com.warrior.eem.service.PowerSupplierService;
 
 /**
  * power supperlier controller
+ * 
  * @author seangan
  *
  */
 @Controller
 @RequestMapping("power_supperlier")
 public class PowerSupplierController extends AbstractController {
-	
+
 	@Autowired
 	private PowerSupplierService pssService;
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> createEntity(@RequestBody PowerSupplierVo psv) {
 		pssService.createEntity(psv);
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
 	public Result<Object> updateEntity(@RequestBody PowerSupplierUpdaterVo psuv) {
 		pssService.updateEntity(psuv);
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
 		pssService.deleteEntity(convertId(id));
 		return Result.success();
 	}
-	
+
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<PowerSupplier> getEntity(String id) {
-		return Result.success((PowerSupplier)pssService.getEntity(convertId(id)));
+		return Result.success((PowerSupplier) pssService.getEntity(convertId(id)));
 	}
-	
+
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> listEntities(@RequestBody(required = false) PowerCustomerOrSupplierCdtVo cdt,
@@ -65,7 +65,7 @@ public class PowerSupplierController extends AbstractController {
 		if (page != null && page.trim().length() == 0) {
 			try {
 				pageNum = Integer.valueOf(page);
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				throw new EemException("页码必须为数字");
 			}
 		}
@@ -74,11 +74,10 @@ public class PowerSupplierController extends AbstractController {
 		if (perPage != null && perPage.trim().length() == 0) {
 			try {
 				perPageNum = Integer.valueOf(perPage);
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
-
-		return Result.success(pssService.listEntities(cdt, pageNum, perPageNum));
+		return Result.success(pssService.countEntity(), pssService.listEntities(cdt, pageNum, perPageNum));
 	}
 }

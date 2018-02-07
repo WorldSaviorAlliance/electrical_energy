@@ -78,8 +78,7 @@ public class PowerCustomerController extends AbstractController {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
-
-		return Result.success(pcsService.listEntities(cdt, pageNum, perPageNum));
+		return Result.success(pcsService.countEntity(), pcsService.listEntities(cdt, pageNum, perPageNum));
 	}
 
 }

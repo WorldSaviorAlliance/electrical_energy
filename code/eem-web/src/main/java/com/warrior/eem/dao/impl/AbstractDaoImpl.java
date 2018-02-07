@@ -255,7 +255,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 
 	@Override
 	public long countDos(SqlRequest req) {
-		final CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		final Root<T> root = cq.from(getEntityClass());
 		if (req != null) {
 			
@@ -282,8 +282,8 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				}
 			}
 		}
-		cq.select(root.get("id"));		
-		return em.createQuery(cq).getResultList().size();
+		cq.select(cb.countDistinct(root.get("id")));		
+		return em.createQuery(cq).getResultList().get(0);
 	}
 
 	/**

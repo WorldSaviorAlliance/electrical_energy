@@ -57,6 +57,10 @@ public class Result<T> implements Serializable {
 	public static <T> Result<T> success(T data) { // 常用
 		return new Result<T>(0, data, CodeStatus.OK.getDesc());
 	}
+	
+	public static <T> Result<T> success(long count, T data) { // 常用
+		return new Result<T>(count, data, CodeStatus.OK.getDesc());
+	}
 
 	public static Result<Object> failure(long errCode, String msg) { // 常用
 		return new Result<Object>(errCode, 0, null, msg);
