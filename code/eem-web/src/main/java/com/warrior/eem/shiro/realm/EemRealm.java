@@ -47,10 +47,10 @@ public class EemRealm extends AuthorizingRealm {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException, EemException {
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
 		SqlRequest req = new SqlRequest();
-		LogicalCondition c = LogicalCondition.emptyOfFalse();
+		LogicalCondition c = LogicalCondition.emptyOfTrue();
 		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, upt.getUsername()));
 		c = c.and(new SimpleCondition("password", Sql_Operator.EQ,
 				Base64AndMD5Util.encodeByBase64AndMd5(String.valueOf(upt.getPassword()))));
