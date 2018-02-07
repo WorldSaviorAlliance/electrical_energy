@@ -1,7 +1,6 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.entity.City;
 import com.warrior.eem.entity.Province;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.IService;
 
 @Service("location")
@@ -47,7 +47,7 @@ public class LocationServiceImpl implements IService, InitializingBean {
 	}
 
 	@Override
-	public List<?> listEntities(Serializable... conditions) {
+	public PageVo listEntities(Serializable... conditions) {
 		// TODO Auto-generated method stub
 		return null;
 	}

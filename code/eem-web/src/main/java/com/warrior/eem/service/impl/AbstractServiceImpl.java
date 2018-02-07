@@ -2,12 +2,12 @@ package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.support.SqlRequest;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.interfaces.EntityConvertor;
 import com.warrior.eem.service.IService;
@@ -97,14 +97,21 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<?> listEntities(Serializable... conditions) {
-		return getDao().listDos(buildListSqlRequest(conditions));
+	public PageVo listEntities(Serializable... conditions) {
+		SqlRequest req = buildListSqlRequest(conditions);
+		return new PageVo(countEntity(req), getDao().listDos(req));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public long countEntity(Serializable... conditions) {
-		return getDao().countDos(buildCountSqlRequest(conditions));
+		SqlRequest req = null;
+		if(conditions != null && conditions.length == 1 && conditions[0] instanceof SqlRequest) {
+			req = (SqlRequest) conditions[0];
+		} else {
+			req = buildCountSqlRequest(conditions);
+		}
+		return getDao().countDos(req);
 	}
 
 	/**

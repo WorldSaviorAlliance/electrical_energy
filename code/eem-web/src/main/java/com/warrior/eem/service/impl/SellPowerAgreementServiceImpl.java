@@ -29,6 +29,7 @@ import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.SellPowerAgreementMonthData;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
@@ -249,8 +250,9 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<?> listEntities(Serializable... conditions) {
-		List<Object[]> arrList =  (List<Object[]>)super.listEntities(conditions);
+	public PageVo listEntities(Serializable... conditions) {
+		PageVo pageVo =  (PageVo)super.listEntities(conditions);
+		List<Object[]> arrList = (List<Object[]>)pageVo.getDatas();
 		List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
 		List<String> propNames = new ArrayList<String>();
 		propNames.add("id");
@@ -272,7 +274,8 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			}
 			res.add(resItem);
 		}
-		return res;
+		pageVo.setDatas(res);
+		return pageVo;
 	}
 	
 	

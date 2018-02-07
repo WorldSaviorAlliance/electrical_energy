@@ -1,7 +1,8 @@
 package com.warrior.eem.service;
 
 import java.io.Serializable;
-import java.util.List;
+
+import com.warrior.eem.entity.vo.PageVo;
 
 /**
  * 抽象service
@@ -43,7 +44,7 @@ public interface IService {
 	 * 获取列表
 	 * @return
 	 */
-	public List<?> listEntities(Serializable... conditions);
+	public PageVo listEntities(Serializable... conditions);
 	
 	/**
 	 * 获取列表

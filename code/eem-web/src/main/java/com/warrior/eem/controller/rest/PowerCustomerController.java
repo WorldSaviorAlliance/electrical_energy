@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.entity.vo.PowerCustomerUpdaterVo;
 import com.warrior.eem.entity.vo.PowerCustomerVo;
@@ -78,7 +79,8 @@ public class PowerCustomerController extends AbstractController {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
-		return Result.success(pcsService.countEntity(), pcsService.listEntities(cdt, pageNum, perPageNum));
+		PageVo vo = pcsService.listEntities(cdt, pageNum, perPageNum);
+		return Result.success(vo.getCount(), vo.getDatas());
 	}
 
 }
