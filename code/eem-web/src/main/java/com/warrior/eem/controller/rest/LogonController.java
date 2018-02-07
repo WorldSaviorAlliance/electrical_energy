@@ -1,5 +1,8 @@
 package com.warrior.eem.controller.rest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.vo.LogonVo;
 import com.warrior.eem.exception.EemException;
+import com.warrior.eem.shiro.session.EemSession;
 import com.warrior.eem.util.EntityValidator;
 
 /**
@@ -31,8 +35,10 @@ public class LogonController extends AbstractController {
 			throw new EemException("解析登录信息失败，请联系管理员");
 		}
 		SecurityUtils.getSubject().login(new UsernamePasswordToken(vo.getUserName(), vo.getPassword()));
-		// TODO 用户信息给页面
-		return Result.success();
+		Map<String, Object> um = new HashMap<String, Object>();
+		um.put("nickName", EemSession.getCurrentUser().getNickName());
+		um.put("id", EemSession.getCurrentUser().getId());
+		return Result.success(um);
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)

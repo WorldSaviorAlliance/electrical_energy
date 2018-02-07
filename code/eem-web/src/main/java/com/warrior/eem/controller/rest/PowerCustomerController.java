@@ -14,7 +14,6 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
 import com.warrior.eem.entity.vo.PowerCustomerUpdaterVo;
 import com.warrior.eem.entity.vo.PowerCustomerVo;
-import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerCustomerService;
 
 /**
@@ -62,24 +61,8 @@ public class PowerCustomerController extends AbstractController {
 	public Result<Object> listEntities(@RequestBody(required = false) PowerCustomerOrSupplierCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
-		Integer pageNum = 1;
-		if (page != null && page.trim().length() == 0) {
-			try {
-				pageNum = Integer.valueOf(page);
-			} catch (NumberFormatException e) {
-				throw new EemException("页码必须为数字");
-			}
-		}
-
-		Integer perPageNum = 20;
-		if (perPage != null && perPage.trim().length() == 0) {
-			try {
-				perPageNum = Integer.valueOf(perPage);
-			} catch (NumberFormatException e) {
-				throw new EemException("每页显示的个数参数必须为数字");
-			}
-		}
-		PageVo vo = pcsService.listEntities(cdt, pageNum, perPageNum);
+		Integer[] pageInfo = buildPageInfo(page, perPage);
+		PageVo vo = pcsService.listEntities(cdt, pageInfo[0], pageInfo[1]);
 		return Result.success(vo.getCount(), vo.getDatas());
 	}
 
