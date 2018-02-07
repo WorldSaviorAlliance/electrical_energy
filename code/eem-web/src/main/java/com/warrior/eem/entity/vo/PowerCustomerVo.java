@@ -6,6 +6,7 @@ import java.util.Date;
 import com.warrior.eem.annotation.FieldChecker;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.interfaces.EntityConvertor;
+import com.warrior.eem.shiro.session.EemSession;
 
 /**
  * 电力客户vo创建对象
@@ -163,8 +164,7 @@ public class PowerCustomerVo implements EntityConvertor, Serializable {
 		pc.setNickName(this.getNickName());
 		pc.setProvince(this.getProvince());
 		pc.setCreateTime(new Date());
-		// 待用户完善
-		pc.setCreator(null);
+		pc.setCreator(EemSession.getCurrentUser());
 		return pc;
 	}
 

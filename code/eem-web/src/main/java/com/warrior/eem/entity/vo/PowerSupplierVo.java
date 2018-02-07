@@ -7,6 +7,7 @@ import java.util.Date;
 import com.warrior.eem.annotation.FieldChecker;
 import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.interfaces.EntityConvertor;
+import com.warrior.eem.shiro.session.EemSession;
 
 /**
  * 电力提供商vo创建对象
@@ -185,7 +186,7 @@ public class PowerSupplierVo implements EntityConvertor, Serializable {
 		ps.setPowerType(this.getPowerType());
 		ps.setCapacity(this.getCapacity());
 		ps.setCreateTime(new Date());
-		ps.setCreator(null);
+		ps.setCreator(EemSession.getCurrentUser());
 		return ps;
 	}
 

@@ -37,6 +37,7 @@ import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
+import com.warrior.eem.shiro.session.EemSession;
 import com.warrior.eem.util.EntityValidator;
 import com.warrior.eem.util.FileUtil;
 
@@ -118,8 +119,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		SellPowerAgreementVo sb = (SellPowerAgreementVo) vo;
 		mergeProps(tb, sb);
 		tb.setCreateTime(new Date());
-		// TODO 当前登录用户
-		tb.setCreator(null);
+		tb.setCreator(EemSession.getCurrentUser());
 		return tb;
 	}
 
