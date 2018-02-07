@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ import com.warrior.eem.entity.ui.Base64AndMD5Util;
 import com.warrior.eem.service.UserService;
 
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService, InitializingBean {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	private final Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
@@ -56,16 +55,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Transactional
-	public void afterPropertiesSet() throws Exception {
-		// TODO 初始化角色和权限
+	public boolean createAdminIfAbsent() {
 		if (checkExistAdminUser()) {
-			logger.info("admin already exit");
-			return;
+			return true;
 		}
 		createEntity(buildAdmin());
-		if (!checkExistAdminUser()) {
-			logger.error("Insert admin failed");
-		}
+		logger.info("creat admin user...");
+		return checkExistAdminUser();
 	}
 
 	private boolean checkExistAdminUser() {
@@ -74,14 +70,14 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		req.setCdt(scdt);
 		return userDao.countDos(req) > 0;
 	}
-	
+
 	private User buildAdmin() {
 		User admin = new User();
 		admin.setName("admin");
 		admin.setPassword(Base64AndMD5Util.encodeByBase64AndMd5("admin"));
 		admin.setNickName("admin");
 		admin.setStatus(UserStatus.ACTIVE);
-		Timestamp time = new Timestamp(System.currentTimeMillis()); 
+		Timestamp time = new Timestamp(System.currentTimeMillis());
 		admin.setAddTime(time);
 		admin.setLastLoginTime(time);
 		return admin;

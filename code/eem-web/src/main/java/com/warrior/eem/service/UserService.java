@@ -7,5 +7,5 @@ package com.warrior.eem.service;
  * @version 1.0.0
  */
 public interface UserService extends IService {
-
+	boolean createAdminIfAbsent();
 }
