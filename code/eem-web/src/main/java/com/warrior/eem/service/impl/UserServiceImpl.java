@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.IDao;
-import com.warrior.eem.dao.impl.UserDaoImpl;
+import com.warrior.eem.dao.PowerCustomerDao;
+import com.warrior.eem.dao.RoleDao;
+import com.warrior.eem.dao.UserDao;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.Page;
@@ -38,7 +40,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired
-	private UserDaoImpl userDao;
+	private UserDao userDao;
+
+	@Autowired
+	private RoleDao roleDao;
+
+	@Autowired
+	private PowerCustomerDao customerDao;
 
 	@Override
 	IDao<User> getDao() {
@@ -85,11 +93,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Override
 	User convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		User user = (User) dbo;
-		UserVo userVo = (UserVo) vo;
-		user.setNickName(userVo.getNickName());
-		user.setPassword(userVo.getPassword());
-		user.setStatus(UserStatus.convert2UserStatus(userVo.getStatus()));
-		// TODO:先暂时不设置角色
+		updateUser(user, (UserVo) vo);
 		return user;
 	}
 
@@ -98,13 +102,31 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		User user = new User();
 		Timestamp time = ToolUtil.getCurrentTime();
 		user.setAddTime(time);
-		UserVo userVo = (UserVo) vo;
-		user.setName(userVo.getName());
-		user.setNickName(userVo.getNickName());
-		user.setPassword(userVo.getPassword());
-		user.setStatus(UserStatus.convert2UserStatus(userVo.getStatus()));
-		// TODO:先暂时不设置角色
+		user.setStatus(UserStatus.ACTIVE);
+		updateUser(user, (UserVo) vo);
 		return user;
+	}
+
+	private void updateUser(User user, UserVo userVo) {
+		if (!ToolUtil.isStringEmpty(userVo.getName())) {
+			user.setName(userVo.getName());
+		}
+		if (!ToolUtil.isStringEmpty(userVo.getNickName())) {
+			user.setNickName(userVo.getNickName());
+		}
+		if (!ToolUtil.isStringEmpty(userVo.getPassword())) {
+			user.setPassword(userVo.getPassword());
+		}
+		UserStatus status = UserStatus.convert2UserStatus(userVo.getStatus());
+		if (UserStatus.ALL != status) {
+			user.setStatus(status);
+		}
+		if (userVo.getRoleId() != -1) {
+			user.setRole(roleDao.getReference(userVo.getRoleId()));
+		}
+		if (userVo.getCustomerId() != -1) {
+			user.setCustomer(customerDao.getReference(userVo.getCustomerId()));
+		}
 	}
 
 	@Override

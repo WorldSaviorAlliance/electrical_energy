@@ -24,11 +24,15 @@ public final class UserVo implements Serializable {
 	@FieldChecker(name = "用户密码", minLen = 6, maxLen = 12)
 	private String password;
 
-	@FieldChecker(name = "用户状态") // 0表示激活 1表示禁用
+	@FieldChecker(name = "用户状态")
+	// 0表示激活 1表示禁用
 	private int status;
 
 	@FieldChecker(name = "用户角色")
 	private long roleId;
+
+	@FieldChecker(name = "电力客户")
+	private long customerId;
 
 	public long getId() {
 		return id;
@@ -76,5 +80,13 @@ public final class UserVo implements Serializable {
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(long customerId) {
+		this.customerId = customerId;
 	}
 }
