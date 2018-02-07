@@ -34,7 +34,7 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired
@@ -89,7 +89,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		user.setNickName(userVo.getNickName());
 		user.setPassword(userVo.getPassword());
 		user.setStatus(UserStatus.convert2UserStatus(userVo.getStatus()));
-		// TODO:对object属性的如何设置?
+		// TODO:先暂时不设置角色
 		return user;
 	}
 
@@ -103,7 +103,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		user.setNickName(userVo.getNickName());
 		user.setPassword(userVo.getPassword());
 		user.setStatus(UserStatus.convert2UserStatus(userVo.getStatus()));
-		// TODO:对object属性的如何设置?
+		// TODO:先暂时不设置角色
 		return user;
 	}
 

@@ -3,7 +3,6 @@ package com.warrior.eem.entity.vo;
 import java.io.Serializable;
 
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.constant.UserStatus;
 
 /**
  * 用户的界面端数据模型

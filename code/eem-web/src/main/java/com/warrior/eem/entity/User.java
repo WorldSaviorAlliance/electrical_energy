@@ -22,40 +22,46 @@ import com.warrior.eem.entity.constant.UserStatus;
 
 /**
  * 用户实体
+ * 
  * @author cold_blade
  * @version 1.0.0
  */
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable{
+public class User implements Serializable {
 	private static final long serialVersionUID = 7127750241730901860L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "nick_name")
 	private String nickName;
 
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "user_status")
 	@Enumerated(EnumType.ORDINAL)
 	private UserStatus status;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@JoinColumn(name = "role_id")
 	private Role role;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@JoinColumn(name = "customer_id")
+	private PowerCustomer customer;
+
 	@Column(name = "add_time")
 	private Timestamp addTime;
-	
+
 	@Column(name = "last_login_time")
 	private Timestamp lastLoginTime;
 
@@ -122,7 +128,12 @@ public class User implements Serializable{
 	public void setLastLoginTime(Timestamp lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
-	
 
-	//TODO:clutomer:
+	public PowerCustomer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(PowerCustomer customer) {
+		this.customer = customer;
+	}
 }
