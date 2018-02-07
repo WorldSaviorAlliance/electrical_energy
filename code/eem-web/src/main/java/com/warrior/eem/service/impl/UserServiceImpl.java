@@ -128,7 +128,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 	private User buildAdmin() {
 		User admin = new User();
 		admin.setName("admin");
-		admin.setPassword(Base64AndMD5Util.encodeByBase64AndMd5("admin"));
+		admin.setPassword(Base64AndMD5Util.encodeByBase64AndMd5("mirror-0"));
 		admin.setNickName("admin");
 		admin.setStatus(UserStatus.ACTIVE);
 		Timestamp time = ToolUtil.getCurrentTime();
