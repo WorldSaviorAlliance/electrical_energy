@@ -103,6 +103,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				root = cq.from(getEntityClass());
 				isTuple = true;
 			}
+			
 			// join
 			Map<String, Join<?, ?>> mj = new HashMap<String, Join<?, ?>>();
 			if (req.getJoiner() != null && req.getJoiner().getJs().size() > 0) {
@@ -110,10 +111,9 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					mj.put(join.getJoinPorpName(), root.join(join.getJoinPorpName(), join.getType().getJoinType()));
 				}
 			}
+			
 			// selector
 			MultiSelector ms = req.getSelect();
-			Condition cdt = req.getCdt();
-			Order order = req.getOrder();
 			page = req.getPage() == null ? page : req.getPage();
 			if (ms != null) {
 				List<Selection<?>> ls = new ArrayList<Selection<?>>();
@@ -125,9 +125,12 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					cq.multiselect(ls);
 				}
 			}
+			
 			// where
-			cq.where(parseCondition(cdt, root, mj));
+			cq.where(parseCondition(req.getCdt(), root, mj));
+			
 			// order
+			Order order = req.getOrder();
 			if (order != null) {
 				List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
 				int i = 0;
@@ -140,19 +143,20 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					cq.orderBy(orders);
 				}
 			}
-		}
-		// group
-		GroupBy gb = req.getGroupBy();
-		if (gb != null && gb.getGroupPropNames().size() > 0) {
-			List<Expression<?>> groupNames = new ArrayList<Expression<?>>();
-			for (String gbName : gb.getGroupPropNames()) {
-				groupNames.add(root.get(gbName));
+			
+			// group
+			GroupBy gb = req.getGroupBy();
+			if (gb != null && gb.getGroupPropNames().size() > 0) {
+				List<Expression<?>> groupNames = new ArrayList<Expression<?>>();
+				for (String gbName : gb.getGroupPropNames()) {
+					groupNames.add(root.get(gbName));
+				}
+				if (groupNames.size() > 0) {
+					cq.groupBy(groupNames);
+				}
 			}
-			if (groupNames.size() > 0) {
-				cq.groupBy(groupNames);
-			}
+			// cq.having(restrictions);
 		}
-		// cq.having(restrictions);
 		TypedQuery<?> tq = em.createQuery(cq);
 		if (page != null) {
 			tq.setFirstResult((page.getStartPageNum() - 1) * page.getPerPageNum());
@@ -250,13 +254,36 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 	}
 
 	@Override
-	public long countDos(Condition cdt) {
+	public long countDos(SqlRequest req) {
 		final CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
 		final Root<T> root = cq.from(getEntityClass());
-		cq.where(parseCondition(cdt, root, null));
-		TypedQuery<T> res = em.createQuery(cq);
-		res.getResultList();
-		return 0;
+		if (req != null) {
+			
+			// join
+			Map<String, Join<?, ?>> mj = new HashMap<String, Join<?, ?>>();
+			if (req.getJoiner() != null && req.getJoiner().getJs().size() > 0) {
+				for (Joiner join : req.getJoiner().getJs()) {
+					mj.put(join.getJoinPorpName(), root.join(join.getJoinPorpName(), join.getType().getJoinType()));
+				}
+			}
+			
+			// where
+			cq.where(parseCondition(req.getCdt(), root, mj));
+			
+			// group
+			GroupBy gb = req.getGroupBy();
+			if (gb != null && gb.getGroupPropNames().size() > 0) {
+				List<Expression<?>> groupNames = new ArrayList<Expression<?>>();
+				for (String gbName : gb.getGroupPropNames()) {
+					groupNames.add(root.get(gbName));
+				}
+				if (groupNames.size() > 0) {
+					cq.groupBy(groupNames);
+				}
+			}
+		}
+		cq.select(root.get("id"));		
+		return em.createQuery(cq).getResultList().size();
 	}
 
 	/**

@@ -69,8 +69,10 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	}
 
 	private boolean checkExistAdminUser() {
+		SqlRequest req = new SqlRequest();
 		SimpleCondition scdt = new SimpleCondition("name", Sql_Operator.EQ, "admin");
-		return userDao.countDos(scdt) > 0;
+		req.setCdt(scdt);
+		return userDao.countDos(req) > 0;
 	}
 	
 	private User buildAdmin() {
