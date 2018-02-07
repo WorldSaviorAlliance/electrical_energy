@@ -1,6 +1,5 @@
 package com.warrior.eem.shiro.realm;
 
-
 import java.util.List;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,6 +19,8 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.ui.Base64AndMD5Util;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.shiro.session.EemSession;
 
 /**
@@ -46,15 +47,17 @@ public class EemRealm extends AuthorizingRealm {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException, EemException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
 		SqlRequest req = new SqlRequest();
-		LogicalCondition c = new LogicalCondition();
-		req.setCdt(c.and(new SimpleCondition("name", Sql_Operator.EQ, upt.getUsername()))
-				.and(new SimpleCondition("password", Sql_Operator.EQ, upt.getPassword())));
-		List<User> users = (List<User>)userDao.listDos(req);
-		if(users == null || users.size() == 0) {
-			throw new AuthenticationException("用户名或者密码有误");
+		LogicalCondition c = LogicalCondition.emptyOfFalse();
+		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, upt.getUsername()));
+		c = c.and(new SimpleCondition("password", Sql_Operator.EQ,
+				Base64AndMD5Util.encodeByBase64AndMd5(String.valueOf(upt.getPassword()))));
+		req.setCdt(c);
+		List<User> users = (List<User>) userDao.listDos(req);
+		if (users == null || users.size() == 0) {
+			throw new EemException("用户名或者密码有误");
 		}
 		EemSession.setCurrentUser(users.get(0));
 		return new SimpleAuthenticationInfo(upt.getUsername(), upt.getPassword(), getName());
