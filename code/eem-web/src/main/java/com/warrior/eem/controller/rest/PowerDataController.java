@@ -9,59 +9,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
+import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.vo.PageVo;
-import com.warrior.eem.entity.vo.PowerCustomerOrSupplierCdtVo;
-import com.warrior.eem.entity.vo.PowerCustomerUpdaterVo;
-import com.warrior.eem.entity.vo.PowerCustomerVo;
+import com.warrior.eem.entity.vo.PowerDataCdtVo;
+import com.warrior.eem.entity.vo.PowerDataUpdateVo;
+import com.warrior.eem.entity.vo.PowerDataVo;
 import com.warrior.eem.exception.EemException;
-import com.warrior.eem.service.PowerCustomerService;
+import com.warrior.eem.service.PowerDataService;
 
 /**
- * 电力客户 controller
+ * 电量管理controller
  * 
  * @author seangan
  *
  */
 @Controller
-@RequestMapping("power_customer")
-public class PowerCustomerController extends AbstractController {
+@RequestMapping("power_data")
+public class PowerDataController extends AbstractController {
 
 	@Autowired
-	private PowerCustomerService pcsService;
+	private PowerDataService pdService;
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody(required = false) PowerCustomerVo powerCustomerVo) {
-		pcsService.createEntity(powerCustomerVo);
+	public Result<Object> createEntity(@RequestBody(required = false) PowerDataVo vo) {
+		pdService.createEntity(vo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody(required = false) PowerCustomerUpdaterVo powerCustomerVo) {
-		pcsService.updateEntity(powerCustomerVo);
+	public Result<Object> updateEntity(@RequestBody(required = false) PowerDataUpdateVo updateVo) {
+		pdService.updateEntity(updateVo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
-		pcsService.deleteEntity(convertId(id));
+		pdService.deleteEntity(convertId(id));
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<PowerCustomer> getEntity(String id) {
-		return Result.success((PowerCustomer) pcsService.getEntity(convertId(id)));
+		return Result.success((PowerCustomer) pdService.getEntity(convertId(id)));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listEntities(@RequestBody(required = false) PowerCustomerOrSupplierCdtVo cdt,
+	public Result<Object> listEntities(@RequestBody(required = false) PowerDataCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
-			@RequestParam(name = "per_page", required = false) String perPage) {
+			@RequestParam(name = "per_page", required = false) String perPage,
+			@RequestParam(name = "sort_by", required = false) String sortBy,
+			@RequestParam(name = "order", required = false) String order) {
 		Integer pageNum = 1;
 		if (page != null && page.trim().length() == 0) {
 			try {
@@ -79,7 +82,15 @@ public class PowerCustomerController extends AbstractController {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
-		PageVo vo = pcsService.listEntities(cdt, pageNum, perPageNum);
+		String sortProp = "month";
+		String orderProp = "DESC";
+		if(sortBy != null && sortBy.trim().length() > 0) {
+			sortProp = sortBy;
+		}
+		if(Order.ASC.equalsIgnoreCase(order)) {
+			orderProp = "ASC";
+		}
+		PageVo vo = pdService.listEntities(cdt, pageNum, perPageNum, sortProp, orderProp);
 		return Result.success(vo.getCount(), vo.getDatas());
 	}
 

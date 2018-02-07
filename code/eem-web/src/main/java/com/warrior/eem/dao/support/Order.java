@@ -14,6 +14,9 @@ import com.warrior.eem.exception.EemException;
 public class Order implements Condition {
 
 	private static final long serialVersionUID = 7044189012900420542L;
+	
+	public static final String ASC = "ASC";
+	public static final String DESC = "DESC";
 
 	/**
 	 * 属性排序类型
@@ -23,6 +26,13 @@ public class Order implements Condition {
 	 */
 	public enum Order_Type {
 		ASC, DESC
+	}
+	
+	public static Order_Type valueOf(String order) {
+		if("ASC".equalsIgnoreCase(order)) {
+			return Order_Type.ASC;
+		} 
+		return Order_Type.DESC;
 	}
 
 	private final List<String> propNames = new ArrayList<>();

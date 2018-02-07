@@ -18,7 +18,7 @@ import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
 
 /**
- * sell agreement controller
+ * 售电合约 controller
  * 
  * @author seangan
  *

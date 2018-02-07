@@ -64,7 +64,7 @@ public class PowerData extends AbstractEntity {
 	
 	// 交易品种
 	@Column(name = "trade_type")
-	private int tradeType;
+	private String tradeType;
 	
 	// 创建时间
 	@Column(name = "create_time")
@@ -118,7 +118,7 @@ public class PowerData extends AbstractEntity {
 		return idleKwh;
 	}
 
-	public int getTradeType() {
+	public String getTradeType() {
 		return tradeType;
 	}
 
@@ -166,7 +166,7 @@ public class PowerData extends AbstractEntity {
 		this.idleKwh = idleKwh;
 	}
 
-	public void setTradeType(int tradeType) {
+	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
 	}
 

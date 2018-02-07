@@ -2,6 +2,7 @@ package com.warrior.eem.controller.rest;
 
 import java.io.IOException;
 
+import javax.persistence.EntityExistsException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,8 @@ public class AbstractController {
 			} else if (e instanceof AuthorizationException) {
 				res = om.writeValueAsString(
 						Result.failure(CodeStatus.FORBIDDEN.getCode(), CodeStatus.FORBIDDEN.getDesc()));
+			} else if(e instanceof EntityExistsException) {
+				res = om.writeValueAsString(Result.failure(((EemException) e).getCode(), "数据已存在"));
 			} else {
 				logger.error(e.getMessage(), e);
 			}

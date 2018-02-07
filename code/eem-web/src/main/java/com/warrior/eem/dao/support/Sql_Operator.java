@@ -1,8 +1,10 @@
 package com.warrior.eem.dao.support;
 
 
+
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Subquery;
+
 
 
 /**
@@ -14,10 +16,14 @@ import javax.persistence.criteria.Subquery;
 public enum Sql_Operator {
 
 	EQ("等于", "equal", new Class[] { Expression.class, Object.class }), 
-	GT("大于", "gt", new Class[] { Expression.class, Number.class }), 
-	GE("大于等于", "ge", new Class[] { Expression.class, Number.class }), 
-	LT("小于", "lt", new Class[] { Expression.class, Number.class }), 
-	LE("小于等于", "le", new Class[] { Expression.class, Number.class }), 
+	GT_NUM("数字大于", "gt", new Class[] { Expression.class, Number.class }), 
+	GE_NUM("数字大于等于", "ge", new Class[] { Expression.class, Number.class }), 
+	LT_NUM("数字小于", "lt", new Class[] { Expression.class, Number.class }), 
+	LE_NUM("数字小于等于", "le", new Class[] { Expression.class, Number.class }), 
+	GE("大于等于", "greaterThanOrEqualTo", new Class[]{ Expression.class, Comparable.class }),
+	GT("大于", "greaterThan", new Class[]{ Expression.class, Comparable.class }),
+	LE("小于等于", "lessThanOrEqualTo", new Class[]{ Expression.class, Comparable.class }),
+	LT("小于", "lessThan", new Class[]{ Expression.class, Comparable.class }),
 	OR("或者", "or", null), // 需要根据真实情况来获取参数个数 
 	AND("并且", "and", null),// 需要根据真实情况来获取参数个数 
 	IN("在某个范围内", "in", new Class[] { Expression.class, Object[].class }), 

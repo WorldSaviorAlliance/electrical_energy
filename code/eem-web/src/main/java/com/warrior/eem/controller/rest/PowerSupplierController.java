@@ -18,7 +18,7 @@ import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerSupplierService;
 
 /**
- * power supperlier controller
+ * 电力供应商 controller
  * 
  * @author seangan
  *
@@ -32,14 +32,14 @@ public class PowerSupplierController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody PowerSupplierVo psv) {
+	public Result<Object> createEntity(@RequestBody(required = false) PowerSupplierVo psv) {
 		pssService.createEntity(psv);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody PowerSupplierUpdaterVo psuv) {
+	public Result<Object> updateEntity(@RequestBody(required = false) PowerSupplierUpdaterVo psuv) {
 		pssService.updateEntity(psuv);
 		return Result.success();
 	}

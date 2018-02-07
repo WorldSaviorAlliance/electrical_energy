@@ -17,7 +17,7 @@ import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerCustomerService;
 
 /**
- * sell agreement month data controller
+ * 售电合约每月数据 controller（暂未用， 后期看情况可以移除）
  * 
  * @author seangan
  *

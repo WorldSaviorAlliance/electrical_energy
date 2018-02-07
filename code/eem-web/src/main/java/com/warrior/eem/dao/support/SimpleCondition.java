@@ -47,6 +47,26 @@ public class SimpleCondition implements Condition {
 	public static SimpleCondition lt(String propName, Object values) {
 		return new SimpleCondition(propName, Sql_Operator.LT, values);
 	}
+	
+	public static SimpleCondition le(String propName, Object values) {
+		return new SimpleCondition(propName, Sql_Operator.LE, values);
+	}
+	
+	public static SimpleCondition geForNum(String propName, Number values) {
+		return new SimpleCondition(propName, Sql_Operator.GE_NUM, values);
+	}
+
+	public static SimpleCondition gtForNum(String propName, Number values) {
+		return new SimpleCondition(propName, Sql_Operator.GT_NUM, values);
+	}
+
+	public static SimpleCondition ltForNum(String propName, Number values) {
+		return new SimpleCondition(propName, Sql_Operator.LT_NUM, values);
+	}
+	
+	public static SimpleCondition leForNum(String propName, Number values) {
+		return new SimpleCondition(propName, Sql_Operator.LE_NUM, values);
+	}
 
 	public static SimpleCondition like(String propName, Object values) {
 		return new SimpleCondition(propName, Sql_Operator.LIKE, values);

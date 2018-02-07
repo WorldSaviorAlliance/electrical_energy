@@ -103,7 +103,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				root = cq.from(getEntityClass());
 				isTuple = true;
 			}
-			
+
 			// join
 			Map<String, Join<?, ?>> mj = new HashMap<String, Join<?, ?>>();
 			if (req.getJoiner() != null && req.getJoiner().getJs().size() > 0) {
@@ -111,7 +111,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					mj.put(join.getJoinPorpName(), root.join(join.getJoinPorpName(), join.getType().getJoinType()));
 				}
 			}
-			
+
 			// selector
 			MultiSelector ms = req.getSelect();
 			page = req.getPage() == null ? page : req.getPage();
@@ -125,10 +125,10 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					cq.multiselect(ls);
 				}
 			}
-			
+
 			// where
 			cq.where(parseCondition(req.getCdt(), root, mj));
-			
+
 			// order
 			Order order = req.getOrder();
 			if (order != null) {
@@ -143,7 +143,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					cq.orderBy(orders);
 				}
 			}
-			
+
 			// group
 			GroupBy gb = req.getGroupBy();
 			if (gb != null && gb.getGroupPropNames().size() > 0) {
@@ -194,9 +194,8 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					return cb.and(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
 				} else if (lcdt.getOperator().equals(Sql_Operator.OR)) {
 					return cb.or(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
-				} else {
-					throw new EemException("无效的sql条件:" + lcdt.getOperator().getOptName());
-				}
+				} 
+				throw new EemException("无效的sql条件:" + lcdt.getOperator().getOptName());
 			} else if (cdt instanceof SimpleCondition) {
 				SimpleCondition scdt = (SimpleCondition) cdt;
 				try {
@@ -207,32 +206,29 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					if (attrPath == null) {
 						attrPath = root.get(scdt.getPropName());
 					}
-					if (joins != null && scdt.getPropName().trim().contains(".")
-							&& scdt.getPropName().trim().split(".").length == 2
-							&& joins.get(scdt.getPropName().trim().split(".")[0]) != null) {
-						attrPath = joins.get(scdt.getPropName().trim().split(".")[0])
-								.get(scdt.getPropName().trim().split(".")[1]);
-					}
-					Method m = cb.getClass().getDeclaredMethod(scdt.getOperator().getDbMethodName(),
-							scdt.getOperator().getMethodParamClasses());
-					m.setAccessible(true);
-					try {
-						if (Sql_Operator.IN.equals(scdt.getOperator())
-								|| Sql_Operator.NOT_IN.equals(scdt.getOperator())) {
-							In in = cb.in(attrPath);
-							for (Object obj : (Object[]) scdt.getPropVal()) {
-								in = in.value(obj);
+					if (scdt.getOperator().getDbMethodName() != null) {
+						Method m = cb.getClass().getDeclaredMethod(scdt.getOperator().getDbMethodName(),
+								scdt.getOperator().getMethodParamClasses());
+						m.setAccessible(true);
+						try {
+							if (Sql_Operator.IN.equals(scdt.getOperator())
+									|| Sql_Operator.NOT_IN.equals(scdt.getOperator())) {
+								In in = cb.in(attrPath);
+								for (Object obj : (Object[]) scdt.getPropVal()) {
+									in = in.value(obj);
+								}
+								return Sql_Operator.IN.equals(scdt.getOperator()) ? in : cb.not(in);
+							} else if (Sql_Operator.BETWEEN.equals(scdt.getOperator())) {
+								return (Predicate) m.invoke(cb, new Object[] { attrPath,
+										((Object[]) scdt.getPropVal())[0], ((Object[]) scdt.getPropVal())[1] });
 							}
-							return Sql_Operator.IN.equals(scdt.getOperator()) ? in : cb.not(in);
-						} else if (Sql_Operator.BETWEEN.equals(scdt.getOperator())) {
-							return (Predicate) m.invoke(cb, new Object[] { attrPath, ((Object[]) scdt.getPropVal())[0],
-									((Object[]) scdt.getPropVal())[1] });
-						} else {
 							return (Predicate) m.invoke(cb, new Object[] { attrPath, scdt.getPropVal() });
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							e.printStackTrace();
+							throw new EemException("执行方法(" + scdt.getOperator().getDbMethodName() + ")错误，请检查下参数！");
 						}
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						e.printStackTrace();
-						throw new EemException("执行方法(" + scdt.getOperator().getDbMethodName() + ")错误，请检查下参数！");
+					} else { // 针对Expression<Object>.class这种格式不好声明方法参数类型的做具体处理，不利用反射
+						// 暂未遇到 后期补充
 					}
 				} catch (NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();
@@ -243,7 +239,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 	}
 
 	private Path<Object> getJoinPath(Map<String, Join<?, ?>> joins, String propName) {
-		if(propName == null || propName.trim().length() == 0) {
+		if (propName == null || propName.trim().length() == 0) {
 			throw new EemException("sql属性名不能为空");
 		}
 		String[] jn = propName.split("\\.");
@@ -258,7 +254,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 		final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		final Root<T> root = cq.from(getEntityClass());
 		if (req != null) {
-			
+
 			// join
 			Map<String, Join<?, ?>> mj = new HashMap<String, Join<?, ?>>();
 			if (req.getJoiner() != null && req.getJoiner().getJs().size() > 0) {
@@ -266,10 +262,10 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 					mj.put(join.getJoinPorpName(), root.join(join.getJoinPorpName(), join.getType().getJoinType()));
 				}
 			}
-			
+
 			// where
 			cq.where(parseCondition(req.getCdt(), root, mj));
-			
+
 			// group
 			GroupBy gb = req.getGroupBy();
 			if (gb != null && gb.getGroupPropNames().size() > 0) {
@@ -282,7 +278,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 				}
 			}
 		}
-		cq.select(cb.countDistinct(root.get("id")));		
+		cq.select(cb.countDistinct(root.get("id")));
 		return em.createQuery(cq).getResultList().get(0);
 	}
 
