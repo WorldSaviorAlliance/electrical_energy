@@ -20,13 +20,8 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">年份</label>
-	                  <div class="col-sm-10">
-		                   <select class="select search_select" data-placeholder="请选择年份" id="search_year">
-							<option value="">2018</option>
-							<option value="apple">2018</option>
-							<option value="orange">2018</option>
-							<option value="grapes">2018</option>
-							<option value="strawberry">2018</option>
+	                <div class="col-sm-10">
+		                <select class="select search_select" data-placeholder="请选择年份" id="search_year">
 						</select> 
 					</div>
 				</div>
@@ -53,7 +48,26 @@
 					</tr>
 				</thead>
 				<tbody id="datas">
-					<tr>
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有售电合约
+						</td>
+					</tr>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
+						</td>
+					</tr>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
+						</td>
+					</tr>
+					<!-- <tr>
 						<td>测试电源商1</td>
 						<td>电源商1</td>
 						<td>四川成都</td>
@@ -164,7 +178,7 @@
 							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_p">修改电价</a>
 							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
-					</tr>
+					</tr> -->
 				</tbody>
 			</table>
 			</div>

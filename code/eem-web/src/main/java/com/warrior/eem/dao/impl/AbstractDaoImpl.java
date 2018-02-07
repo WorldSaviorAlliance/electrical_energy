@@ -191,10 +191,14 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 			if (cdt instanceof LogicalCondition) {
 				LogicalCondition lcdt = (LogicalCondition) cdt;
 				if (lcdt.getOperator().equals(Sql_Operator.AND)) {
-					return cb.and(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
+					return lcdt.getLc() == null ? cb.and(cb.conjunction())
+							: cb.and(parseCondition(lcdt.getLc(), root, joins),
+									parseCondition(lcdt.getRc(), root, joins));
 				} else if (lcdt.getOperator().equals(Sql_Operator.OR)) {
-					return cb.or(parseCondition(lcdt.getLc(), root, joins), parseCondition(lcdt.getRc(), root, joins));
-				} 
+					return lcdt.getRc() == null ? cb.or(cb.disjunction())
+							: cb.or(parseCondition(lcdt.getLc(), root, joins),
+									parseCondition(lcdt.getRc(), root, joins));
+				}
 				throw new EemException("无效的sql条件:" + lcdt.getOperator().getOptName());
 			} else if (cdt instanceof SimpleCondition) {
 				SimpleCondition scdt = (SimpleCondition) cdt;

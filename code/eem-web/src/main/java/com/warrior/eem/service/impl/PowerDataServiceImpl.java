@@ -20,6 +20,7 @@ import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerDataService;
+import com.warrior.eem.shiro.session.EemSession;
 import com.warrior.eem.util.EntityValidator;
 
 /**
@@ -86,8 +87,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	PowerData convertVoToDoForCreate(Serializable vo) {
 		PowerData pd = mergeProps(new PowerData(), (PowerDataVo)vo);
 		pd.setCreateTime(new Date());
-		// TODO 用户
-		pd.setCreator(null);
+		pd.setCreator(EemSession.getCurrentUser());
 		return pd;
 		
 	}

@@ -13,10 +13,10 @@ public class SellAgreementCdtVo implements Serializable {
 
 	private static final long serialVersionUID = -8306872775556514026L;
 
-	@FieldChecker(name = "电力用户名称", maxLen = 30, minLen = 1)
+	@FieldChecker(name = "电力用户名称", maxLen = 30, minLen = 0)
 	private String name;
 	
-	@FieldChecker(name = "年份", maxLen = 4, minLen = 1)
+	@FieldChecker(name = "年份", maxLen = 4, minLen = 0)
 	private String validYear;
 	
 	public SellAgreementCdtVo() {

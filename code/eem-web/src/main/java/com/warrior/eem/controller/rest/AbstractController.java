@@ -7,6 +7,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +39,19 @@ public class AbstractController {
 			rep.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			String res = om.writeValueAsString(Result.failure(CodeStatus.INTERNAL_SERVER_ERROR.getCode(),
 					CodeStatus.INTERNAL_SERVER_ERROR.getDesc()));
-			if (e instanceof EemException) {
+			if (e instanceof EemException || e.getCause() instanceof EemException) {
+				if (e.getCause() instanceof EemException) {
+					e = (EemException) e.getCause();
+				}
 				res = om.writeValueAsString(Result.failure(((EemException) e).getCode(), e.getMessage()));
+			} else if (e instanceof AuthenticationException) {
+				res = om.writeValueAsString(
+						Result.failure(CodeStatus.UNAUTHORIZED.getCode(), CodeStatus.UNAUTHORIZED.getDesc()));
 			} else if (e instanceof AuthorizationException) {
 				res = om.writeValueAsString(
 						Result.failure(CodeStatus.FORBIDDEN.getCode(), CodeStatus.FORBIDDEN.getDesc()));
-			} else if(e instanceof EntityExistsException) {
-				res = om.writeValueAsString(Result.failure(((EemException) e).getCode(), "数据已存在"));
+			} else if (e instanceof EntityExistsException) {
+				res = om.writeValueAsString(Result.failure(CodeStatus.COMMON_EXCEPTION.getCode(), "数据已存在"));
 			} else {
 				logger.error(e.getMessage(), e);
 			}
@@ -53,9 +60,10 @@ public class AbstractController {
 		} catch (IOException e1) {
 		}
 	}
-	
+
 	/**
 	 * id转换器
+	 * 
 	 * @param id
 	 * @return
 	 */
