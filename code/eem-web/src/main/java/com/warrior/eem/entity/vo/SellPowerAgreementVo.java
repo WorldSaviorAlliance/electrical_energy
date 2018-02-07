@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 import com.warrior.eem.annotation.FieldChecker;
 import com.warrior.eem.entity.constant.Constant;
 
-
-
 /**
  * 售电合约
  * @author seangan

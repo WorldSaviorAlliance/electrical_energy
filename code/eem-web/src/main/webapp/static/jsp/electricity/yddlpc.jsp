@@ -11,7 +11,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">电力用户<span class="asterisk">*</span></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<select class="select" data-placeholder="请选择电力用户" id="valid_year">
 							<option value="apple">2022</option>
 							<option value="orange">2022</option>
@@ -47,7 +47,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">户名<span class="asterisk">*</span></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<select class="select" data-placeholder="请选择户名" id="valid_year">
 							<option value="apple">2022</option>
 							<option value="orange">2022</option>
@@ -60,7 +60,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">电压等级<span class="asterisk">*</span></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<select class="select" data-placeholder="请选择电压等级" id="valid_year">
 							<option value="apple">2022</option>
 							<option value="orange">2022</option>
@@ -73,7 +73,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">交易品种<span class="asterisk">*</span></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<select class="select" data-placeholder="请选择交易品种" id="valid_year">
 							<option value="apple">2022</option>
 							<option value="orange">2022</option>

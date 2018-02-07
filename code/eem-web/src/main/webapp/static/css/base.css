@@ -212,3 +212,32 @@ label{
 	color: gray;	
 	display: none;
 }
+.file_upload {
+    padding: 12px 12px;
+    height: 38px;
+    line-height: 38px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
+}
+
+.file_upload input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    width: 5000px;
+    height: 40px;
+}
+
+.file_upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}

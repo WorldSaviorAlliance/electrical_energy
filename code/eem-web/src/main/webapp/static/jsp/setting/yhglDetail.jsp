@@ -6,19 +6,19 @@
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">用户名称 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入用户名称" required id="name" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">初始密码 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入初始密码" required id="name" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">用户类型<span	class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择用户类型" id="industry_type">
 					<option value="0">电力用户</option>
 					<option value="1">系统用户</option>
@@ -27,7 +27,7 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电力用户<span	class="asterisk">*</span></label>
-		<div class="col-sm-9"> 
+		<div class="col-sm-7"> 
 			<select class="select detail_search" data-placeholder="请选择电力用户" id="industry_type">
 				<option value="0">石油化工</option>
 				<option value="1">机械制造</option>

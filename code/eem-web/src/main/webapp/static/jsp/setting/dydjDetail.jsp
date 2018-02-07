@@ -6,7 +6,7 @@
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入名称" required id="name" />
 		</div>
 	</div>

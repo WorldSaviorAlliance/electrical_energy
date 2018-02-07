@@ -8,27 +8,27 @@
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电源商名称 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入电源商名称" required id="customer" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合约名称<span
 			class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入合约名称" required id="customer_no" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合约编号<span
 			class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入合约编号" required id="no" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合同有效年份<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择合同有效年份" id="valid_year">
 				<option value="apple">2022</option>
 				<option value="orange">2022</option>
@@ -39,7 +39,7 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合同附件<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control box" id="file_path" style="margin-top: -1px;" readonly="readonly">
 			
 		</div>
@@ -51,7 +51,7 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电压等级<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择电压等级" id="voltage_type">
 				<option value="apple">110KV</option>
 				<option value="orange">220KV</option>
@@ -60,13 +60,13 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">交易电量<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入交易电量" required id="trade_electric_quantity" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">交易品种<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择交易品种" id="voltage_type">
 				<option value="apple">常规直购电</option>
 				<option value="orange">精准扶持直购电</option>
@@ -76,7 +76,7 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">交易价格<span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入交易价格" required id="normal_trade_price" />
 		</div>
 	</div>

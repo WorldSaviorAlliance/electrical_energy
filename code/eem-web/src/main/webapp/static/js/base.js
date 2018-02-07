@@ -371,3 +371,46 @@ function showSystemError()
 {
 	showDynamicMessage(STR_CONFIRM, '系统错误，请联系管理员', MESSAGE_TYPE_ERROR);
 }
+
+/**
+ * 获取所有的电力用户的下拉列表
+ */
+function getAllDlyhSelecte(contorlId, valId)
+{
+	$('#' + contorlId).empty();
+	$.ajax({
+		url: rootpath + '/' + PATH_DLYH + '/list?page=0&per_page=10000',
+		type : 'POST', 
+		dataType: 'json',
+		data : JSON.stringify(search),
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);
+				if(ar.code == 0)
+				{
+					var datas = ar.data;
+					if(datas != null && datas.length != 0)
+					{
+						var opts = '';
+						for(var i = 0; i < datas.length; i++)
+						{
+							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
+						}
+						$('#' + contorlId).append(opts);
+						if(valId != null)
+						{
+							$('#' + contorlId).val(valId);
+						}
+						
+						$('#' + contorlId).niceSelect();
+					}
+				}
+			}
+			else
+			{
+				showSystemError();
+			}
+		}
+	});
+}

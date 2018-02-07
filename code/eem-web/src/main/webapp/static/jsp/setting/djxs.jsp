@@ -8,19 +8,19 @@
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">平段电价系数 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入平段电价系数" required id="name" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">高峰电价系数 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入高峰电价系数" required id="name" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">低估电价系数 <span class="asterisk">*</span></label>
-		<div class="col-sm-9">
+		<div class="col-sm-7">
 			<input type="text" class="form-control" placeholder="请输入低估电价系数" required id="name" />
 		</div>
 	</div>
