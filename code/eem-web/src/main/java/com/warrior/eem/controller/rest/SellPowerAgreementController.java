@@ -15,7 +15,6 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
-import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
 
 /**
@@ -63,24 +62,8 @@ public class SellPowerAgreementController extends AbstractController {
 	public Result<Object> listEntities(@RequestBody(required = false) SellAgreementCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
-		Integer pageNum = 1;
-		if (page != null && page.trim().length() == 0) {
-			try {
-				pageNum = Integer.valueOf(page);
-			} catch (NumberFormatException e) {
-				throw new EemException("页码必须为数字");
-			}
-		}
-
-		Integer perPageNum = 20;
-		if (perPage != null && perPage.trim().length() == 0) {
-			try {
-				perPageNum = Integer.valueOf(perPage);
-			} catch (NumberFormatException e) {
-				throw new EemException("每页显示的个数参数必须为数字");
-			}
-		}
-		PageVo pv = spaService.listEntities(cdt, pageNum, perPageNum);
+		Integer[] pageInfo = buildPageInfo(page, perPage);
+		PageVo pv = spaService.listEntities(cdt, pageInfo[0], pageInfo[1]);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}
 

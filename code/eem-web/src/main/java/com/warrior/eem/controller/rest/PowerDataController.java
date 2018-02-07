@@ -15,7 +15,6 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataUpdateVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
-import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.PowerDataService;
 
 /**
@@ -65,32 +64,16 @@ public class PowerDataController extends AbstractController {
 			@RequestParam(name = "per_page", required = false) String perPage,
 			@RequestParam(name = "sort_by", required = false) String sortBy,
 			@RequestParam(name = "order", required = false) String order) {
-		Integer pageNum = 1;
-		if (page != null && page.trim().length() == 0) {
-			try {
-				pageNum = Integer.valueOf(page);
-			} catch (NumberFormatException e) {
-				throw new EemException("页码必须为数字");
-			}
-		}
-
-		Integer perPageNum = 20;
-		if (perPage != null && perPage.trim().length() == 0) {
-			try {
-				perPageNum = Integer.valueOf(perPage);
-			} catch (NumberFormatException e) {
-				throw new EemException("每页显示的个数参数必须为数字");
-			}
-		}
+		Integer[] pageInfo = buildPageInfo(page, perPage);
 		String sortProp = "month";
 		String orderProp = "DESC";
-		if(sortBy != null && sortBy.trim().length() > 0) {
+		if (sortBy != null && sortBy.trim().length() > 0) {
 			sortProp = sortBy;
 		}
-		if(Order.ASC.equalsIgnoreCase(order)) {
+		if (Order.ASC.equalsIgnoreCase(order)) {
 			orderProp = "ASC";
 		}
-		PageVo vo = pdService.listEntities(cdt, pageNum, perPageNum, sortProp, orderProp);
+		PageVo vo = pdService.listEntities(cdt, pageInfo[0], pageInfo[1], sortProp, orderProp);
 		return Result.success(vo.getCount(), vo.getDatas());
 	}
 

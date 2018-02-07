@@ -79,4 +79,31 @@ public class AbstractController {
 		}
 		return idNum;
 	}
+	
+	/**
+	 * 构建翻页信息
+	 * @param page  页码
+	 * @param perPage 每页显示条数
+	 * @return
+	 */
+	Integer[] buildPageInfo(String page, String perPage) {
+		Integer pageNum = 1;
+		if (page != null && page.trim().length() == 0) {
+			try {
+				pageNum = Integer.valueOf(page);
+			} catch (NumberFormatException e) {
+				throw new EemException("页码必须为数字");
+			}
+		}
+
+		Integer perPageNum = 20;
+		if (perPage != null && perPage.trim().length() == 0) {
+			try {
+				perPageNum = Integer.valueOf(perPage);
+			} catch (NumberFormatException e) {
+				throw new EemException("每页显示的个数参数必须为数字");
+			}
+		}
+		return new Integer[]{pageNum, perPageNum};
+	}
 }
