@@ -323,6 +323,20 @@ function getIndustryTypeSelectStr()
 	return str;
 }
 
+
+/**
+ * 获取年份下拉列表数据
+ */
+function getYearSelectStr()
+{
+	var str = '<option></option>';
+	for(var i = 0; i < 50; i++)
+	{
+		str += '<option value="' + (2018 + i) + '">' + (2018 + i) + '</option>';
+	}
+	return str;
+}
+
 /**
  * 通过id获取对应的数据
  */

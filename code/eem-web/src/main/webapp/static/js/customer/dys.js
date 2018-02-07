@@ -77,7 +77,7 @@ $(function()
 					else
 					{
 						$('#datas tr[type="error_msg"]').show();
-						$('#datas span[type="error_detail]').html(ar.msg);
+						$('#datas span[type="error_detail"]').html(ar.msg);
 					}
 				}
 				else
