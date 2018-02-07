@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
@@ -79,8 +80,8 @@ public class SellPowerAgreementController extends AbstractController {
 				throw new EemException("每页显示的个数参数必须为数字");
 			}
 		}
-
-		return Result.success(spaService.listEntities(cdt, pageNum, perPageNum));
+		PageVo pv = spaService.listEntities(cdt, pageNum, perPageNum);
+		return Result.success(pv.getCount(), pv.getDatas());
 	}
 
 }
