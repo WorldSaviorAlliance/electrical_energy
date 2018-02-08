@@ -2,6 +2,9 @@ package com.warrior.eem.service.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,10 +98,10 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		req.setSelect(ms);
 		req.setPage(page);
 		LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
-		if(cdt.getName() != null && cdt.getName().trim().length() > 0) {
+		if (cdt.getName() != null && cdt.getName().trim().length() > 0) {
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
-		if(cdt.getValidYear() != null && cdt.getValidYear().trim().length() > 0) {
+		if (cdt.getValidYear() != null && cdt.getValidYear().trim().length() > 0) {
 			sqlCdt = sqlCdt.and(SimpleCondition.equal("validYear", cdt.getValidYear()));
 		}
 		req.setCdt(sqlCdt);
@@ -113,16 +116,14 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 	@Override
 	SellPowerAgreement convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		SellPowerAgreement tb = (SellPowerAgreement) dbo;
-		SellPowerAgreementVo sb = (SellPowerAgreementVo) vo;
-		mergeProps(tb, sb);
+		mergeProps(tb, (SellPowerAgreementVo) vo);
 		return tb;
 	}
 
 	@Override
 	SellPowerAgreement convertVoToDoForCreate(Serializable vo) {
 		SellPowerAgreement tb = new SellPowerAgreement();
-		SellPowerAgreementVo sb = (SellPowerAgreementVo) vo;
-		mergeProps(tb, sb);
+		mergeProps(tb, (SellPowerAgreementVo) vo);
 		tb.setCreateTime(new Date());
 		tb.setCreator(EemSession.getCurrentUser());
 		return tb;
@@ -133,7 +134,9 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		if (pc == null) {
 			throw new EemException("无效的电力用户id：" + sb.getCustomerId());
 		}
-		tb.setAttachment(sb.getAttachment());
+		if (sb.getAttachment() != null && sb.getAttachment().trim().length() > 0) {
+			tb.setAttachment(sb.getAttachment());
+		}
 		tb.setCustomer(pc);
 		tb.setCustomerNo(sb.getCustomerNo());
 		tb.setMarginTradePrice(sb.getMarginTradePrice());
@@ -200,9 +203,6 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 	@Transactional
 	public void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementUpdateVo e,
 			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthUpdateVo) {
-		if (file == null) {
-			throw new EemException("附件不能为空");
-		}
 		try {
 			EntityValidator.checkEntity(e);
 			EntityValidator.checkEntity(sellPowerAgreementMonthUpdateVo);
@@ -222,22 +222,26 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			if (sa == null) {
 				throw new EemException("无效的id（" + e.getId() + "）");
 			}
-			attamentName = sa.getAttachment();
 		} else {
 			throw new EemException("id不能为空");
 		}
-		try {
-			String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
-			((SellPowerAgreementVo) e).setAttachment(fileName);
-		} catch (IOException e1) {
-			throw new EemException("读取附件失败，请联系管理员");
+		if (file != null) { // 更新附件
+			try {
+				String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
+				((SellPowerAgreementVo) e).setAttachment(fileName);
+			} catch (IOException e1) {
+				throw new EemException("读取附件失败，请联系管理员");
+			}
+			attamentName = sa.getAttachment();
 		}
 		try {
 			sa = convertVoToDoForUpdate(sa, e);
 			sa.setMonthData(convertMonthVoToDo(sa.getMonthData(), sellPowerAgreementMonthUpdateVo));
 			updateEntity(sa);
-		} catch (Exception e2) { // 更新失败 删除附件
-			FileUtil.deleteFile(baseDir + sa.getAttachment());
+		} catch (Exception e2) {
+			if (file != null) {// 更新失败 如果有上传附件则删除附件
+				FileUtil.deleteFile(baseDir + sa.getAttachment());
+			}
 			throw new EemException(e2.getMessage());
 		}
 		if (attamentName != null && attamentName.trim().length() > 0) {
@@ -248,9 +252,9 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 	@Override
 	@Transactional
 	public void deleteAgreement(Serializable id) {
-		SellPowerAgreement spa = (SellPowerAgreement)getEntity(id);
-		if(spa != null) {
-			FileUtil.deleteFile(baseDir + spa.getAttachment()); 
+		SellPowerAgreement spa = (SellPowerAgreement) getEntity(id);
+		if (spa != null) {
+			FileUtil.deleteFile(baseDir + spa.getAttachment());
 		}
 		deleteEntity(id);
 	}
@@ -258,8 +262,8 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageVo listEntities(Serializable... conditions) {
-		PageVo pageVo =  (PageVo)super.listEntities(conditions);
-		List<Object[]> arrList = (List<Object[]>)pageVo.getDatas();
+		PageVo pageVo = (PageVo) super.listEntities(conditions);
+		List<Object[]> arrList = (List<Object[]>) pageVo.getDatas();
 		List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
 		List<String> propNames = new ArrayList<String>();
 		propNames.add("id");
@@ -273,10 +277,11 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		propNames.add("attachment");
 		propNames.add("createTime");
 		Map<String, Object> resItem = null;
-		for(Object[] arr : arrList) {
+		for (Object[] arr : arrList) {
 			int i = 0;
+			arr[arr.length - 1] = format((Timestamp) arr[arr.length - 1]);
 			resItem = new HashMap<String, Object>();
-			for(Object obj : arr) {
+			for (Object obj : arr) {
 				resItem.put(propNames.get(i), obj);
 				i++;
 			}
@@ -285,6 +290,22 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		pageVo.setDatas(res);
 		return pageVo;
 	}
-	
-	
+
+	/**
+	 * 格式化时间
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String format(Date date) {
+		return threadLocal.get().format(date);
+	}
+
+	private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
+		@Override
+		protected DateFormat initialValue() {
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		}
+	};
+
 }
