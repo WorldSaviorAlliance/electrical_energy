@@ -10,7 +10,8 @@
  */
 function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 {
-	var g_dlTableId = dlTableId;console.log(hyData);
+	var g_hyData = hyData;
+	var g_dlTableId = dlTableId;
 	var g_djTableId = djTableId;
 	var g_ntpId = ntpId;
 	var g_stpId = stpId;
@@ -27,6 +28,8 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 	 */
 	function initTable()
 	{
+		$('#' + dlTableId).empty();
+		$('#' + djTableId).empty();
 		var dlStr = '';
 		var djStr = '';
 		
@@ -194,9 +197,9 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 			
 			data[titleData[i].obj] = '(' + ntp + ':' + stp + ':' + rtp + ':' + mtp + ')';
 		}
-		if(hyData != null)
+		if(g_hyData != null)
 		{
-			data.id = hyData.monthData.id;
+			data.id = g_hyData.monthData.id;
 		}
 		return data;
 	};
@@ -215,15 +218,21 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 		return true;
 	};
 	
+	this.updateTable = function updateTable(hyData)
+	{
+		g_hyData = hyData;
+		initTable();
+	};
+	
 	/**
 	 * 得到对应的电量的数据
 	 */
 	function getData(index)
 	{
 		var data = null;
-		if(hyData != null && hyData.monthData != null)
+		if(g_hyData != null && g_hyData.monthData != null)
 		{
-			data = hyData.monthData[titleData[index].obj];
+			data = g_hyData.monthData[titleData[index].obj];
 		}
 		return data;
 	}

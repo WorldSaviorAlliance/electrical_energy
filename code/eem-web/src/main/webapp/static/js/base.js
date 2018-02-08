@@ -382,7 +382,6 @@ function getAllDlyhSelecte(contorlId, valId)
 		url: rootpath + '/' + PATH_DLYH + '/list?page=0&per_page=10000',
 		type : 'POST', 
 		dataType: 'json',
-		data : JSON.stringify(search),
 	    contentType: 'application/json',
 		complete : function(XHR, TS) {
 			if (TS == "success") {
@@ -392,7 +391,7 @@ function getAllDlyhSelecte(contorlId, valId)
 					var datas = ar.data;
 					if(datas != null && datas.length != 0)
 					{
-						var opts = '';
+						var opts = '<option></option>';
 						for(var i = 0; i < datas.length; i++)
 						{
 							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
