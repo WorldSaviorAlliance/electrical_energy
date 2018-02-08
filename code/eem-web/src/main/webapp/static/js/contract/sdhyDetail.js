@@ -1,6 +1,7 @@
 //@ sourceURL=sdhyDetail.js
 function SdhyDetail(afterSaveCallbk, curData)
 {
+	var g_table_month = null;
 	var g_afterSaveCallbk = afterSaveCallbk;
 	var g_curData = curData;
 	init();
@@ -52,6 +53,11 @@ function SdhyDetail(afterSaveCallbk, curData)
 		    	if($('#marginTradePrice').val() == '')
 		    	{
 		    		showDynamicMessage(STR_CONFIRM, '富余电量交易价格不能为空', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if(!g_table_month.validate())
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '月份电量不能为空', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	doSaveAction();
@@ -106,7 +112,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 							$('#supportTradePrice').val(g_curData.supportTradePrice);
 							$('#replaceTradePrice').val(g_curData.replaceTradePrice);
 							$('#marginTradePrice').val(g_curData.marginTradePrice);
-							Month2DL('dl_datas', 'dj_datas', g_curData);
+							g_table_month = new Month2DL('dl_datas', 'dj_datas', 'normalTradePrice', 'supportTradePrice', 'replaceTradePrice', 'marginTradePrice', g_curData);
 						}
 					}
 					else
@@ -118,7 +124,8 @@ function SdhyDetail(afterSaveCallbk, curData)
 		}
 		else
 		{
-			Month2DL('dl_datas', 'dj_datas');
+			g_table_month = new Month2DL('dl_datas', 'dj_datas', 'normalTradePrice', 'supportTradePrice', 'replaceTradePrice', 'marginTradePrice');
+			getAllDlyhSelecte('customerId');
 		}
 	}
 	
@@ -136,8 +143,11 @@ function SdhyDetail(afterSaveCallbk, curData)
 			normalTradePrice : $('#normalTradePrice').val(),
 			supportTradePrice : $('#supportTradePrice').val(),
 			replaceTradePrice : $('#replaceTradePrice').val(),
-			marginTradePrice : $('marginTradePrice').val()
+			marginTradePrice : $('#marginTradePrice').val()
 		};
+		var tempMonthData = g_table_month.getMonthData();
+		var obj = Object.assign(temp, tempMonthData);
+		
 		var msgTitle = '添加售电合约';
 		if(g_curData != null)
 		{
@@ -171,9 +181,13 @@ function SdhyDetail(afterSaveCallbk, curData)
 				
 			},
 			error : function(data, status, e) {
+				showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
 				$('div.eem_window_close').click();
 				hideProgress(progress);
-				showSystemError();
+				if(g_afterSaveCallbk != null)
+				{
+					g_afterSaveCallbk();
+				}
 			}
 		});
 	}

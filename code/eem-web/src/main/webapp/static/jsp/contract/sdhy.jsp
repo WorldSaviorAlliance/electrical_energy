@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
 			</div>
 		</div>

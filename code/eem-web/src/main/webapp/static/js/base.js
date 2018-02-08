@@ -402,9 +402,8 @@ function getAllDlyhSelecte(contorlId, valId)
 						{
 							$('#' + contorlId).val(valId);
 						}
-						
-						$('#' + contorlId).niceSelect();
 					}
+					$('#' + contorlId).niceSelect();
 				}
 			}
 			else
