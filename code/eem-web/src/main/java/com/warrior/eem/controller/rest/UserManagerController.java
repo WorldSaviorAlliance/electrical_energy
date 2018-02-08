@@ -13,6 +13,7 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
 import com.warrior.eem.service.UserService;
+import com.warrior.eem.shiro.session.EemSession;
 
 /**
  * 用户管理
@@ -37,7 +38,11 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
 	public Result<Object> updateEntity(@RequestBody(required = false) UserVo userVo) {
-		userService.updateEntity(userVo);
+		User user = userService.updateUser(userVo);
+		User curUser = EemSession.getCurrentUser();
+		if (null != curUser && curUser.getId() == user.getId()) {
+			EemSession.setCurrentUser(user);// 更新当前session中的用户信息
+		}
 		return Result.success();
 	}
 

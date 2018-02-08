@@ -36,7 +36,7 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired
@@ -51,6 +51,19 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Override
 	IDao<User> getDao() {
 		return userDao;
+	}
+
+	@Override
+	public User updateUser(UserVo vo) {
+		try {
+			EntityValidator.checkEntity(vo);
+		} catch (IllegalAccessException | SecurityException e1) {
+			throw new EemException("更新实体解析参数失败");
+		}
+		User user = queryUser(vo.getId());
+		updateUser(user, vo);
+		userDao.updateDo(user);
+		return user;
 	}
 
 	@Override
@@ -157,5 +170,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		admin.setAddTime(time);
 		admin.setLastLoginTime(time);
 		return admin;
+	}
+
+	private User queryUser(long userId) {
+		User user = userDao.getReference(userId);
+		if (ToolUtil.isStringEmpty(user.getName())) {
+			user = userDao.getEntity(userId);
+		}
+		return user;
 	}
 }

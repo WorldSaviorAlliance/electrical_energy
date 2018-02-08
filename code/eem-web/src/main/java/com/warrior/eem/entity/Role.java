@@ -13,8 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.warrior.eem.util.ToolUtil;
+
 /**
- *角色,不同角色对应着不同的权限 
+ * 角色,不同角色对应着不同的权限
+ * 
  * @author cold_blade
  * @version 1.0.0
  */
@@ -27,13 +30,13 @@ public class Role implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
 
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoleAuthority> authorities = new ArrayList<>();
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -50,13 +53,33 @@ public class Role implements Serializable {
 		this.name = name;
 	}
 
-	public List<RoleAuthority> getAuthorities() {
-		return authorities;
+	public List<Authority> getAuthorities() {
+		List<Authority> list = new ArrayList<>();
+		for (RoleAuthority elem : authorities) {
+			list.add(elem.getAuthority());
+		}
+		return list;
 	}
-	
+
 	public void addAuthority(Authority authority) {
 		RoleAuthority ra = new RoleAuthority(this, authority);
 		authorities.add(ra);
 		authority.getOwners().add(ra);
+	}
+
+	public void removeAuthority(Authority authority) {
+		RoleAuthority ra = null;
+		for (int i = authorities.size() - 1; i >= 0; --i) {
+			ra = authorities.get(i);
+			if (ra.getAuthority().equals(authority)) {
+				authorities.remove(i);
+				authority.getOwners().remove(ra);
+				break;
+			}
+		}
+	}
+	
+	public boolean isValid() {
+		return !ToolUtil.isStringEmpty(name);
 	}
 }

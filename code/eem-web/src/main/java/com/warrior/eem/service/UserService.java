@@ -1,5 +1,8 @@
 package com.warrior.eem.service;
 
+import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.vo.UserVo;
+
 /**
  * 用户的服务接口
  * 
@@ -8,4 +11,6 @@ package com.warrior.eem.service;
  */
 public interface UserService extends IService {
 	boolean createAdminIfAbsent();
+	
+	User updateUser(UserVo vo);
 }
