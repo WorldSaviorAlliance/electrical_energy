@@ -1,6 +1,8 @@
 package com.warrior.eem.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,35 +22,37 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "buy_electricity_contract")
-public class BuyElectricityContract extends BaseType {
+public class BuyElectricityContract extends AbstractEntity implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "create_date")
+	private Date createDate;
+
 	private String number;
+	
 	@Column(name = "valid_year")
 	private String validYear;
-
+	
 	@Column(name = "attachment_name")
 	private String attachmentName;
+	
 	@Column(name = "trade_electricity_quantity")
 	private BigDecimal tradeQuantity;
-
+	
 	private BigDecimal price;
-
+	
 	@Column(name = "trade_type_id")
 	private String tradeType;
-
+	
 	@Column(name = "voltage_type_id")
 	private String voltageType;
-	
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User creator;
 	
 	@OneToOne
 	@JoinColumn(name = "supplier_id")
@@ -57,14 +62,10 @@ public class BuyElectricityContract extends BaseType {
 	@JoinColumn(name = "contract_id")
 	private Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User creator;
+	
 	public PowerSupplier getSupplier() {
 		return supplier;
 	}
@@ -128,15 +129,6 @@ public class BuyElectricityContract extends BaseType {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-
-	public User getCreator() {
-		return creator;
-	}
-
-	public void setCreator(User creator) {
-		this.creator = creator;
-	}
-
 	public Set<BuyContractUserInfo> getContractUserInfos() {
 		return contractUserInfos;
 	}
@@ -145,4 +137,28 @@ public class BuyElectricityContract extends BaseType {
 		this.contractUserInfos = contractUserInfos;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+	
 }

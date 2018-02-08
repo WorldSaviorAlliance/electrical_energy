@@ -2,9 +2,8 @@ package com.warrior.eem.service.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -149,7 +148,6 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		contract.setPrice(((BuyElectricityContractUpdateVo) vo).getPrice());
 		contract.setTradeQuantity(((BuyElectricityContractUpdateVo) vo).getQuantity());
 		contract.setValidYear(((BuyElectricityContractUpdateVo) vo).getValidYear());
-		contract.setCreateDate(Date.valueOf(LocalDate.now()));
 		Long supplierId ;
 		try {			
 			supplierId= Long.valueOf(((BuyElectricityContractUpdateVo) vo).getSupplier());
@@ -181,6 +179,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			throw new EemException("附件不能为空");
 		}
 		BuyElectricityContract contract = convertVoToDoForCreate(buyContract);
+		BuyElectricityContract oldContract = null;
 		String fileName;
 		try {
 			fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
@@ -190,7 +189,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		try {
 			if (contract.getId() != null) {
 				try {
-					getBuyContractById(contract.getId());
+					oldContract = getBuyContractById(contract.getId());
 				} catch (NoResultException e) {
 					throw new EemException("购电合同不存在！");
 				}
@@ -206,11 +205,14 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			}
 			contract.setContractUserInfos(contractUserInfos);
 			if (contract.getId() == null) {
+				Date now = new Date();
+				contract.setCreateDate(now);
 				getDao().createDo(contract);
 			} else {
 				for (Long id : ids) {
 					deleteBuyContractUserInfoById(id);
 				}
+				contract.setCreateDate(oldContract.getCreateDate());
 				getDao().updateDo(contract);
 			}
 		} catch (IllegalAccessException | SecurityException e) {
@@ -278,5 +280,10 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		}
 		return infos;
 	}
-
+	
+	public static void main(String args[]) {
+		
+		Date now = new Date();
+		System.out.println(now);
+	}
 }

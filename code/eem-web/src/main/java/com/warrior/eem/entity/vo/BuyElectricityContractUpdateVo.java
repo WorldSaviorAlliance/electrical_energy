@@ -33,6 +33,8 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	@FieldChecker(name = "电价", minVal = 0.00000001, maxVal = Constant.MAX_POWER_VALUE)
 	private BigDecimal price;
 
+	private String createTime;
+
 	public Long getBuyContractId() {
 		return buyContractId;
 	}
@@ -84,9 +86,14 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	public BigDecimal getPrice() {
 		return price;
 	}
-
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 }
