@@ -30,26 +30,21 @@ $(function(){
 			$('#password').attr("disabled",true);
 			$('#username').attr("disabled",true);
 			
-			setTimeout(function(){
-				location.replace(rootpath + '/home');
-			}, 5000);
-			
-			/*var param = {
-				username : username,
+			var param = {
+				userName : username,
 				password : password,
 			};
 			
 			$.ajax({
-				url: rootpath + '/login',
-				type : 'POST',
-				data : {
-					data : JSON.stringify(param)
-				},
-				dataType : 'json',
+				url: rootpath + '/logon',
+				type : 'POST', 
+				dataType: 'json',
+				data : JSON.stringify(param),
+			    contentType: 'application/json',
 				complete : function(XHR, TS) {
 					if (TS == "success") {
 						var ar = JSON.parse(XHR.responseText);
-						if (ar.success)
+						if (ar.code == 0)
 						{
 							location.replace(rootpath + '/home');
 							return;
@@ -64,8 +59,9 @@ $(function(){
 					$('#username').attr("disabled",false);
 					$('#error_msg').show();
 					$('#loginBtn').fadeIn();
+					$('#wait_msg').hide();
 				}
-			});*/
+			});
 		});
 	}
 	
