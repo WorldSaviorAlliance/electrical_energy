@@ -34,7 +34,7 @@ public class SellPowerAgreementController extends AbstractController {
 	@ResponseBody
 	public Result<Object> createEntity(SellPowerAgreementUpdateVo sellPowerAgreementUpdateVo,
 			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthVo,
-			@RequestParam(name = "att_file") MultipartFile attrFile) {
+			@RequestParam(name = "att_file", required = false) MultipartFile attrFile) {
 		if (sellPowerAgreementUpdateVo != null && sellPowerAgreementUpdateVo.getId() != null
 				&& sellPowerAgreementUpdateVo.getId().trim().length() > 0) { // update
 			spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementUpdateVo, sellPowerAgreementMonthVo);

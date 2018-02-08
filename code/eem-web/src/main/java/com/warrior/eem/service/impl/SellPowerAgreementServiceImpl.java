@@ -171,6 +171,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			createEntity(spa);
 		} catch (Exception e2) { // 创建失败 删除附件
 			FileUtil.deleteFile(baseDir + ((SellPowerAgreementVo) e).getAttachment());
+			throw new EemException(e2.getMessage());
 		}
 	}
 
@@ -236,6 +237,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			updateEntity(sa);
 		} catch (Exception e2) { // 更新失败 删除附件
 			FileUtil.deleteFile(baseDir + sa.getAttachment());
+			throw new EemException(e2.getMessage());
 		}
 		if (attamentName != null && attamentName.trim().length() > 0) {
 			FileUtil.deleteFile(baseDir + attamentName);

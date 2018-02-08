@@ -22,8 +22,15 @@ public class FileUtil {
 		try {
 			String fn = fileName.split("\\.")[0] + "-" + System.currentTimeMillis() + "." + fileName.split("\\.")[1];
 			File f = new File(baseDir + fn);
+			if(!f.getParentFile().exists()) {
+				if(!f.getParentFile().mkdirs()) {
+					throw new EemException("创建目录失败");
+				}
+			}
 			if (!f.exists()) {
-				f.createNewFile();
+				if(!f.createNewFile()) {
+					throw new EemException("创建文件（" + fileName + "）失败");
+				}
 			}
 			fis = new FileOutputStream(f);
 			byte[] bs = new byte[4096];
@@ -34,8 +41,12 @@ public class FileUtil {
 			}
 			return fn;
 		} catch (Exception e) {
-			throw new EemException("上传文件（" + fileName + ""
-					+ "）失败");
+			if(e.getCause() instanceof EemException) {
+				throw new EemException(e.getMessage());
+			} else {
+				throw new EemException("上传文件（" + fileName + ""
+						+ "）失败");
+			}
 		} finally {
 			try {
 				if (null != fis) {
