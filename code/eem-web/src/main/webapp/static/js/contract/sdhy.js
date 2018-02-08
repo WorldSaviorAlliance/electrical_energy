@@ -101,19 +101,18 @@ $(function()
 			{
 				var temp = datas[i];
 				trs += '<tr type="data">'+
+							'<td>' + getObjStr(temp.customerName) + '</td>'+
+							'<td>' + getObjStr(temp.customerNo) + '</td>'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.nickName) + '</td>'+
-							'<td>' + getObjStr(temp.province) + '-' +getObjStr(temp.city) + '</td>'+
-							'<td>' + getPowerTypeStr(temp.powerType) + '</td>'+
-							'<td>' + getObjStr(temp.capacity) + '</td>'+
-							'<td>' + getNatureType(temp.natureType) + '</td>'+					
-							'<td>' + getObjStr(temp.contactName) + '</td>'+
-							'<td>' + getObjStr(temp.contactPhone) + '</td>'+
-							'<td>' + getObjStr(temp.contactPosition) + '</td>'+
-							'<td>' + getObjStr(temp.contactEmail) + '</td>'+
+							'<td>' + getObjStr(temp.No) + '</td>'+
+							'<td>' + getObjStr(temp.validYear) + '</td>'+
+							'<td>' + getObjStr(temp.tradePowerQuantity) + '</td>'+					
+							'<td>' + getObjStr(temp.voltageType) + '</td>'+
+							'<td></td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
-								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+
+								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改合约</a>'+
+								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify_p" id="' + temp.id + '">修改电价</a>'+
 								'<a class="btn btn-danger btn-xs" flag="del" id="' + temp.id + '">删除</a>'+
 							'</td>'+
 						'</tr>';
@@ -148,7 +147,7 @@ $(function()
 		$('a[flag="modify"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/customer/SdhyDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,

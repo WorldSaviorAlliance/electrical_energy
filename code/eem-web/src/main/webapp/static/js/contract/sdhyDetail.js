@@ -7,10 +7,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 	function init()
 	{
 		initControlAction();
-		if(g_curData != null)
-		{
-			inintControlVal();
-		}
+		inintControlVal();
 	}
 	
 	function initControlAction()
@@ -67,36 +64,61 @@ function SdhyDetail(afterSaveCallbk, curData)
 		});
 		$('#validYear').append(getYearSelectStr());
 		$('.detail_search').niceSelect();
-		getAllDlyhSelecte('customerId');
+		if(g_curData == null)
+		{
+			getAllDlyhSelecte('customerId');
+		}
 		
 		$("#att_file").on("change",function(){
 		    var filePath=$(this).val();
 		    var arr=filePath.split('\\');
 	        var fileName=arr[arr.length-1];
 	        $("#file_path").val(fileName);
-		});console.log($("#att_file"));
+		});
 	}
 	
 	function inintControlVal()
 	{
 		if(g_curData != null)
 		{
-			$('#name').val(getObjStr(g_curData.name));
-			$('#nickName').val(getObjStr(g_curData.nickName));
-			$('#powerType').val(g_curData.powerType);
-			$('#capacity').val(getObjStr(g_curData.capacity));
-			$('#province').val(g_curData.province);
-			$('#city').val(g_curData.city);
-			$('#province').niceSelect('update');
-			$('#city').niceSelect('update');
-			$('#address').val(getObjStr(g_curData.address));
-			$('#contactName').val(getObjStr(g_curData.contactName));
-			$('#contactPhone').val(getObjStr(g_curData.contactPhone));
-			$('#contactPosition').val(getObjStr(g_curData.contactPosition));
-			$('#contactEmail').val(getObjStr(g_curData.contactEmail));
-			$('#fax').val(getObjStr(g_curData.fax));
-			$('#natureType').val(g_curData.natureType);
-			$('#natureType').niceSelect('update');
+			$.ajax({
+				url: rootpath + '/' + PATH_SDHY + '/info?id=' + g_curData.id,
+				type : 'GET', 
+				dataType: 'json',
+			    contentType: 'application/json',
+				complete : function(XHR, TS) {
+					$('#datas tr[type="loading_msg"]').hide();
+					if (TS == "success") {
+						var ar = JSON.parse(XHR.responseText);
+						if(ar.code == 0)
+						{
+							g_curData = ar.data;console.log(g_curData);
+							getAllDlyhSelecte('customerId', g_curData.customer.id);
+							$('#customerNo').val(g_curData.customerNo);
+							$('#name').val(g_curData.name);
+							$('#no').val(g_curData.No);
+							$('#file_path').val(g_curData.attachment);//附件
+							$('#validYear').val(g_curData.validYear);
+							$('#validYear').niceSelect('update');
+							$('#voltageType').val(g_curData.voltageType);
+							$('#tradePowerQuantity').val(g_curData.tradePowerQuantity);
+							$('#normalTradePrice').val(g_curData.normalTradePrice);
+							$('#supportTradePrice').val(g_curData.supportTradePrice);
+							$('#replaceTradePrice').val(g_curData.replaceTradePrice);
+							$('#marginTradePrice').val(g_curData.marginTradePrice);
+							Month2DL('dl_datas', 'dj_datas', g_curData);
+						}
+					}
+					else
+					{
+						showSystemError();
+					}
+				}
+			});
+		}
+		else
+		{
+			Month2DL('dl_datas', 'dj_datas');
 		}
 	}
 	
@@ -124,7 +146,6 @@ function SdhyDetail(afterSaveCallbk, curData)
 		}
 		
     	var progress = showProgress('正在保存售电合约');
-    	console.log($('#att_file'));
     	$.ajaxFileUpload({
 			url: rootpath + '/' + PATH_SDHY + '/info',
 			secureuri : false,
@@ -150,6 +171,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 				
 			},
 			error : function(data, status, e) {
+				$('div.eem_window_close').click();
 				hideProgress(progress);
 				showSystemError();
 			}
