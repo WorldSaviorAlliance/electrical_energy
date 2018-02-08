@@ -18,9 +18,12 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/login = anon
-				/static/** = anon
-				/demo/login_launcher = anon
-				/** = anon
+				/logon = anon
+				/static/css/** = anon
+				/static/images/** = anon
+				/static/js/** = anon
+				/static/jsp/login.jsp = anon
+				/** = secAuthc
 			</value>
 		</property>
 	</bean>
