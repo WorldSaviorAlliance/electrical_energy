@@ -4,6 +4,26 @@
 $(function(){
 	$('#header_exist').unbind('click').click(function(){
 		confirm('是否退出系统？', function(){
+			$.ajax({
+				url: rootpath + '/logout',
+				type : 'GET', 
+				dataType: 'json',
+			    contentType: 'application/json',
+				complete : function(XHR, TS) {
+					if (TS == "success") {
+						var ar = JSON.parse(XHR.responseText);
+						if (ar.code == 0)
+						{
+							location.replace(rootpath + '/login');
+							return;
+						}
+						else
+						{
+							$('#error_msg').html("注销失败：" + ar.msg);
+						}
+					}
+				}
+			});
 			return true;
 		});
 	});

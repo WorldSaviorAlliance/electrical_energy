@@ -91,6 +91,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		ms.addSelectProp("voltageType");
 		ms.addSelectProp("tradePowerQuantity");
 		ms.addSelectProp("attachment");
+		ms.addSelectProp("createTime");
 		req.setSelect(ms);
 		req.setPage(page);
 		LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
@@ -270,6 +271,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		propNames.add("voltageType");
 		propNames.add("tradePowerQuantity");
 		propNames.add("attachment");
+		propNames.add("createTime");
 		Map<String, Object> resItem = null;
 		for(Object[] arr : arrList) {
 			int i = 0;

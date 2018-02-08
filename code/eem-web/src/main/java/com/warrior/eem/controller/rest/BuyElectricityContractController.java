@@ -21,18 +21,22 @@ import com.warrior.eem.entity.vo.BuyContractSearchVo;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
 import com.warrior.eem.entity.vo.PageVo;
-import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.BuyElectricityContractService;
 
+/**
+ * 购电合约
+ * @author seangan
+ *
+ */
 @Controller
-@RequestMapping(value = "/contract")
+@RequestMapping(value = "/buy_agreement")
 public class BuyElectricityContractController extends AbstractController {
 
 	@Autowired
 	private BuyElectricityContractService buyContractService;
 
 	@ResponseBody
-	@RequestMapping(value = "buy_contract", method = RequestMethod.POST)
+	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public Result<Object> createOrUpdateBuyContract(BuyElectricityContractUpdateVo buyContract,
 			@RequestParam(name = "infos") String infos, @RequestParam(name = "file") MultipartFile file,
 			@RequestParam(name = "ids", required = false) String deleteIds) throws Exception {
@@ -50,37 +54,24 @@ public class BuyElectricityContractController extends AbstractController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "buy_contracts", method = RequestMethod.POST)
+	@RequestMapping(value = "list", method = RequestMethod.POST)
 	public Result<Object> listBuyContracts(@RequestBody(required = false) BuyContractSearchVo searchCondition,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String pageSize) {
-		Integer pageNo = 1;
-		Integer size = 20;
-		if (page != null && pageSize != null) {
-			try {
-				pageNo = Integer.valueOf(page);
-			} catch (NumberFormatException e) {
-				throw new EemException("页数必须为数字");
-			}
-			try {
-				size = Integer.valueOf(pageSize);
-			} catch (NumberFormatException e) {
-				throw new EemException("每页显示数量必须为数字");
-			}
-		}
-		PageVo pageVO = buyContractService.listEntities(searchCondition, pageNo, size);
+		Integer[] pageInfo = buildPageInfo(page, pageSize);
+		PageVo pageVO = buyContractService.listEntities(searchCondition, pageInfo[0], pageInfo[1]);
 		return Result.success(pageVO.getCount(), pageVO.getDatas());
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "buy_contract", method = RequestMethod.DELETE)
+	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	public Result<Object> deleteBuyContract(@RequestParam(name = "id") Long id) {
 		buyContractService.deleteEntity(id);
 		return Result.success();
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "buy_contract_user_info", method = RequestMethod.GET)
+	@RequestMapping(value = "info", method = RequestMethod.GET)
 	public Result<List<BuyContractUserInfoUpdateVo>> getBuyContractUserInfoByContractId(
 			@RequestParam(name = "id") Long id) {
 		return Result.success(buyContractService.getBuyContractUserInfoByContractId(id));
