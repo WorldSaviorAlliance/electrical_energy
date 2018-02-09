@@ -412,3 +412,44 @@ function getAllDlyhSelecte(contorlId, valId)
 		}
 	});
 }
+
+/**
+ * 获取所有的电源商的下拉列表
+ */
+function getAllDysSelecte(contorlId, valId)
+{
+	$('#' + contorlId).empty();
+	$.ajax({
+		url: rootpath + '/' + PATH_DYS + '/list?page=0&per_page=10000',
+		type : 'POST', 
+		dataType: 'json',
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);
+				if(ar.code == 0)
+				{
+					var datas = ar.data;
+					if(datas != null && datas.length != 0)
+					{
+						var opts = '<option></option>';
+						for(var i = 0; i < datas.length; i++)
+						{
+							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
+						}
+						$('#' + contorlId).append(opts);
+						if(valId != null)
+						{
+							$('#' + contorlId).val(valId);
+						}
+					}
+					$('#' + contorlId).niceSelect();
+				}
+			}
+			else
+			{
+				showSystemError();
+			}
+		}
+	});
+}

@@ -106,6 +106,7 @@ h4, .h4 {
 
 .table > thead >tr > th {
     border-left: 1px solid #d3dbde;
+    border-right: 1px solid #d3dbde;
     background-color: #F3F7F8;
     font-weight: bold;
     font-size: 14px;
