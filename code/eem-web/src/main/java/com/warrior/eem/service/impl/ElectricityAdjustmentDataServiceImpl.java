@@ -1,7 +1,10 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +14,6 @@ import com.warrior.eem.dao.ElectricityAdjustmentDataDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.SellPowerAgreementDao;
-import com.warrior.eem.dao.TradeTypeDao;
-import com.warrior.eem.dao.VoltageTypeDao;
 import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
@@ -24,10 +25,9 @@ import com.warrior.eem.entity.ElectricityAdjustmentData;
 import com.warrior.eem.entity.ElectricityAdjustmentData.AdjustmentType;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.SellPowerAgreement;
-import com.warrior.eem.entity.TradeType;
-import com.warrior.eem.entity.VoltageType;
 import com.warrior.eem.entity.vo.ElectricityAdjustmentDataCondition;
 import com.warrior.eem.entity.vo.ElectricityAdjustmentDataUpdateVO;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.ElectricityAdjustmentDataService;
 import com.warrior.eem.shiro.session.EemSession;
@@ -45,12 +45,6 @@ public class ElectricityAdjustmentDataServiceImpl extends AbstractServiceImpl<El
 
 	@Autowired
 	private SellPowerAgreementDao agreementDAO;
-
-	@Autowired
-	private TradeTypeDao tradeTypeDAO;
-
-	@Autowired
-	private VoltageTypeDao voltageTypeDAO;
 
 	@Override
 	IDao<ElectricityAdjustmentData> getDao() {
@@ -125,16 +119,8 @@ public class ElectricityAdjustmentDataServiceImpl extends AbstractServiceImpl<El
 		}
 		adjustmentData.setSellAgreement(agreement);
 
-		TradeType tradeType = tradeTypeDAO.getEntity(((ElectricityAdjustmentDataUpdateVO) vo).getTradeType());
-		if (tradeType == null) {
-			throw new EemException("交易类型不存在");
-		}
 		adjustmentData.setTradeType(((ElectricityAdjustmentDataUpdateVO) vo).getTradeType());
 		adjustmentData.setValidYear(((ElectricityAdjustmentDataUpdateVO) vo).getValidYear());
-		VoltageType voltageType = voltageTypeDAO.getEntity(((ElectricityAdjustmentDataUpdateVO) vo).getVoltageType());
-		if (voltageType == null) {
-			throw new EemException("电压类型不存在");
-		}
 		adjustmentData.setVoltageType(((ElectricityAdjustmentDataUpdateVO) vo).getVoltageType());
 		return adjustmentData;
 	}
@@ -163,4 +149,32 @@ public class ElectricityAdjustmentDataServiceImpl extends AbstractServiceImpl<El
 		}
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public PageVo listEntities(Serializable... conditions) {
+		PageVo pageVo = super.listEntities(conditions);
+		List<ElectricityAdjustmentData> objects = (List<ElectricityAdjustmentData>) pageVo.getDatas();
+		List<ElectricityAdjustmentDataUpdateVO> list = new ArrayList<>();
+		for (ElectricityAdjustmentData object : objects) {
+			ElectricityAdjustmentDataUpdateVO vo = new ElectricityAdjustmentDataUpdateVO();
+			vo.setAdjustmentType(object.getAdjustmentType().equals(AdjustmentType.ASC) ? 1 : 0);
+			vo.setContractId(object.getSellAgreement().getId());
+			vo.setContractNumber(object.getContractNumber());
+			vo.setCreateTime(new SimpleDateFormat("yyyyMMdd-HHMMSS").format(object.getCreateTime()));
+			vo.setCustomerId(object.getCustomer().getId());
+			vo.setCustomerNumber(object.getCustomerNumber());
+			vo.setId(object.getId());
+			vo.setMonth(object.getMonth());
+			vo.setQuantity(object.getAdjustment());
+			vo.setTradeType(object.getTradeType());
+			vo.setUserName(object.getCreator() == null ? null
+					: object.getCreator().getName() == null ? null : object.getCreator().getName());
+			vo.setValidYear(object.getValidYear());
+			vo.setVoltageType(object.getVoltageType());
+			vo.setPrice(object.getPrice());
+			list.add(vo);
+		}
+		pageVo.setDatas(list);
+		return pageVo;
+	}
 }
