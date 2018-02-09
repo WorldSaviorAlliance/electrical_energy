@@ -34,9 +34,7 @@ import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.SellPowerAgreementMonthData;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
@@ -201,11 +199,11 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 
 	@Override
 	@Transactional
-	public void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementUpdateVo e,
-			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthUpdateVo) {
+	public void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementVo e,
+			SellPowerAgreementMonthDataVo sellPowerAgreementMonthVo) {
 		try {
 			EntityValidator.checkEntity(e);
-			EntityValidator.checkEntity(sellPowerAgreementMonthUpdateVo);
+			EntityValidator.checkEntity(sellPowerAgreementMonthVo);
 		} catch (IllegalAccessException | SecurityException e1) {
 			throw new EemException("解析参数失败");
 		}
@@ -225,7 +223,8 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		} else {
 			throw new EemException("id不能为空");
 		}
-		if (file != null) { // 更新附件
+		boolean hasAttachment = (file != null && file.getSize() > 0);
+		if (hasAttachment) { // 更新附件
 			try {
 				String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
 				((SellPowerAgreementVo) e).setAttachment(fileName);
@@ -236,10 +235,10 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		}
 		try {
 			sa = convertVoToDoForUpdate(sa, e);
-			sa.setMonthData(convertMonthVoToDo(sa.getMonthData(), sellPowerAgreementMonthUpdateVo));
+			sa.setMonthData(convertMonthVoToDo(sa.getMonthData(), sellPowerAgreementMonthVo));
 			updateEntity(sa);
 		} catch (Exception e2) {
-			if (file != null) {// 更新失败 如果有上传附件则删除附件
+			if (hasAttachment) {// 更新失败 如果有上传附件则删除附件
 				FileUtil.deleteFile(baseDir + sa.getAttachment());
 			}
 			throw new EemException(e2.getMessage());

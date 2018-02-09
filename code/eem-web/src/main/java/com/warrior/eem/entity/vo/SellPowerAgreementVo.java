@@ -15,41 +15,43 @@ import com.warrior.eem.entity.constant.Constant;
 public class SellPowerAgreementVo implements Serializable {
 
 	private static final long serialVersionUID = 7741791027666246628L;
+	
+	private String id;
 
 	@FieldChecker(name = "电力用户id", minVal = 1, maxVal = Long.MAX_VALUE)
-	private Long customerId; // 客户id
+	public Long customerId; // 客户id
 	 
 	@FieldChecker(name = "用户户号", minLen = 1, maxLen = 30)
-	private String customerNo; // 客户户号
+	public String customerNo; // 客户户号
 	
 	@FieldChecker(name = "合约名称", minLen = 1, maxLen = 20)
-	private String name; // 名称
+	public String name; // 名称
 	
 	@FieldChecker(name = "合约编号", minLen = 1, maxLen = 30)
-	private String No; // 编号
+	public String No; // 编号
 	
 	@FieldChecker(name = "合约有效年份", minLen = 1, maxLen = 4)
-	private String validYear; // 有效年
+	public String validYear; // 有效年
 
 	private String attachment; // 附件名
 	
 	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
-	private String voltageType; // 电压类型
+	public String voltageType; // 电压类型
 	
 	@FieldChecker(name = "交易电量", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
-	private BigDecimal tradePowerQuantity;
+	public BigDecimal tradePowerQuantity;
 	
 	@FieldChecker(name = "常规直购电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
-	private BigDecimal normalTradePrice;
+	public BigDecimal normalTradePrice;
 	
 	@FieldChecker(name = "精准扶持直购电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
-	private BigDecimal supportTradePrice;
+	public BigDecimal supportTradePrice;
 	
 	@FieldChecker(name = "自备替代直购电交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
-	private BigDecimal replaceTradePrice;
+	public BigDecimal replaceTradePrice;
 	
 	@FieldChecker(name = "富余电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
-	private BigDecimal marginTradePrice;
+	public BigDecimal marginTradePrice;
 	
 	public SellPowerAgreementVo() {
 		
@@ -101,6 +103,14 @@ public class SellPowerAgreementVo implements Serializable {
 
 	public BigDecimal getMarginTradePrice() {
 		return marginTradePrice;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setCustomerId(Long customerId) {

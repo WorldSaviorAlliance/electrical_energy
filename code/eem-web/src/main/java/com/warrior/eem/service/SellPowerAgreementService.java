@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 
 /**
@@ -34,11 +32,12 @@ public interface SellPowerAgreementService extends IService {
 	 * @param e
 	 * @param monthdata
 	 */
-	void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementUpdateVo e,
-			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthUpdateVo);
-	
+	void saveAndUpdateAgreement(MultipartFile file, SellPowerAgreementVo e,
+			SellPowerAgreementMonthDataVo sellPowerAgreementMonthUpdateVo);
+
 	/**
 	 * 移除合约信息
+	 * 
 	 * @param id
 	 */
 	void deleteAgreement(Serializable id);

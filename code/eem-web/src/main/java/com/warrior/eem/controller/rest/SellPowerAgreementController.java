@@ -13,8 +13,8 @@ import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataUpateVo;
-import com.warrior.eem.entity.vo.SellPowerAgreementUpdateVo;
+import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
+import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.service.SellPowerAgreementService;
 
 /**
@@ -32,14 +32,14 @@ public class SellPowerAgreementController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(SellPowerAgreementUpdateVo sellPowerAgreementUpdateVo,
-			SellPowerAgreementMonthDataUpateVo sellPowerAgreementMonthVo,
+	public Result<Object> createEntity(SellPowerAgreementVo sellPowerAgreementVo,
+			SellPowerAgreementMonthDataVo sellPowerAgreementMonthVo,
 			@RequestParam(name = "att_file", required = false) MultipartFile attrFile) {
-		if (sellPowerAgreementUpdateVo != null && sellPowerAgreementUpdateVo.getId() != null
-				&& sellPowerAgreementUpdateVo.getId().trim().length() > 0) { // update
-			spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementUpdateVo, sellPowerAgreementMonthVo);
+		if (sellPowerAgreementVo != null && sellPowerAgreementVo.getId() != null
+				&& sellPowerAgreementVo.getId().trim().length() > 0) { // update
+			spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementVo, sellPowerAgreementMonthVo);
 		} else { // create
-			spaService.saveAndCreateAgreement(attrFile, sellPowerAgreementUpdateVo, sellPowerAgreementMonthVo);
+			spaService.saveAndCreateAgreement(attrFile, sellPowerAgreementVo, sellPowerAgreementMonthVo);
 		}
 		return Result.success();
 	}

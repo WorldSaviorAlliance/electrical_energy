@@ -14,6 +14,11 @@ import com.warrior.eem.entity.vo.ElectricityAdjustmentDataUpdateVO;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.ElectricityAdjustmentDataService;
 
+/**
+ * 电量调整controller
+ * @author seangan
+ *
+ */
 @Controller
 @RequestMapping(value = "/adjustment_data")
 public class ElectricityAdjustmentDataController extends AbstractController {
@@ -22,21 +27,21 @@ public class ElectricityAdjustmentDataController extends AbstractController {
 	private ElectricityAdjustmentDataService adjustService;
 
 	@ResponseBody
-	@RequestMapping(value = "/agreement_adjustment_data", method = RequestMethod.POST)
+	@RequestMapping(value = "/info", method = RequestMethod.POST)
 	public Result<Object> saveAndUpdateElectricityAdjustmentData(ElectricityAdjustmentDataUpdateVO adjustmentDataVo) {
 		adjustService.saveOrUpdateElectricityAdjustmentData(adjustmentDataVo);
 		return Result.success();
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "agreement_adjustment_data", method = RequestMethod.DELETE)
+	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	public Result<Object> deleteElectricityAdjustmentData(@RequestParam(name = "id") Long id) {
 		adjustService.deleteEntity(id);
 		return Result.success();
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "agreement_adjustment_datas", method = RequestMethod.POST)
+	@RequestMapping(value = "list", method = RequestMethod.POST)
 	public Result<Object> listElectricityAdjustmentData(
 			@RequestBody(required = false) ElectricityAdjustmentDataCondition condition,
 			@RequestParam(name = "page", required = false) String page,

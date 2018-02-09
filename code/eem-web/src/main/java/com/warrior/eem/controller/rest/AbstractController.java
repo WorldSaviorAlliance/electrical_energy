@@ -88,7 +88,7 @@ public class AbstractController {
 	 */
 	Integer[] buildPageInfo(String page, String perPage) {
 		Integer pageNum = 1;
-		if (page != null && page.trim().length() == 0) {
+		if (page != null && page.trim().length() > 0) {
 			try {
 				pageNum = Integer.valueOf(page);
 			} catch (NumberFormatException e) {
@@ -97,7 +97,7 @@ public class AbstractController {
 		}
 
 		Integer perPageNum = 20;
-		if (perPage != null && perPage.trim().length() == 0) {
+		if (perPage != null && perPage.trim().length() > 0) {
 			try {
 				perPageNum = Integer.valueOf(perPage);
 			} catch (NumberFormatException e) {
