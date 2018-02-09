@@ -181,15 +181,15 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 				}
 			}
 			EntityValidator.checkEntity(buyContract);
-			for (BuyContractUserInfoUpdateVo obj : infos) {
-				EntityValidator.checkEntity(obj);
-			}
 			contract.setAttachmentName(fileName);
-			Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
-			for (BuyContractUserInfoUpdateVo info : infos) {
-				contractUserInfos.add(converseBuyContractUserInfoVoToDo(info));
+			if(infos != null) {
+				Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
+				for (BuyContractUserInfoUpdateVo info : infos) {
+					EntityValidator.checkEntity(info);
+					contractUserInfos.add(converseBuyContractUserInfoVoToDo(info));
+				}
+				contract.setContractUserInfos(contractUserInfos);
 			}
-			contract.setContractUserInfos(contractUserInfos);
 			if (contract.getId() == null) {
 				Date now = new Date();
 				contract.setCreateDate(now);
