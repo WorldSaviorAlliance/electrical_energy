@@ -157,7 +157,7 @@ public class ElectricityAdjustmentDataServiceImpl extends AbstractServiceImpl<El
 		List<ElectricityAdjustmentDataUpdateVO> list = new ArrayList<>();
 		for (ElectricityAdjustmentData object : objects) {
 			ElectricityAdjustmentDataUpdateVO vo = new ElectricityAdjustmentDataUpdateVO();
-			vo.setAdjustmentType(object.getAdjustmentType().equals(AdjustmentType.ASC) ? 1 : 0);
+			vo.setAdjustmentType(object.getAdjustmentType().equals(AdjustmentType.ASC) ? 0 : 1);
 			vo.setContractId(object.getSellAgreement().getId());
 			vo.setContractNumber(object.getContractNumber());
 			vo.setCreateTime(new SimpleDateFormat("yyyyMMdd-HHMMSS").format(object.getCreateTime()));
