@@ -29,7 +29,6 @@
 			<div class="col-md-4">
 				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
-				<button class="btn btn-info" id="modify_dj" type="button">编辑电价</button>
 			</div>
 		</div>
 		<div class="col-sm-12" style="padding: 0px;">

@@ -5,15 +5,7 @@
 %>
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
 	<div class="form-group">
-		<label class="col-sm-2 control-label">电力用户名称 <span class="asterisk">*</span></label>
-		<div class="col-sm-7">
-			<select class="select detail_search" data-placeholder="请选择合同有效年份" id="customer">
-			</select>
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label">合约名称<span
-			class="asterisk">*</span></label>
+		<label class="col-sm-2 control-label">合约名称<span	class="asterisk">*</span></label>
 		<div class="col-sm-7">
 			<input type="text" class="form-control" readonly="readonly" id="name" />
 			<input id="normalTradePrice" style="display: none;"/>
@@ -58,5 +50,6 @@
 	    <button class="btn btn-default" type="button" style="margin-left: 15px;" id="cancel">取消</button>
 	</div>	
 </form>
+<script type="text/javascript" src="<%=basePath%>static/js/jquery/ajaxfileupload.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/control/month2Dl.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/contract/sddjDetail.js"></script>

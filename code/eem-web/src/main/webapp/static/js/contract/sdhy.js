@@ -37,23 +37,6 @@ $(function()
 			});
 		});
 		
-		$('#modify_dj').unbind('click').click(function(){
-			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/sddjDetail.jsp', function(){
-				$(this).EemWindow({
-					height : WINDOW_HEIGHT,
-					width : WINDOW_WIDTH,
-		            title: '修改电价',
-		            content: addDiv,
-		            hasBottomBtn : false,
-		            afterShow : function(){
-		            	new SddjDetail();
-		            }
-		        });	
-			});
-		});
-		
-		
 		$('#search_year').append(getYearSelectStr());
 		$('.search_select').niceSelect();
 	}
@@ -175,6 +158,23 @@ $(function()
 		            afterShow : function(){
 		            	var curData = getCurDataById(id, g_all_datas);
 		            	g_page_sdhy_detail = new SdhyDetail(getAllData, curData);
+		            }
+		        });	
+			});
+		});
+		
+		$('a[flag="modify_p"]').unbind('click').click(function(){
+			var id = $(this).attr('id');
+			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
+			addDiv.load(rootpath + '/static/jsp/contract/sddjDetail.jsp', function(){
+				$(this).EemWindow({
+					height : WINDOW_HEIGHT,
+					width : WINDOW_WIDTH,
+		            title: '修改电价',
+		            content: addDiv,
+		            hasBottomBtn : false,
+		            afterShow : function(){
+		            	new SddjDetail(getAllData, id);
 		            }
 		        });	
 			});
