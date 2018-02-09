@@ -2,11 +2,11 @@ package com.warrior.eem.entity.constant;
 
 
 /**
- *系统相关常量
+ *电力相关常量
  * @author seangan
  *
  */
-public class Constant {
+public class PowerConsts {
 	
 	/**
 	 * 电量/电价最大值

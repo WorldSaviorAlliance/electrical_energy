@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.constant.Constant;
+import com.warrior.eem.entity.constant.PowerConsts;
 
 public class ElectricityAdjustmentDataUpdateVO implements Serializable{
 
@@ -23,7 +23,7 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable{
 	@FieldChecker(name="有效年份", minLen = 1, maxLen = 4)
 	private String validYear;
 	private Long voltageType;
-	@FieldChecker(name="调整数量", minVal = 0.000001, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name="调整数量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal quantity;
 	private Integer adjustmentType;
 	@FieldChecker(name="调整年份", minLen = 1, maxLen = 4)
@@ -32,7 +32,7 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable{
 	private Long userId;
 	private String userName;
 	private String createTime;
-	@FieldChecker(name="交易价格", minVal = 0.000001, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name="交易价格", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal price;
 	
 	

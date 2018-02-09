@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.constant.Constant;
+import com.warrior.eem.entity.constant.PowerConsts;
 
 /**
  * 售电合约
@@ -38,19 +38,19 @@ public class SellPowerAgreementVo implements Serializable {
 	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
 	public String voltageType; // 电压类型
 	
-	@FieldChecker(name = "交易电量", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "交易电量", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)
 	public BigDecimal tradePowerQuantity;
 	
-	@FieldChecker(name = "常规直购电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "常规直购电量交易价格", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)
 	public BigDecimal normalTradePrice;
 	
-	@FieldChecker(name = "精准扶持直购电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "精准扶持直购电量交易价格", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)
 	public BigDecimal supportTradePrice;
 	
-	@FieldChecker(name = "自备替代直购电交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "自备替代直购电交易价格", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)
 	public BigDecimal replaceTradePrice;
 	
-	@FieldChecker(name = "富余电量交易价格", minVal = 1, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "富余电量交易价格", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)
 	public BigDecimal marginTradePrice;
 	
 	public SellPowerAgreementVo() {

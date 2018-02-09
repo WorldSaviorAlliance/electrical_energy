@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.warrior.eem.annotation.FieldChecker;
-import com.warrior.eem.entity.constant.Constant;
+import com.warrior.eem.entity.constant.PowerConsts;
 
 /**
  * 
@@ -27,10 +27,10 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	@FieldChecker(name = "有效年份", minLen = 1, maxLen = 4)
 	private String validYear;
 	private Long voltageLevel;
-	@FieldChecker(name = "购电量", minVal = 0, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "购电量", minVal = 0, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal quantity;
 	private Long tradeType;
-	@FieldChecker(name = "电价", minVal = 0.00000001, maxVal = Constant.MAX_POWER_VALUE)
+	@FieldChecker(name = "电价", minVal = 0.00000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal price;
 
 	private String createTime;
