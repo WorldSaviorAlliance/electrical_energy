@@ -39,6 +39,14 @@ public class Authority implements Serializable {
 	@OneToMany(mappedBy = "authority", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoleAuthority> owners = new ArrayList<>();
 
+	public Authority() {
+	}
+
+	public Authority(String func, String funcName) {
+		this.func = func;
+		this.funcName = funcName;
+	}
+	
 	public Long getId() {
 		return id;
 	}

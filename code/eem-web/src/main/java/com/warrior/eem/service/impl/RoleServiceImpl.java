@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.warrior.eem.dao.AuthorityDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.RoleDao;
 import com.warrior.eem.dao.support.LogicalCondition;
@@ -18,6 +19,7 @@ import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.Authority;
 import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.vo.RoleCdtVo;
+import com.warrior.eem.entity.vo.RoleVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.RoleService;
 import com.warrior.eem.util.EntityValidator;
@@ -34,6 +36,9 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 
 	@Autowired
 	private RoleDao roleDao;
+
+	@Autowired
+	private AuthorityDao authorityDao;
 
 	@Override
 	IDao<Role> getDao() {
@@ -69,35 +74,42 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 
 	@Override
 	Role convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
-		return null;
+		RoleVo roleVo = (RoleVo) vo;
+		Role role = (Role) dbo;
+		updateAuthority(role, roleVo);
+		return role;
 	}
 
 	@Override
 	Role convertVoToDoForCreate(Serializable vo) {
+		RoleVo roleVo = (RoleVo) vo;
+		String name = roleVo.getName();
+		if (checkExist(name)) {
+			throw new EemException(name + "已存在");
+		}
+		Role role = new Role();
+		role.setName(name);
+		updateAuthority(role, roleVo);
 		return null;
 	}
 
-	@Override
-	public boolean updateAuthorities(long roleId, List<Authority> authorities) {
-		Role role = queryRole(roleId);
+	private void updateAuthority(Role role, RoleVo roleVo) {
+		List<Long> authorityIds = roleVo.getAuthorities();
 		role.getAuthorities().clear();
-		role.getAuthorities().addAll(authorities);
-		roleDao.updateDo(role);
-		return true;
+		if (null != authorityIds && !authorityIds.isEmpty()) {
+			Authority authority;
+			for (Long id : authorityIds) {
+				authority = authorityDao.queryAuthority(id);
+				if (null != authority) {
+					role.getAuthorities().add(authority);
+				}
+			}
+		}
 	}
 
-	@Override
-	public boolean checkExist(String name) {
+	private boolean checkExist(String name) {
 		SqlRequest req = new SqlRequest();
 		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, name));
 		return roleDao.countDos(req) > 0;
-	}
-
-	private Role queryRole(long roleId) {
-		Role role = roleDao.getReference(roleId);
-		if (!role.isValid()) {// 从引用中获取的是一个虚拟的对象,去数据库查询
-			role = roleDao.getEntity(roleId);
-		}
-		return role;
 	}
 }
