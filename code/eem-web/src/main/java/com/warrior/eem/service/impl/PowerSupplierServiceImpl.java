@@ -53,7 +53,7 @@ public class PowerSupplierServiceImpl extends AbstractServiceImpl<PowerSupplier>
 			}
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 			if(cdt.getName() != null && cdt.getName().trim().length() > 0) {
-				sqlCdt = sqlCdt.and(SimpleCondition.like("name", cdt.getName() + "%"));
+				sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 			}
 			if(cdt.getProvince() != null && cdt.getProvince().trim().length() > 0) {
 				sqlCdt = sqlCdt.and(SimpleCondition.equal("province", cdt.getProvince()));

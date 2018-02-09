@@ -97,7 +97,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		req.setPage(page);
 		LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 		if (cdt.getName() != null && cdt.getName().trim().length() > 0) {
-			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
+			sqlCdt = sqlCdt.and(SimpleCondition.like("customer.name", "%" + cdt.getName() + "%"));
 		}
 		if (cdt.getValidYear() != null && cdt.getValidYear().trim().length() > 0) {
 			sqlCdt = sqlCdt.and(SimpleCondition.equal("validYear", cdt.getValidYear()));
