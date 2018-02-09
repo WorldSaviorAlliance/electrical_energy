@@ -5,6 +5,9 @@
 %>
 
 <form id="detail_form" class="form-horizontal" style="margin-top: 15px;">
+	<div class="form-group" style="text-align: center;">
+		<label id="jy_error" style="color:red;"></label>
+	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电力用户名称<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
@@ -19,8 +22,5 @@
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 	</div>	
-	<div class="form-group" style="text-align: center;">
-		<button class="btn btn-primary" style="margin-left: 15px;">保存</button>
-	    <button class="btn btn-default" type="button" style="margin-left: 15px;">取消</button>
-	</div>	
 </form>
+<script type="text/javascript" src="<%=basePath%>static/js/contract/jydl.js"></script>

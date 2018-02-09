@@ -110,6 +110,7 @@ $(function()
 							'<td>' + getObjStr(temp.voltageLevel) + '</td>'+
 							'<td>' + getObjStr(temp.tradeType) + '</td>'+					
 							'<td>' + getObjStr(temp.price) + '厘/kWh</td>'+
+							'<td></td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改合约</a>'+

@@ -3,6 +3,7 @@ function GdhyDetail(afterSaveCallbk, curData)
 {
 	var g_afterSaveCallbk = afterSaveCallbk;
 	var g_curData = curData;
+	var g_page_jydl = null; //交易电价的界面
 	init();
 	function init()
 	{
@@ -60,13 +61,50 @@ function GdhyDetail(afterSaveCallbk, curData)
 					width : WINDOW_WIDTH,
 		            title: '交易电量',
 		            content: addDiv,
-		            hasBottomBtn : false,
+		            onOkBtnFn : function(){
+		            	if(!g_page_jydl.validate())
+		            	{
+		            		return false;
+		            	}
+		            	addJydl2Table();
+		            	return true;
+		            },
 		            afterShow : function(){
-//		            	g_page_gdhy_detail = new GdhyDetail(getAllData);
+		            	g_page_jydl = new Jydl();
 		            }
 		        });	
 			});
 		});
+	}
+	
+	/**
+	 * 添加新的交易电量到表格中
+	 */
+	function addJydl2Table()
+	{
+		$('#jy_datas tr[type="empty_msg"]').hide();
+		var data = g_page_jydl.getJydlData();
+		if(data.id == null)//新增一行
+		{
+			var tr = '<tr type="data" customerId="' + data.customerId + '" price="' + data.price + '">' +
+						 '<td>'+
+						 	data.name+
+						 '</td>'+
+						 '<td flag="price">'+
+						 	data.price + '万kWh' +
+						 '</td>'+
+						 '<td>'+
+						 	'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="jydl_modify" customerId="' + data.id + '" price="' + data.price + '">修改</a>'+
+							'<a class="btn btn-danger btn-xs" flag="jydl_del">删除</a>'+
+						 '</td>'+
+					  '</tr>';
+			$('#jy_datas').append(tr);
+		}
+		else //更新对应行
+		{
+			$('#jy_datas tr[type="data"][customerId="' + data.id + '"]').attr('price', data.price);
+			$('#jy_datas tr[type="data"][customerId="' + data.id + '"] td[flag="price"]').html(data.price + '万kWh');			
+		}
 	}
 	
 	function initControlVal()
@@ -86,6 +124,20 @@ function GdhyDetail(afterSaveCallbk, curData)
 			tradeType: $('#tradeType').val(),
 			price: $('#price').val()
 		};
+		
+		var infos = '';
+		var djtrs = $('#jy_datas tr[type="data"]');
+		if(djtrs.length != 0)
+		{
+			var tempdj = [];
+			for(var i = 0; i < djtrs.length; i++)
+			{
+				var $t = $(djtrs.get(i));
+				tempdj.push({'powerUserId' : parseInt($t.attr('customerId')), 'quantity' : parseInt($t.attr('price'))});
+			}
+			infos = JSON.stringify(tempdj);
+		}
+		temp.infos = infos;
 		
 		var msgTitle = '添加购电合约';
 		if(g_curData != null)

@@ -18,40 +18,40 @@ public class SellPowerAgreementMonthDataVo implements Serializable {
 
 	private Long sellPowerAgreementId;
 
-	@FieldChecker(name = "一月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "一月", minLen = 9, maxLen = 164)
 	private String january;
 
-	@FieldChecker(name = "二月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "二月", minLen = 9, maxLen = 164)
 	private String february;
 
-	@FieldChecker(name = "三月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "三月", minLen = 9, maxLen = 164)
 	private String march;
 
-	@FieldChecker(name = "四月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "四月", minLen = 9, maxLen = 164)
 	private String april;
 
-	@FieldChecker(name = "五月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "五月", minLen = 9, maxLen = 164)
 	private String may;
 
-	@FieldChecker(name = "六月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "六月", minLen = 9, maxLen = 164)
 	private String june;
 
-	@FieldChecker(name = "七月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "七月", minLen = 9, maxLen = 164)
 	private String july;
 
-	@FieldChecker(name = "八月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "八月", minLen = 9, maxLen = 164)
 	private String august;
 
-	@FieldChecker(name = "九月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "九月", minLen = 9, maxLen = 164)
 	private String september;
 
-	@FieldChecker(name = "10月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "10月", minLen = 9, maxLen = 164)
 	private String october;
 
-	@FieldChecker(name = "11月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "11月", minLen = 9, maxLen = 164)
 	private String november;
 
-	@FieldChecker(name = "12月", minLen = 18, maxLen = 164)
+	@FieldChecker(name = "12月", minLen = 9, maxLen = 164)
 	private String december;
 
 	public SellPowerAgreementMonthDataVo() {
