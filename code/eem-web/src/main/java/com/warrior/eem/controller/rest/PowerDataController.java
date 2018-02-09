@@ -13,7 +13,6 @@ import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
-import com.warrior.eem.entity.vo.PowerDataUpdateVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
 import com.warrior.eem.service.PowerDataService;
 
@@ -39,8 +38,8 @@ public class PowerDataController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody(required = false) PowerDataUpdateVo updateVo) {
-		pdService.updateEntity(updateVo);
+	public Result<Object> updateEntity(@RequestBody(required = false) PowerDataVo vo) {
+		pdService.updateEntity(vo);
 		return Result.success();
 	}
 

@@ -15,6 +15,8 @@ import com.warrior.eem.entity.constant.PowerConsts;
 public class PowerDataVo implements Serializable {
 
 	private static final long serialVersionUID = -5716740087717124317L;
+	
+	private Long id;
 
 	@FieldChecker(name = "电力用户id", minLen = 1)
 	private String customerId;
@@ -88,6 +90,14 @@ public class PowerDataVo implements Serializable {
 
 	public String getTradeType() {
 		return tradeType;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setCustomerId(String customerId) {
