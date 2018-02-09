@@ -95,21 +95,21 @@ $(function()
 		var totalpage = 0;
 		if(datas != null && datas.length != 0)
 		{
-			g_all_datas = datas;
+			g_all_datas = datas;console.log(g_all_datas);
 			var trs = '';
 			totalpage = datas.length / PAGE_COUNT + (datas.length % PAGE_COUNT != 0 ? 1 : 0);
 			for(var i = 0; i < datas.length; i++)
 			{
 				var temp = datas[i];
 				trs += '<tr type="data">'+
-							'<td>' + getObjStr(temp.customerName) + '</td>'+
-							'<td>' + getObjStr(temp.customerNo) + '</td>'+
+							'<td>' + getObjStr(temp.supplier) + '</td>'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.No) + '</td>'+
+							'<td>' + getObjStr(temp.number) + '</td>'+
 							'<td>' + getObjStr(temp.validYear) + '</td>'+
-							'<td>' + getObjStr(temp.tradePowerQuantity) + '</td>'+					
-							'<td>' + getObjStr(temp.voltageType) + '</td>'+
-							'<td></td>'+
+							'<td>' + getObjStr(temp.quantity) + '万kWh</td>'+
+							'<td>' + getObjStr(temp.voltageLevel) + '</td>'+
+							'<td>' + getObjStr(temp.tradeType) + '</td>'+					
+							'<td>' + getObjStr(temp.price) + '厘/kWh</td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改合约</a>'+

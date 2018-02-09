@@ -20,13 +20,8 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">年份</label>
-	                  <div class="col-sm-10">
-		                   <select class="select search_select" data-placeholder="请选择年份" id="search_year">
-							<option value="">2018</option>
-							<option value="apple">2018</option>
-							<option value="orange">2018</option>
-							<option value="grapes">2018</option>
-							<option value="strawberry">2018</option>
+	                <div class="col-sm-10">
+		                <select class="select search_select" data-placeholder="请选择年份" id="search_year">
 						</select> 
 					</div>
 				</div>
