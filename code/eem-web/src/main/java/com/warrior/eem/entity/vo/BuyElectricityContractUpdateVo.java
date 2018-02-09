@@ -31,12 +31,14 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	@FieldChecker(name = "有效年份", minLen = 1, maxLen = 4)
 	private String validYear;
 	
-	private Long voltageLevel;
+	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
+	private String voltageLevel;
 	
 	@FieldChecker(name = "购电量", minVal = 0, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal quantity;
 	
-	private Long tradeType;
+	@FieldChecker(name = "交易品种", minLen = 1, maxLen = 10)
+	private String tradeType;
 	
 	@FieldChecker(name = "电价", minVal = 0.00000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal price;
@@ -79,16 +81,16 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
 	}
-	public Long getVoltageLevel() {
+	public String getVoltageLevel() {
 		return voltageLevel;
 	}
-	public void setVoltageLevel(Long voltageLevel) {
+	public void setVoltageLevel(String voltageLevel) {
 		this.voltageLevel = voltageLevel;
 	}
-	public Long getTradeType() {
+	public String getTradeType() {
 		return tradeType;
 	}
-	public void setTradeType(Long tradeType) {
+	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
 	}
 	public BigDecimal getPrice() {

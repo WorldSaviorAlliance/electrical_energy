@@ -22,8 +22,6 @@ import com.warrior.eem.dao.BuyElectricityContractDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.PowerSupplierDao;
-import com.warrior.eem.dao.TradeTypeDao;
-import com.warrior.eem.dao.VoltageTypeDao;
 import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
@@ -67,12 +65,6 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 
 	@Autowired
 	private PowerSupplierDao supplierDAO;
-
-	@Autowired
-	private TradeTypeDao tradeTypeDAO;
-
-	@Autowired
-	private VoltageTypeDao voltageDAO;
 
 	@Override
 	IDao<BuyElectricityContract> getDao() {
@@ -130,9 +122,9 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			if (object.getSupplier() != null) {
 				contract.setSupplier(object.getSupplier().getId());
 			}
-			contract.setTradeType(object.getTradeType() == null ? null : Long.valueOf(object.getTradeType()));
+			contract.setTradeType(object.getTradeType());
 			contract.setValidYear(object.getValidYear());
-			contract.setVoltageLevel(object.getVoltageType() == null ? null : Long.valueOf(object.getVoltageType()));
+			contract.setVoltageLevel(object.getVoltageType());
 			contracts.add(contract);
 		}
 		pageVo.setDatas(contracts);
@@ -159,14 +151,8 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			throw new EemException("不合法电力提供商id");
 		}
 		contract.setSupplier(supplier);
-		if (tradeTypeDAO.getEntity(((BuyElectricityContractUpdateVo) vo).getTradeType()) == null) {
-			throw new EemException("不合法交易类型id");
-		}
-		contract.setTradeType(String.valueOf(((BuyElectricityContractUpdateVo) vo).getTradeType()));
-		if (voltageDAO.getEntity(((BuyElectricityContractUpdateVo) vo).getVoltageLevel()) == null) {
-			throw new EemException("不合法电压Id");
-		}
-		contract.setVoltageType(String.valueOf(((BuyElectricityContractUpdateVo) vo).getVoltageLevel()));
+		contract.setTradeType(((BuyElectricityContractUpdateVo) vo).getTradeType());
+		contract.setVoltageType(((BuyElectricityContractUpdateVo) vo).getVoltageLevel());
 		contract.setCreator(EemSession.getCurrentUser());
 		return contract;
 	}

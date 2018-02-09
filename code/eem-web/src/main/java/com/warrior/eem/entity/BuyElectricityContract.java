@@ -48,10 +48,10 @@ public class BuyElectricityContract extends AbstractEntity implements Serializab
 	
 	private BigDecimal price;
 	
-	@Column(name = "trade_type_id")
+	@Column(name = "trade_type")
 	private String tradeType;
 	
-	@Column(name = "voltage_type_id")
+	@Column(name = "voltage_type")
 	private String voltageType;
 	
 	@OneToOne
