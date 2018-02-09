@@ -22,12 +22,12 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent e) {
 		if (e.getApplicationContext().getParent() == null) {
-			if (userService.createAdminIfAbsent()) {// 默认新增一个admin用户
+			if (!userService.createAdminIfAbsent()) {// 默认新增一个admin用户
 				logger.info("Failed to insert admin user.");
 			}
-		}
-		if (authorityService.initDefaultDataIfAbsent()) {// 初始化权限表
-			logger.info("Failed to initialize authority table.");
+			if (!authorityService.initDefaultDataIfAbsent()) {// 初始化权限表
+				logger.info("Failed to initialize authority table.");
+			}
 		}
 	}
 }

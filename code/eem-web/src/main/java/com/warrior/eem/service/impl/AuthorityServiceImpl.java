@@ -3,6 +3,8 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,7 @@ public final class AuthorityServiceImpl extends AbstractServiceImpl<Authority>im
 	}
 	
 	@Override
+	@Transactional
 	public boolean initDefaultDataIfAbsent() {
 		if (authorityDao.countDos(null) > 0) {
 			return true;

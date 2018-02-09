@@ -17,7 +17,7 @@ public final class AuthorityDaoImpl extends AbstractDaoImpl<Authority>implements
 
 	@Override
 	protected Class<Authority> getEntityClass() {
-		return null;
+		return Authority.class;
 	}
 
 	@Override
