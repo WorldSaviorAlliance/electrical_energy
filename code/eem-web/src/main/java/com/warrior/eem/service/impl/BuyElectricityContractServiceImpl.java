@@ -120,11 +120,14 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			contract.setPrice(object.getPrice());
 			contract.setQuantity(object.getTradeQuantity());
 			if (object.getSupplier() != null) {
-				contract.setSupplier(object.getSupplier().getId());
+				PowerSupplier ps = supplierDAO.getEntity(object.getSupplier().getId());
+				contract.setSupplier(ps == null ? null : ps.getName());
 			}
 			contract.setTradeType(object.getTradeType());
 			contract.setValidYear(object.getValidYear());
 			contract.setVoltageLevel(object.getVoltageType());
+			contract.setCreateTime(object.getCreateDate());
+			contract.setAttachment(object.getAttachmentName());
 			contracts.add(contract);
 		}
 		pageVo.setDatas(contracts);
@@ -142,7 +145,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		contract.setValidYear(((BuyElectricityContractUpdateVo) vo).getValidYear());
 		Long supplierId ;
 		try {			
-			supplierId= ((BuyElectricityContractUpdateVo) vo).getSupplier();
+			supplierId= Long.valueOf(((BuyElectricityContractUpdateVo) vo).getSupplier());
 		}catch(NumberFormatException e) {
 			throw new EemException("不合法电力提供商id格式");
 		}
