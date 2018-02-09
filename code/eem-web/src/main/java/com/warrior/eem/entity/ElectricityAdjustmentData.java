@@ -48,9 +48,9 @@ public class ElectricityAdjustmentData extends AbstractEntity implements Seriali
 	@JoinColumn(name = "agreement_id")
 	private SellPowerAgreement sellAgreement;
 
-	private Long tradeType;
+	private String tradeType;
 
-	private Long voltageType;
+	private String voltageType;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -136,19 +136,19 @@ public class ElectricityAdjustmentData extends AbstractEntity implements Seriali
 		this.sellAgreement = sellAgreement;
 	}
 
-	public Long getTradeType() {
+	public String getTradeType() {
 		return tradeType;
 	}
 
-	public void setTradeType(Long tradeType) {
+	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
 	}
 
-	public Long getVoltageType() {
+	public String getVoltageType() {
 		return voltageType;
 	}
 
-	public void setVoltageType(Long voltageType) {
+	public void setVoltageType(String voltageType) {
 		this.voltageType = voltageType;
 	}
 
