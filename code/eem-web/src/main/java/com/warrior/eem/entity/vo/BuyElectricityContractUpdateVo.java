@@ -17,7 +17,7 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long buyContractId;
+	private Long id;
 
 	@FieldChecker(name = "合约名称", minLen = 1, maxLen = 20)
 	private String name;
@@ -35,11 +35,11 @@ public class BuyElectricityContractUpdateVo implements Serializable{
 
 	private String createTime;
 
-	public Long getBuyContractId() {
-		return buyContractId;
+	public Long getId() {
+		return id;
 	}
-	public void setBuyContractId(Long buyContractId) {
-		this.buyContractId = buyContractId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;

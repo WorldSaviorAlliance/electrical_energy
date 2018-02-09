@@ -38,7 +38,7 @@ public class BuyElectricityContractController extends AbstractController {
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public Result<Object> createOrUpdateBuyContract(BuyElectricityContractUpdateVo buyContract,
-			@RequestParam(name = "infos") String infos, @RequestParam(name = "file") MultipartFile file,
+			@RequestParam(name = "infos", required = false) String infos, @RequestParam(name = "file", required = false) MultipartFile file,
 			@RequestParam(name = "ids", required = false) String deleteIds) throws Exception {
 		ObjectMapper om = new ObjectMapper();
 		JavaType javaType = om.getTypeFactory().constructParametrizedType(Set.class, HashSet.class,

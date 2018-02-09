@@ -123,7 +123,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		for (BuyElectricityContract object : list) {
 			BuyElectricityContractUpdateVo contract = new BuyElectricityContractUpdateVo();
 			contract.setName(object.getName());
-			contract.setBuyContractId(object.getId());
+			contract.setId(object.getId());
 			contract.setNumber(object.getNumber());
 			contract.setPrice(object.getPrice());
 			contract.setQuantity(object.getTradeQuantity());
@@ -142,7 +142,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 	@Override
 	BuyElectricityContract convertVoToDoForCreate(Serializable vo) {
 		BuyElectricityContract contract = new BuyElectricityContract();
-		contract.setId(((BuyElectricityContractUpdateVo) vo).getBuyContractId());
+		contract.setId(((BuyElectricityContractUpdateVo) vo).getId());
 		contract.setName(((BuyElectricityContractUpdateVo) vo).getName());
 		contract.setNumber(((BuyElectricityContractUpdateVo) vo).getNumber());
 		contract.setPrice(((BuyElectricityContractUpdateVo) vo).getPrice());
