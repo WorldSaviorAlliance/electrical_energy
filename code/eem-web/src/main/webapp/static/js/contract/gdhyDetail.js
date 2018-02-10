@@ -109,7 +109,51 @@ function GdhyDetail(afterSaveCallbk, curData)
 	
 	function initControlVal()
 	{
-		
+		if(g_curData != null)
+		{
+			$.ajax({
+				url: rootpath + '/' + PATH_GDHY + '/info?id=' + g_curData.id,
+				type : 'GET', 
+				dataType: 'json',
+			    contentType: 'application/json',
+				complete : function(XHR, TS) {
+					$('#datas tr[type="loading_msg"]').hide();
+					if (TS == "success") {
+						var ar = JSON.parse(XHR.responseText);
+						if(ar.code == 0)
+						{
+							var temp = ar.data;console.log(g_curData);
+							$('#name').val(g_curData.name);
+							$('#number').val(g_curData.number);
+							$('#name').val(g_curData.name);
+							$('#name').val(g_curData.name);
+							$('#name').val(g_curData.name);
+							$('#name').val(g_curData.name);
+							var temp = {
+									name : $('#name').val(),
+									number : $('#').val(),
+									supplier: $('#').val(),
+									validYear: $('#validYear').val(),
+									voltageLevel: $('#voltageLevel').val(),
+									quantity: $('#quantity').val(),
+									tradeType: $('#tradeType').val(),
+									price: $('#price').val()
+								};
+							getAllDysSelecte('supplier', g_curData);
+						}
+					}
+					else
+					{
+						showSystemError();
+					}
+				}
+			});
+		}
+		else
+		{
+			g_table_month = new Month2DL('dl_datas', 'dj_datas', 'normalTradePrice', 'supportTradePrice', 'replaceTradePrice', 'marginTradePrice');
+			getAllDlyhSelecte('customerId');
+		}
 	}
 	
 	function doSaveAction()
