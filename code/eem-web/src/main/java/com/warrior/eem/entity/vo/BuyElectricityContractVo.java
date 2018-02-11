@@ -3,6 +3,7 @@ package com.warrior.eem.entity.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class BuyElectricityContractVo implements Serializable{
@@ -14,7 +15,7 @@ public class BuyElectricityContractVo implements Serializable{
 	
 	private String number;
 	
-	private Long supplier;
+	private Map<String, Object> supplier;
 	
 	private String validYear;
 	
@@ -54,11 +55,11 @@ public class BuyElectricityContractVo implements Serializable{
 		this.number = number;
 	}
 
-	public Long getSupplier() {
+	public Map<String, Object> getSupplier() {
 		return supplier;
 	}
 
-	public void setSupplier(Long supplier) {
+	public void setSupplier(Map<String, Object> supplier) {
 		this.supplier = supplier;
 	}
 

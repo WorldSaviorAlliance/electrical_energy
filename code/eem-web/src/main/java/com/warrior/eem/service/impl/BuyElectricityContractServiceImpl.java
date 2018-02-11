@@ -5,8 +5,10 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -144,7 +146,10 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		vo.setPrice(entity.getPrice());
 		vo.setQuantity(entity.getTradeQuantity());
 		if (entity.getSupplier() != null) {
-			vo.setSupplier(entity.getSupplier().getId());
+			Map<String, Object> psMap = new HashMap<String, Object>();
+			psMap.put("id", entity.getSupplier().getId());
+			psMap.put("name", entity.getSupplier().getName());
+			vo.setSupplier(psMap);
 		}
 		vo.setTradeType(entity.getTradeType());
 		vo.setValidYear(entity.getValidYear());
