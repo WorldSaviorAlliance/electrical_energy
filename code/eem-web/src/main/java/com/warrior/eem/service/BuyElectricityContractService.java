@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.warrior.eem.entity.BuyElectricityContract;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
+import com.warrior.eem.entity.vo.BuyElectricityContractVo;
 
 public interface BuyElectricityContractService extends IService {
 
@@ -16,5 +17,5 @@ public interface BuyElectricityContractService extends IService {
 
 	BuyElectricityContract getBuyContractById(Long id);
 
-	List<BuyContractUserInfoUpdateVo> getBuyContractUserInfoByContractId(Long id);
+	BuyElectricityContractVo getBuyContractUserInfoByContractId(Long id);
 }

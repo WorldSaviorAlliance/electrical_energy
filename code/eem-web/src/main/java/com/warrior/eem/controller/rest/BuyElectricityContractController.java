@@ -20,6 +20,7 @@ import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.vo.BuyContractSearchVo;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
+import com.warrior.eem.entity.vo.BuyElectricityContractVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.BuyElectricityContractService;
 
@@ -35,15 +36,28 @@ public class BuyElectricityContractController extends AbstractController {
 	@Autowired
 	private BuyElectricityContractService buyContractService;
 
+	/**
+	 * 
+	 * @param buyContract 购买合约基本信息
+	 * @param infos 购买合约对应的客户列表信息json串 
+	 * @param file 附件属性
+	 * @param deleteIds 如果对客户列表信息有移除动作的  把移除项对应的id通过数组上传 eg: [1,2,3]
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	public Result<Object> createOrUpdateBuyContract(BuyElectricityContractUpdateVo buyContract,
 			@RequestParam(name = "infos", required = false) String infos, @RequestParam(name = "file", required = false) MultipartFile file,
 			@RequestParam(name = "ids", required = false) String deleteIds) throws Exception {
 		ObjectMapper om = new ObjectMapper();
-		JavaType javaType = om.getTypeFactory().constructParametrizedType(Set.class, HashSet.class,
-				BuyContractUserInfoUpdateVo.class);
-		Set<BuyContractUserInfoUpdateVo> contractUserInfos = om.readValue(infos, javaType);
+		JavaType javaType = null;
+		Set<BuyContractUserInfoUpdateVo> contractUserInfos = null;
+		if(infos != null && infos.trim().length() > 0) {
+			javaType = om.getTypeFactory().constructParametrizedType(Set.class, HashSet.class,
+					BuyContractUserInfoUpdateVo.class);
+			contractUserInfos = om.readValue(infos, javaType);
+		}
 		List<Long> ids = new ArrayList<>();
 		if (deleteIds != null && deleteIds.trim().length() > 0) {
 			javaType = om.getTypeFactory().constructParametrizedType(List.class, ArrayList.class, Long.class);
@@ -72,7 +86,7 @@ public class BuyElectricityContractController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.GET)
-	public Result<List<BuyContractUserInfoUpdateVo>> getBuyContractUserInfoByContractId(
+	public Result<BuyElectricityContractVo> getBuyContractUserInfoByContractId(
 			@RequestParam(name = "id") Long id) {
 		return Result.success(buyContractService.getBuyContractUserInfoByContractId(id));
 	}

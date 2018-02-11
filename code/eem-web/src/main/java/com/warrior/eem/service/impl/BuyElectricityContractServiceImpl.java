@@ -2,6 +2,7 @@ package com.warrior.eem.service.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.vo.BuyContractSearchVo;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
+import com.warrior.eem.entity.vo.BuyElectricityContractVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.BuyElectricityContractService;
@@ -120,15 +122,35 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			contract.setPrice(object.getPrice());
 			contract.setQuantity(object.getTradeQuantity());
 			if (object.getSupplier() != null) {
-				contract.setSupplier(object.getSupplier().getId());
+				PowerSupplier ps = supplierDAO.getEntity(object.getSupplier().getId());
+				contract.setSupplier(ps == null ? null : ps.getName());
 			}
 			contract.setTradeType(object.getTradeType());
 			contract.setValidYear(object.getValidYear());
 			contract.setVoltageLevel(object.getVoltageType());
+			contract.setCreateTime(object.getCreateDate());
+			contract.setAttachment(object.getAttachmentName());
 			contracts.add(contract);
 		}
 		pageVo.setDatas(contracts);
 		return pageVo;
+	}
+
+	private BuyElectricityContractVo convertDoToVo(BuyElectricityContract entity) {
+		BuyElectricityContractVo vo = new BuyElectricityContractVo();
+		vo.setName(entity.getName());
+		vo.setId(entity.getId());
+		vo.setNumber(entity.getNumber());
+		vo.setPrice(entity.getPrice());
+		vo.setQuantity(entity.getTradeQuantity());
+		if (entity.getSupplier() != null) {
+			vo.setSupplier(entity.getSupplier().getId());
+		}
+		vo.setTradeType(entity.getTradeType());
+		vo.setValidYear(entity.getValidYear());
+		vo.setVoltageLevel(entity.getVoltageType());
+		vo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getCreateDate()));
+		return vo;
 	}
 
 	@Override
@@ -140,9 +162,13 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		contract.setPrice(((BuyElectricityContractUpdateVo) vo).getPrice());
 		contract.setTradeQuantity(((BuyElectricityContractUpdateVo) vo).getQuantity());
 		contract.setValidYear(((BuyElectricityContractUpdateVo) vo).getValidYear());
+		Long supplierId;
+		try {
+			supplierId = ((BuyElectricityContractUpdateVo) vo).getSupplier();
+		} catch (NumberFormatException e) {
 		Long supplierId ;
 		try {			
-			supplierId= ((BuyElectricityContractUpdateVo) vo).getSupplier();
+			supplierId= Long.valueOf(((BuyElectricityContractUpdateVo) vo).getSupplier());
 		}catch(NumberFormatException e) {
 			throw new EemException("不合法电力提供商id格式");
 		}
@@ -181,15 +207,15 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 				}
 			}
 			EntityValidator.checkEntity(buyContract);
-			for (BuyContractUserInfoUpdateVo obj : infos) {
-				EntityValidator.checkEntity(obj);
-			}
 			contract.setAttachmentName(fileName);
-			Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
-			for (BuyContractUserInfoUpdateVo info : infos) {
-				contractUserInfos.add(converseBuyContractUserInfoVoToDo(info));
+			if(infos != null) {
+				Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
+				for (BuyContractUserInfoUpdateVo info : infos) {
+					EntityValidator.checkEntity(info);
+					contractUserInfos.add(converseBuyContractUserInfoVoToDo(info));
+				}
+				contract.setContractUserInfos(contractUserInfos);
 			}
-			contract.setContractUserInfos(contractUserInfos);
 			if (contract.getId() == null) {
 				Date now = new Date();
 				contract.setCreateDate(now);
@@ -244,15 +270,16 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 	}
 
 	@Override
-	public List<BuyContractUserInfoUpdateVo> getBuyContractUserInfoByContractId(Long id) {
+	public BuyElectricityContractVo getBuyContractUserInfoByContractId(Long id) {
 		BuyElectricityContract contract = null;
+		BuyElectricityContractVo contractVo = new BuyElectricityContractVo();
 		try {
 			contract = getBuyContractById(id);
+			contractVo = convertDoToVo(contract);
 		} catch (NoResultException e) {
 			throw new EemException("不合法id");
 		}
-		List<BuyContractUserInfoUpdateVo> infos = new ArrayList<>();
-
+		Set<BuyContractUserInfoUpdateVo> infos = new HashSet<>();
 		if (contract.getContractUserInfos() != null && !contract.getContractUserInfos().isEmpty()) {
 			for (BuyContractUserInfo object : contract.getContractUserInfos()) {
 				BuyContractUserInfoUpdateVo info = new BuyContractUserInfoUpdateVo();
@@ -264,12 +291,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 				infos.add(info);
 			}
 		}
-		return infos;
-	}
-	
-	public static void main(String args[]) {
-		
-		Date now = new Date();
-		System.out.println(now);
+		contractVo.setUserInfo(infos);
+		return contractVo;
 	}
 }
