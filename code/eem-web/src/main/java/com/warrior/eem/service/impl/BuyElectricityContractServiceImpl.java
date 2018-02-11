@@ -164,12 +164,8 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		contract.setValidYear(((BuyElectricityContractUpdateVo) vo).getValidYear());
 		Long supplierId;
 		try {
-			supplierId = ((BuyElectricityContractUpdateVo) vo).getSupplier();
+			supplierId = Long.valueOf(((BuyElectricityContractUpdateVo) vo).getSupplier());
 		} catch (NumberFormatException e) {
-		Long supplierId ;
-		try {			
-			supplierId= Long.valueOf(((BuyElectricityContractUpdateVo) vo).getSupplier());
-		}catch(NumberFormatException e) {
 			throw new EemException("不合法电力提供商id格式");
 		}
 		PowerSupplier supplier = supplierDAO.getEntity(supplierId);
@@ -208,7 +204,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			}
 			EntityValidator.checkEntity(buyContract);
 			contract.setAttachmentName(fileName);
-			if(infos != null) {
+			if (infos != null) {
 				Set<BuyContractUserInfo> contractUserInfos = new HashSet<>();
 				for (BuyContractUserInfoUpdateVo info : infos) {
 					EntityValidator.checkEntity(info);
