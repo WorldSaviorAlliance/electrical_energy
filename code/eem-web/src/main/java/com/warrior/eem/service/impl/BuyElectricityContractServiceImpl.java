@@ -124,8 +124,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 			contract.setPrice(object.getPrice());
 			contract.setQuantity(object.getTradeQuantity());
 			if (object.getSupplier() != null) {
-				PowerSupplier ps = supplierDAO.getEntity(object.getSupplier().getId());
-				contract.setSupplier(ps == null ? null : ps.getName());
+				contract.setSupplier(object.getSupplier() == null ? null : object.getSupplier().getName());
 			}
 			contract.setTradeType(object.getTradeType());
 			contract.setValidYear(object.getValidYear());
