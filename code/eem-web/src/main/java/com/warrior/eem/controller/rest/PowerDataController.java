@@ -1,5 +1,7 @@
 package com.warrior.eem.controller.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.warrior.eem.common.Result;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
+import com.warrior.eem.entity.vo.ContractAndPracticalResVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
@@ -74,6 +78,20 @@ public class PowerDataController extends AbstractController {
 		}
 		PageVo vo = pdService.listEntities(cdt, pageInfo[0], pageInfo[1], sortProp, orderProp);
 		return Result.success(vo.getCount(), vo.getDatas());
+	}
+
+	/**
+	 * 统计年/月 实际预测偏差列表数据
+	 * 
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping(value = "statis_list", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> statisContractAndpracticalData(
+			@RequestBody(required = false) ContractAndPracticalReqVo param) {
+		PageVo pv = pdService.listContractAndpracticalData(param);
+		return Result.success(pv.getCount(), pv.getDatas());
 	}
 
 }
