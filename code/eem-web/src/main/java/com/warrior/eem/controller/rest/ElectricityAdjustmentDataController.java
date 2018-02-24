@@ -28,7 +28,7 @@ public class ElectricityAdjustmentDataController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
-	public Result<Object> saveAndUpdateElectricityAdjustmentData(ElectricityAdjustmentDataUpdateVO adjustmentDataVo) {
+	public Result<Object> saveAndUpdateElectricityAdjustmentData(@RequestBody ElectricityAdjustmentDataUpdateVO adjustmentDataVo) {
 		adjustService.saveOrUpdateElectricityAdjustmentData(adjustmentDataVo);
 		return Result.success();
 	}

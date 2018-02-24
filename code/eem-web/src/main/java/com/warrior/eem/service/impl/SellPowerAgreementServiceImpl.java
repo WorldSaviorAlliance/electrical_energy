@@ -85,6 +85,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		MultiSelector ms = new MultiSelector();
 		ms.addSelectProp("id");
 		ms.addSelectProp("customer.name");
+		ms.addSelectProp("customer.id");
 		ms.addSelectProp("customerNo");
 		ms.addSelectProp("name");
 		ms.addSelectProp("No");
@@ -267,6 +268,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		List<String> propNames = new ArrayList<String>();
 		propNames.add("id");
 		propNames.add("customerName");
+		propNames.add("customerId");
 		propNames.add("customerNo");
 		propNames.add("name");
 		propNames.add("No");

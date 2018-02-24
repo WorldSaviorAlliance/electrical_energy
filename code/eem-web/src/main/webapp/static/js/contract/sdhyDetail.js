@@ -8,7 +8,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 	function init()
 	{
 		initControlAction();
-		inintControlVal();
+		initControlVal();
 	}
 	
 	function initControlAction()
@@ -83,7 +83,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 		});
 	}
 	
-	function inintControlVal()
+	function initControlVal()
 	{
 		if(g_curData != null)
 		{

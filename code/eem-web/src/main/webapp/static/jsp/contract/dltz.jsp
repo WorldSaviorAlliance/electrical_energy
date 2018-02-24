@@ -63,123 +63,23 @@
 					</tr>
 				</thead>
 				<tbody id="datas">
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有电量调整
 						</td>
 					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
 						</td>
 					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
 						</td>
 					</tr>
 				</tbody>

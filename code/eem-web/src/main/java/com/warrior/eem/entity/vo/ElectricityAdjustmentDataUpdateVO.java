@@ -27,7 +27,7 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable {
 	@FieldChecker(name = "调整数量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal quantity;
 	private Integer adjustmentType;
-	@FieldChecker(name = "调整年份", minLen = 1, maxLen = 4)
+	@FieldChecker(name = "调整年份", minLen = 1, maxLen = 6)
 	private String month;
 	@FieldChecker(name = "交易品种", minLen = 1, maxLen = 10)
 	private String tradeType;

@@ -338,6 +338,21 @@ function getYearSelectStr()
 }
 
 /**
+ * 获取交易品种数据
+ */
+function getTradeTypeSelectStr()
+{
+	var tradeType = ['常规直购电', '精准扶持直购电', '自备替代直购电'];
+	
+	var str = '<option value="-1">--请选择交易品种--</option>';
+	for(var i = 0; i < tradeType.length; i++)
+	{
+		str += '<option value="' + i + '">' + tradeType[i] + '</option>';
+	}
+	return str;
+}
+
+/**
  * 通过id获取对应的数据
  */
 function getCurDataById(id, all_datas)
@@ -391,7 +406,7 @@ function getAllDlyhSelecte(contorlId, valId)
 					var datas = ar.data;
 					if(datas != null && datas.length != 0)
 					{
-						var opts = '<option></option>';
+						var opts = '<option>--请选择电力用户--</option>';
 						for(var i = 0; i < datas.length; i++)
 						{
 							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
@@ -432,7 +447,7 @@ function getAllDysSelecte(contorlId, valId)
 					var datas = ar.data;
 					if(datas != null && datas.length != 0)
 					{
-						var opts = '<option></option>';
+						var opts = '<option>--请选择电源商--</option>';
 						for(var i = 0; i < datas.length; i++)
 						{
 							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
