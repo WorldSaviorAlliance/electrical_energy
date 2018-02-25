@@ -2,69 +2,50 @@ package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.warrior.eem.dao.IDao;
-import com.warrior.eem.entity.City;
+import com.warrior.eem.dao.ProvinceDao;
+import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.Province;
-import com.warrior.eem.entity.vo.PageVo;
-import com.warrior.eem.service.IService;
+import com.warrior.eem.service.LocationService;
 
-@Service("location")
-public class LocationServiceImpl implements IService, InitializingBean {
+/**
+ * 地理位置的服务
+ * 
+ * @author cold_blade
+ * @version 1.0.0
+ */
 
-	@Resource(name = "cityDao")
-	private IDao<City> cityDao;
-	
-	@Resource(name = "provinceDao")
-	private IDao<Province> provinceDao;
-	
+@Service
+public class LocationServiceImpl extends AbstractServiceImpl<Province> implements LocationService {
+
+	@Autowired
+	private ProvinceDao dao;
+
 	@Override
-	public void createEntity(Serializable e) {
-		// TODO Auto-generated method stub
-
+	IDao<Province> getDao() {
+		return dao;
 	}
 
 	@Override
-	public void updateEntity(Serializable e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteEntity(Serializable id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Serializable getEntity(Serializable id) {
-		// TODO Auto-generated method stub
+	SqlRequest buildListSqlRequest(Serializable... conditions) {
 		return null;
 	}
 
 	@Override
-	public PageVo listEntities(Serializable... conditions) {
-		// TODO Auto-generated method stub
+	SqlRequest buildCountSqlRequest(Serializable... conditions) {
 		return null;
 	}
 
 	@Override
-	public long countEntity(Serializable... conditions) {
-		// TODO Auto-generated method stub
-		return 0;
+	Province convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
+		return null;
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		long cityCnt = cityDao.countDos(null);
-		long provinceCnt = provinceDao.countDos(null);
-		if (0 == cityCnt || 0 == provinceCnt) {
-			// TODO 初始化城市和省份到数据库
-		}
+	Province convertVoToDoForCreate(Serializable vo) {
+		return null;
 	}
-
 }
