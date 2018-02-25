@@ -161,7 +161,7 @@ public class ElectricityAdjustmentDataServiceImpl extends AbstractServiceImpl<El
 			vo.setContractId(object.getSellAgreement().getId());
 			vo.setContractNumber(object.getContractNumber());
 			vo.setContractName(object.getSellAgreement().getName());
-			vo.setCreateTime(new SimpleDateFormat("yyyyMMdd-HHMMSS").format(object.getCreateTime()));
+			vo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(object.getCreateTime()));
 			vo.setCustomerId(object.getCustomer().getId());
 			vo.setCustomerName(object.getCustomer().getName());
 			vo.setCustomerNumber(object.getCustomerNumber());
