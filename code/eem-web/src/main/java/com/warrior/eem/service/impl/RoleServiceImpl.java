@@ -3,6 +3,8 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +41,26 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 
 	@Autowired
 	private AuthorityDao authorityDao;
-
+	
 	@Override
 	IDao<Role> getDao() {
 		return roleDao;
+	}
+	
+	@Override
+	@Transactional
+	public boolean initAdminRole() {
+		if (checkExist("管理员")) {
+			return true;
+		}
+		Role admin = new Role();
+		admin.setName("管理员");
+		List<?> authorities = authorityDao.listDos(null);
+		for (Object obj : authorities) {
+			admin.addAuthority((Authority) obj);
+		}
+		roleDao.createDo(admin);
+		return checkExist("管理员");
 	}
 
 	@Override

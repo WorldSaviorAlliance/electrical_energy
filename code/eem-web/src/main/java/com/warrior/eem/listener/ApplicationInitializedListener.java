@@ -7,6 +7,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.warrior.eem.service.AuthorityService;
+import com.warrior.eem.service.RoleService;
 import com.warrior.eem.service.UserService;
 
 @Component
@@ -18,6 +19,9 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 
 	@Autowired
 	private AuthorityService authorityService;
+	
+	@Autowired
+	private RoleService roleService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent e) {
@@ -27,6 +31,9 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 			}
 			if (!authorityService.initDefaultDataIfAbsent()) {// 初始化权限表
 				logger.info("Failed to initialize authority table.");
+			}
+			if (!roleService.initAdminRole()) {// 初始化管理员角色
+				logger.info("Failed to initialize admin role.");
 			}
 		}
 	}
