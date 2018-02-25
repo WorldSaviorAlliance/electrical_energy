@@ -1,7 +1,5 @@
 package com.warrior.eem.controller.rest;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +12,6 @@ import com.warrior.eem.common.Result;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
-import com.warrior.eem.entity.vo.ContractAndPracticalResVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataVo;

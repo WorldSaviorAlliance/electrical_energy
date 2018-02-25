@@ -86,6 +86,12 @@ $(function()
 		});
 	}
 	
+	
+	function gettradeType(type)
+	{
+		var tradeType = ['常规直购电', '精准扶持直购电', '自备替代直购电'];
+		return tradeType[type];
+	}
 
 	/**
 	 * 初始化表格
@@ -104,12 +110,14 @@ $(function()
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.customerName) + '</td>'+
 							'<td>' + getObjStr(temp.customerNumber) + '</td>'+
-							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.No) + '</td>'+
-							'<td>' + getObjStr(temp.validYear) + '</td>'+
-							'<td>' + getObjStr(temp.tradePowerQuantity) + '</td>'+					
+							'<td>' + getObjStr(temp.contractName) + '</td>'+
+							'<td>' + getObjStr(temp.contractNumber) + '</td>'+
+							'<td>' + getObjStr(temp.month) + '</td>'+
+							'<td>' + (temp.adjustmentType == 0 ? '调增' : '调减') + '</td>'+
+							'<td>' + getObjStr(temp.quantity) + '万kWh</td>'+
 							'<td>' + getObjStr(temp.voltageType) + '</td>'+
-							'<td></td>'+
+							'<td>' + gettradeType(temp.tradeType)+ '</td>'+
+							'<td>' + getObjStr(temp.price) + '厘/kWh</td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+

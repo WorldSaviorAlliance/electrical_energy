@@ -15,8 +15,10 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable {
 
 	private Long id;
 	private Long customerId;
+	private String customerName;
 	@FieldChecker(name = "用户户号", minLen = 1, maxLen = 30)
 	private String customerNumber;
+	private String contractName;
 	private Long contractId;
 	@FieldChecker(name = "合同编号", minLen = 1, maxLen = 30)
 	private String contractNumber;
@@ -27,7 +29,7 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable {
 	@FieldChecker(name = "调整数量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal quantity;
 	private Integer adjustmentType;
-	@FieldChecker(name = "调整年份", minLen = 1, maxLen = 6)
+	@FieldChecker(name = "调整月份", minLen = 1, maxLen = 6)
 	private String month;
 	@FieldChecker(name = "交易品种", minLen = 1, maxLen = 10)
 	private String tradeType;
@@ -51,6 +53,14 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable {
 
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String curstomerName) {
+		this.customerName = curstomerName;
 	}
 
 	public String getCustomerNumber() {
@@ -131,6 +141,14 @@ public class ElectricityAdjustmentDataUpdateVO implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getContractName() {
+		return contractName;
+	}
+
+	public void setContractName(String contractName) {
+		this.contractName = contractName;
 	}
 
 	public String getUserName() {
