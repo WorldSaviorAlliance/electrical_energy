@@ -47,7 +47,7 @@ function DltzDetail(afterSaveCallbk, curData)
 		$('#tradeType').append(getTradeTypeSelectStr());
 		$('.detail_search').niceSelect();
 		$('#customerId').change(function(){
-			initSdhyList($(this).val());
+			initSdhyList(false, $(this).val());
 		});
 		
 		$('#contractId').change(function(){
@@ -90,7 +90,15 @@ function DltzDetail(afterSaveCallbk, curData)
 	{
 		if(g_curData != null)
 		{
+			getAllDlyhSelecte('customerId', g_curData.customerId);
 			
+			$('#customerNo').val(g_curData.customerNumber);
+			$('#price').val(g_curData.price);
+			$('#quantity').val(g_curData.quantity);
+			$('#month').val(g_curData.month);
+			$('#month').niceSelect('update');
+			$('#tradeType').val(g_curData.tradeType);
+			$('#tradeType').niceSelect('update');
 		}
 		else
 		{
@@ -115,12 +123,19 @@ function DltzDetail(afterSaveCallbk, curData)
 				$('#datas tr[type="loading_msg"]').hide();
 				if (TS == "success") {
 					var ar = JSON.parse(XHR.responseText);
-					console.log(ar);
 					if(ar.code == 0)
 					{
 						g_all_sdhy = ar.data;
 					}
-					initSdhyList();
+					
+					if(g_curData != null)
+					{
+						initSdhyList(true, g_curData.customerId, g_curData.contractId);
+					}
+					else
+					{
+						initSdhyList(true);
+					}
 				}
 			}
 		});
@@ -129,29 +144,33 @@ function DltzDetail(afterSaveCallbk, curData)
 	/**
 	 * 通过电力用户获取其对应的售电合约
 	 */
-	function initSdhyList(dlyhId)
+	function initSdhyList(isAdd, dlyhId, contractId)
 	{
 		$('#contractId').empty();
 		var opts = '<option value="-1">--请选择售电合约--</option>';
-		if(dlyhId != null)
+		if(g_all_sdhy != null && dlyhId != null)
 		{
-			if(g_all_sdhy != null)
+			for(var i = 0; i < g_all_sdhy.length; i++)
 			{
-				for(var i = 0; i < g_all_sdhy.length; i++)
+				if(g_all_sdhy[i].customerId == dlyhId)
 				{
-					if(g_all_sdhy[i].customerId == dlyhId)
-					{
-						opts += '<option value="' + g_all_sdhy[i].id + '">' + g_all_sdhy[i].name + '</option>';
-					}
+					opts += '<option value="' + g_all_sdhy[i].id + '">' + g_all_sdhy[i].name + '</option>';
 				}
-				$('#contractId').append(opts);
-				$('#contractId').niceSelect('update');
 			}
+		}
+		$('#contractId').append(opts);
+		if(contractId != null)
+		{
+			$('#contractId').val(contractId);
+			$('#contractId').trigger("change");
+		}
+		if(isAdd)
+		{
+			$('#contractId').niceSelect();
 		}
 		else
 		{
-			$('#contractId').append(opts);
-			$('#contractId').niceSelect();
+			$('#contractId').niceSelect('update');
 		}
 	}
 	

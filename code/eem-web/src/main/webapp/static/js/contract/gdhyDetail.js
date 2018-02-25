@@ -125,20 +125,6 @@ function GdhyDetail(afterSaveCallbk, curData)
 							var temp = ar.data;console.log(g_curData);
 							$('#name').val(g_curData.name);
 							$('#number').val(g_curData.number);
-							$('#name').val(g_curData.name);
-							$('#name').val(g_curData.name);
-							$('#name').val(g_curData.name);
-							$('#name').val(g_curData.name);
-							var temp = {
-									name : $('#name').val(),
-									number : $('#').val(),
-									supplier: $('#').val(),
-									validYear: $('#validYear').val(),
-									voltageLevel: $('#voltageLevel').val(),
-									quantity: $('#quantity').val(),
-									tradeType: $('#tradeType').val(),
-									price: $('#price').val()
-								};
 							getAllDysSelecte('supplier', g_curData);
 						}
 					}
