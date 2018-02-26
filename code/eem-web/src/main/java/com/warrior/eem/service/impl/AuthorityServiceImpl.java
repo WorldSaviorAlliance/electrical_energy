@@ -43,16 +43,14 @@ public final class AuthorityServiceImpl extends AbstractServiceImpl<Authority>im
 
 	@Override
 	Authority convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	Authority convertVoToDoForCreate(Serializable vo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean initDefaultDataIfAbsent() {
