@@ -1,22 +1,30 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.PowerDataDao;
+import com.warrior.eem.dao.SellPowerAgreementDao;
 import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
+import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.PowerData;
+import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.vo.ContractAndPracticalItem;
 import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
@@ -41,6 +49,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 
 	@Autowired
 	private PowerCustomerDao pcDao;
+
+	@Autowired
+	private SellPowerAgreementDao spaDao;
 
 	@Override
 	IDao<PowerData> getDao() {
@@ -114,21 +125,25 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		return pd;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(readOnly = true)
 	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param) {
+		List<ContractAndPracticalItem> capis = new LinkedList<ContractAndPracticalItem>();
 		SqlRequest req = null;
+		LogicalCondition cdt = null;
+		String startTime = param.getStartTime();
+		String endTime = param.getEndTime();
 		if (param != null) {
 			req = new SqlRequest();
-			LogicalCondition cdt = LogicalCondition.emptyOfTrue();
+			cdt = LogicalCondition.emptyOfTrue();
 			if (ToolUtil.isStringEmpty(param.getStartTime()) && ToolUtil.isStringEmpty(param.getEndTime())) {
 			} else {
-				String startTime = param.getStartTime();
-				String endTime = param.getEndTime();
 				if (!ToolUtil.isStringEmpty(startTime) && !ToolUtil.isStringEmpty(endTime)) {
 					if (param.getType() == ContractAndPracticalReqVo.MONTH_STATIC) { // 按照月
 					} else if (param.getType() == ContractAndPracticalReqVo.YEAR_STATIC) { // 按照年
-						startTime = startTime + "01";
-						endTime = endTime + "12";
+						param.setStartTime(startTime + "01");
+						param.setEndTime(endTime + "12");
 					} else {
 						throw new EemException("无效的类型");
 					}
@@ -161,6 +176,88 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			}
 			req.setCdt(cdt);
 		}
-		return new PageVo(getDao().countDos(req), getDao().listDos(req));
+		Order order = new Order();
+		order.addOrder("month", Order_Type.ASC);
+		req.setOrder(order);
+		List<PowerData> datas = (List<PowerData>) getDao().listDos(req);
+		long count = getDao().countDos(req);
+		if (datas != null && datas.size() > 0) {
+			// 售电合约 单价（各个月份）
+			req = new SqlRequest();
+			cdt = LogicalCondition.emptyOfTrue();
+			if (!ToolUtil.isStringEmpty(param.getCustomerId())) {
+				try {
+					if (pcDao.getEntity(Long.valueOf(param.getCustomerId())) == null) {
+						throw new EemException("无效的电力用户");
+					}
+				} catch (NumberFormatException e) {
+					throw new EemException("错误的电力用户id格式");
+				}
+				Joiner joiner = new Joiner();
+				joiner.add("customer");
+				req.setJoiner(joiner);
+				cdt = cdt.and(SimpleCondition.equal("customer.id", param.getCustomerId()));
+
+				if (!ToolUtil.isStringEmpty(startTime) && !ToolUtil.isStringEmpty(endTime)) {
+					cdt = cdt.and(SimpleCondition.between("validYear", param.getStartTime().substring(0, 3),
+							param.getStartTime().substring(0, 3)));
+				}
+			}
+			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+			int size = spas.size();
+			datas.forEach(data -> {
+				BigDecimal unitPrice = null;
+				for (int i = size - 1; i >= 0; i--) { // 年合约列表
+					SellPowerAgreement spa = spas.get(i);
+					if (data.getMonth().startsWith(spa.getValidYear())) {
+						unitPrice = spa.createUnitPriceBySellType(data.getTradeType()); // 电单价
+						break;
+					}
+				}
+				if (unitPrice == null) {
+					throw new EemException("未找到月份（" + data.getMonth() + "）对应的售电合约信息");
+				}
+				capis.add(buildContractAndPracticalItem(data, unitPrice));
+			});
+		}
+		return new PageVo(count, capis);
+	}
+
+	/**
+	 * 构建item对象
+	 * 
+	 * @param data
+	 * @param unitPrice
+	 * @return
+	 */
+	private ContractAndPracticalItem buildContractAndPracticalItem(PowerData data, BigDecimal unitPrice) {
+		// 有效电量
+		BigDecimal validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
+		// 无效电量
+		BigDecimal invalidKwh = data.getIdleKwh();
+		double num = validKwh.doubleValue()
+				/ Math.sqrt(Math.pow(validKwh.doubleValue(), 2) + Math.pow(invalidKwh.doubleValue(), 2));
+
+		// TODO 需要乘以系数
+		data.setFlatKwh(data.getFlatKwh().multiply(unitPrice)); // 平段
+		data.setPeakKwh(data.getPeakKwh().multiply(unitPrice)); // 高峰
+		data.setTroughKwh(data.getTroughKwh().multiply(unitPrice)); // 低谷
+
+		BigDecimal validPrice = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
+		double totalPrice = validPrice.doubleValue() + (validPrice.doubleValue() * num);
+		ContractAndPracticalItem item = new ContractAndPracticalItem();
+		item.setCustomerName(data.getCustomer().getNickName());
+		item.setCustomerNo(data.getCustomerNo());
+		item.setEmNo(data.getEmNo());
+		item.setFlatPrice(data.getFlatKwh());
+		item.setValidPrice(validPrice);
+		item.setMonth(data.getMonth());
+		item.setPeakPrice(data.getPeakKwh());
+		item.setTotalPrice(totalPrice);
+		item.setTradePrice(unitPrice);
+		item.setTradeType(data.getTradeType());
+		item.setTroughPrice(data.getTroughKwh());
+		item.setVoltageType(data.getVoltageType());
+		return item;
 	}
 }

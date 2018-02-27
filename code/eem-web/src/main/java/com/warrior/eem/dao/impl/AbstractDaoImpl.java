@@ -157,7 +157,9 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 			}
 			// cq.having(restrictions);
 		}
+		
 		TypedQuery<?> tq = em.createQuery(cq);
+		// page
 		if (page != null) {
 			tq.setFirstResult((page.getStartPageNum() - 1) * page.getPerPageNum());
 			tq.setMaxResults(page.getPerPageNum());

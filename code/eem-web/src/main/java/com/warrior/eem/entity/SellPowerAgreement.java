@@ -16,9 +16,11 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warrior.eem.exception.EemException;
 
 /**
  * 售电合约
+ * 
  * @author seangan
  *
  */
@@ -26,61 +28,81 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "sell_power_agreement")
 public class SellPowerAgreement extends AbstractEntity {
 
+	/**
+	 * 售电合约电价类型
+	 * 
+	 * @author seangan
+	 *
+	 */
+	public enum Sell_Power_Price_Type {
+		Normal("常规直购电量交易价格"), Support("精准扶持直购电量交易价格"), Replace("自备替代直购电交易价格"), Margin("富于电量交易价格");
+
+		private String name;
+
+		Sell_Power_Price_Type(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+
 	private static final long serialVersionUID = 7741791027666246628L;
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private PowerCustomer customer;
-	
+
 	@Column(name = "customer_no")
 	private String customerNo;
-	
+
 	@Column(name = "name")
 	private String name; // 名称
-	
+
 	@Column(name = "number")
 	private String No; // 编号
-	
+
 	@Column(name = "valid_year")
 	private String validYear; // 有效年
-	
+
 	@Column(name = "attachment")
 	private String attachment; // 附件路径
-	
+
 	@Column(name = "valtage_type")
 	private String voltageType;
-	
+
 	@Column(name = "trade_power_quantity")
 	private BigDecimal tradePowerQuantity;
-	
+
 	@Column(name = "norma_trade_price")
 	private BigDecimal normalTradePrice;
-	
+
 	@Column(name = "support_trade_price")
 	private BigDecimal supportTradePrice;
-	
+
 	@Column(name = "replace_trade_price")
 	private BigDecimal replaceTradePrice;
-	
+
 	@Column(name = "margin_trade_price")
 	private BigDecimal marginTradePrice;
-	
+
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User creator;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "month_data_id")
 	private SellPowerAgreementMonthData monthData;
-	
+
 	public SellPowerAgreement() {
-		
+
 	}
 
 	public PowerCustomer getCustomer() {
@@ -202,5 +224,24 @@ public class SellPowerAgreement extends AbstractEntity {
 	public void setCreator(User creator) {
 		this.creator = creator;
 	}
-	
+
+	/**
+	 * 生成售电合约单价
+	 * @param sellTypeName
+	 * @return
+	 */
+	public BigDecimal createUnitPriceBySellType(String sellTypeName) {
+		
+		if (Sell_Power_Price_Type.Margin.getName().equals(sellTypeName)) {
+			return this.getMarginTradePrice();
+		} else if (Sell_Power_Price_Type.Normal.getName().equals(sellTypeName)) {
+			return this.getNormalTradePrice();
+		} else if (Sell_Power_Price_Type.Replace.getName().equals(sellTypeName)) {
+			return this.getReplaceTradePrice();
+		} else if (Sell_Power_Price_Type.Support.getName().equals(sellTypeName)) {
+			return this.getSupportTradePrice();
+		}
+		throw new EemException("无效的交易类型：" + sellTypeName);
+	}
+
 }

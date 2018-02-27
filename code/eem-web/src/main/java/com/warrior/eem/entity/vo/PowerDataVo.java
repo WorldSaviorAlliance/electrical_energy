@@ -18,8 +18,8 @@ public class PowerDataVo implements Serializable {
 	
 	private Long id;
 
-	@FieldChecker(name = "电力用户id", minLen = 1)
-	private String customerId;
+	@FieldChecker(name = "电力用户id", minVal = 1, maxVal = Long.MAX_VALUE)
+	private Long customerId;
 
 	@FieldChecker(name = "用户户号", minLen = 1, maxLen = 30)
 	private String customerNo;
@@ -52,7 +52,7 @@ public class PowerDataVo implements Serializable {
 
 	}
 
-	public String getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
 
@@ -100,7 +100,7 @@ public class PowerDataVo implements Serializable {
 		this.id = id;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 

@@ -83,7 +83,7 @@ public class PowerDataController extends AbstractController {
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping(value = "statis_list", method = RequestMethod.POST)
+	@RequestMapping(value = "price_list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> statisContractAndpracticalData(
 			@RequestBody(required = false) ContractAndPracticalReqVo param) {
