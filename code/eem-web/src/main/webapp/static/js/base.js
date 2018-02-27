@@ -468,3 +468,14 @@ function getAllDysSelecte(contorlId, valId)
 		}
 	});
 }
+
+
+/**
+ * 获得所有页数
+ * @param allCount
+ * @returns
+ */
+function getTotalPage(allCount)
+{
+	return allCount / PAGE_COUNT + (allCount % PAGE_COUNT != 0 ? 1 : 0);
+}

@@ -3,6 +3,7 @@ $(function()
 {
 	var g_page_dys_detail = null;
 	var g_all_datas = null; //当前所有的数据
+	var g_all_count = 0;  //当前所有数据的个数
 	init();
 	/**
 	 * 初始化界面
@@ -10,7 +11,7 @@ $(function()
 	function init()
 	{
 		initControlAction();
-		getAllData(0);
+		getAllData(FIRST_PAGE);
 	}
 	
 	/**
@@ -19,7 +20,7 @@ $(function()
 	function initControlAction()
 	{
 		$('#do_search').unbind('click').click(function(){
-			getAllData(0);
+			getAllData(FIRST_PAGE);
 		});
 		
 		$('#add').unbind('click').click(function(){
@@ -48,7 +49,7 @@ $(function()
 	{
 		if(curpage == null)
 		{
-			curpage = 0;
+			curpage = FIRST_PAGE;
 		}
 		$('#datas tr[type="loading_msg"]').show();
 		$('#datas tr[type="error_msg"]').hide();
@@ -69,9 +70,9 @@ $(function()
 				$('#datas tr[type="loading_msg"]').hide();
 				if (TS == "success") {
 					var ar = JSON.parse(XHR.responseText);
-					console.log(ar);
 					if(ar.code == 0)
 					{
+						g_all_count = ar.count;
 						initTable(curpage, ar.data);
 					}
 					else
@@ -93,12 +94,10 @@ $(function()
 	 */
 	function initTable(curpage, datas)
 	{
-		var totalpage = 0;
 		if(datas != null && datas.length != 0)
 		{
 			g_all_datas = datas;
 			var trs = '';
-			totalpage = datas.length / PAGE_COUNT + (datas.length % PAGE_COUNT != 0 ? 1 : 0);
 			for(var i = 0; i < datas.length; i++)
 			{
 				var temp = datas[i];
@@ -130,12 +129,13 @@ $(function()
 		initTableAction(curpage);
 	}
 	
-	function initTableAction(curpage, totalpage)
+	function initTableAction(curpage)
 	{
 		$('#page').empty();
 		var opts = {
-			totalPage : totalpage,
-			curPage : curpage
+			totalPage : getTotalPage(g_all_count),
+			curPage : curpage,
+			changePageFnc : getAllData
 		};
 		$('#page').EemPage(opts);
 		
@@ -197,7 +197,6 @@ $(function()
 			}
 		});
 	}
-	
 
 	return this;	
 });

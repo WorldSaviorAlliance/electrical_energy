@@ -36,7 +36,7 @@
 			var isNextDisabled = opts.curPage == opts.totalPage ? 'disabled' : '';
 				
 			var table = '<div class="pull-right" style="margin-right: 0px;">'+
-								'<ul class="pagination ng-isolate-scope">'+
+							'<ul class="pagination ng-isolate-scope eem_page">'+
 								'<li class="ng-scope ' + isFirstDisabled + '">'+
 									'<a href="javascript:void(1)" class="ng-binding ' + isFirstDisabled + '" type="0">首页</a>'+
 								'</li>'+
