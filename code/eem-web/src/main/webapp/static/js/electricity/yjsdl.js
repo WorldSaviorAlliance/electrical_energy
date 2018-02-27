@@ -11,7 +11,7 @@ $(function()
 	function init()
 	{
 		initControlAction();
-		getAllData();
+		getAllData(FIRST_PAGE);
 	}
 	
 	/**
@@ -20,7 +20,7 @@ $(function()
 	function initControlAction()
 	{
 		$('#do_search').unbind('click').click(function(){
-			getAllData(0);
+			getAllData(FIRST_PAGE);
 		});
 		$('#add').unbind('click').click(function(){
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
@@ -39,13 +39,6 @@ $(function()
 		});
 		
 		$('.select').niceSelect();
-		
-		$('#page').empty();
-		var opts = {
-			totalPage : 100,
-			curPage : 1
-		};
-		$('#page').EemPage(opts);
 		
 		$('a[flag="del"]').unbind('click').click(function(){
 			confirm('是否删除该月结算电量？', function(){
@@ -80,7 +73,7 @@ $(function()
 	{
 		if(curpage == null)
 		{
-			curpage = 0;
+			curpage = FIRST_PAGE;
 		}
 		$('#datas tr[type="loading_msg"]').show();
 		$('#datas tr[type="error_msg"]').hide();

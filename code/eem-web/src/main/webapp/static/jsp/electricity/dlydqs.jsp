@@ -19,28 +19,28 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">月份</label>
-	                  <div class="col-sm-4">
-		                   <select class="select search_select" data-placeholder="请选择开始月份" id="search_start_month">
-							<option value="">201801</option>
-							<option value="apple">201802</option>
-							<option value="orange">201803</option>
-							<option value="grapes">201804</option>
-							<option value="strawberry">201805</option>
+	                <div class="col-sm-4">
+		                <select class="select search_select" data-placeholder="请选择开始月份" id="startTime">
+							<option value="">请选择开始月份</option>
+							<option value="201802">201802</option>
+							<option value="201803">201803</option>
+							<option value="201804">201804</option>
+							<option value="201805">201805</option>
 						</select> 
 					</div>
 					<div class="col-sm-4">
-		                   <select class="select search_select" data-placeholder="请选择结束月份" id="search_end_month">
-							<option value="">201801</option>
-							<option value="apple">201802</option>
-							<option value="orange">201803</option>
-							<option value="grapes">201804</option>
-							<option value="strawberry">201805</option>
+		                <select class="select search_select" data-placeholder="请选择结束月份" id="endTime">
+							<option value="">请选择结束月份</option>
+							<option value="201802">201802</option>
+							<option value="201803">201803</option>
+							<option value="201804">201804</option>
+							<option value="201805">201805</option>
 						</select> 
 					</div>
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 			</div>
 		</div>
 		<div class="col-sm-12" style="padding: 0px;">
