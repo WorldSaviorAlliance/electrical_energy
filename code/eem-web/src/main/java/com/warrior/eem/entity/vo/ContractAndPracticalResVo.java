@@ -15,43 +15,43 @@ public class ContractAndPracticalResVo implements Serializable {
 	/**
 	 * 时间
 	 */
-	private String date;
+	private String month;
 	
 	/**
 	 * 预测数据
 	 */
-	private String contractData;
+	private double contractData;
 	
 	/**
 	 * 实际数据
 	 */
-	private String practicalData;
+	private double practicalData;
 	
 	public ContractAndPracticalResVo() {
 		
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public String getContractData() {
+	public double getContractData() {
 		return contractData;
 	}
 
-	public String getPracticalData() {
+	public double getPracticalData() {
 		return practicalData;
 	}
-
-	public void setDate(String date) {
-		this.date = date;
+	
+	public String getMonth() {
+		return month;
 	}
 
-	public void setContractData(String contractData) {
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public void setContractData(double contractData) {
 		this.contractData = contractData;
 	}
 
-	public void setPracticalData(String practicalData) {
+	public void setPracticalData(double practicalData) {
 		this.practicalData = practicalData;
 	}
 }
