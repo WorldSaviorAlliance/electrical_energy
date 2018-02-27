@@ -86,19 +86,14 @@ $(function()
 			}
 		});
 	}
-	
-	
-	function gettradeType(type)
-	{
-		var tradeType = ['常规直购电', '精准扶持直购电', '自备替代直购电'];
-		return tradeType[type];
-	}
+
 
 	/**
 	 * 初始化表格
 	 */
 	function initTable(curpage, datas)
 	{
+		$('#datas').empty();
 		if(datas != null && datas.length != 0)
 		{
 			g_all_datas = datas;

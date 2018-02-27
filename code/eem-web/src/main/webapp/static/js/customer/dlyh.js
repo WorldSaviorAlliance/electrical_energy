@@ -93,6 +93,7 @@ $(function()
 	 */
 	function initTable(curpage, datas)
 	{
+		$('#datas').empty();
 		if(datas != null && datas.length != 0)
 		{
 			g_all_datas = datas;
