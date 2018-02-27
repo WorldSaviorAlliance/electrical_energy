@@ -86,8 +86,9 @@ public class PowerDataController extends AbstractController {
 	@RequestMapping(value = "price_list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> statisContractAndpracticalData(
+			@RequestParam(name = "order", defaultValue = "DESC", required = false) String order,
 			@RequestBody(required = false) ContractAndPracticalReqVo param) {
-		PageVo pv = pdService.listContractAndpracticalData(param);
+		PageVo pv = pdService.listContractAndpracticalData(param, order);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}
 

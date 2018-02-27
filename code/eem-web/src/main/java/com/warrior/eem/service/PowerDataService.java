@@ -17,5 +17,5 @@ public interface PowerDataService extends IService {
 	 * @param req 请求参数
 	 * @return
 	 */
-	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo req);
+	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo req, String order);
 }

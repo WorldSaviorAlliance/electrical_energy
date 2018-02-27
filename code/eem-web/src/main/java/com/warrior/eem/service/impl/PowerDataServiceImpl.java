@@ -128,7 +128,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param) {
+	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param, String order) {
 		List<ContractAndPracticalItem> capis = new LinkedList<ContractAndPracticalItem>();
 		SqlRequest req = null;
 		LogicalCondition cdt = null;
@@ -176,9 +176,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			}
 			req.setCdt(cdt);
 		}
-		Order order = new Order();
-		order.addOrder("month", Order_Type.ASC);
-		req.setOrder(order);
+		Order or = new Order();
+		or.addOrder("month", (Order.ASC.equals(order) ? Order_Type.DESC : Order_Type.DESC));
+		req.setOrder(or);
 		List<PowerData> datas = (List<PowerData>) getDao().listDos(req);
 		long count = getDao().countDos(req);
 		if (datas != null && datas.size() > 0) {
