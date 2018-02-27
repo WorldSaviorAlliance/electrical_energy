@@ -29,7 +29,7 @@ public class Order implements Condition {
 	}
 	
 	public static Order_Type valueOf(String order) {
-		if("ASC".equalsIgnoreCase(order)) {
+		if(ASC.equalsIgnoreCase(order)) {
 			return Order_Type.ASC;
 		} 
 		return Order_Type.DESC;

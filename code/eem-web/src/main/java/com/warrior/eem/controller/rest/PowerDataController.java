@@ -15,6 +15,7 @@ import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
+import com.warrior.eem.entity.vo.PowerMonthPriceReqVo;
 import com.warrior.eem.service.PowerDataService;
 
 /**
@@ -83,12 +84,26 @@ public class PowerDataController extends AbstractController {
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping(value = "price_list", method = RequestMethod.POST)
+	@RequestMapping(value = "statis_list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> statisContractAndpracticalData(
-			@RequestParam(name = "order", defaultValue = "DESC", required = false) String order,
 			@RequestBody(required = false) ContractAndPracticalReqVo param) {
-		PageVo pv = pdService.listContractAndpracticalData(param, order);
+		PageVo pv = pdService.listContractAndpracticalData(param);
+		return Result.success(pv.getCount(), pv.getDatas());
+	}
+
+	/**
+	 * 月度清算列表数据
+	 * 
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping(value = "price_list", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> listPowerMonthPriceData(
+			@RequestParam(name = "order", defaultValue = "DESC", required = false) String order,
+			@RequestBody(required = false) PowerMonthPriceReqVo param) {
+		PageVo pv = pdService.listPowerMonthPriceData(param, order);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}
 

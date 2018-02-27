@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @author seangan
  *
  */
-public class ContractAndPracticalItem implements Serializable {
+public class PowerMonthPriceInfoItemVo implements Serializable {
 	
 	private static final long serialVersionUID = -1242435088158768025L;
 
@@ -50,7 +50,7 @@ public class ContractAndPracticalItem implements Serializable {
 	// 电费总计
 	private double totalPrice;
 	
-	public ContractAndPracticalItem() {
+	public PowerMonthPriceInfoItemVo() {
 		
 	}
 

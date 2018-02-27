@@ -1,6 +1,8 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
@@ -24,8 +26,10 @@ import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.PowerData;
 import com.warrior.eem.entity.SellPowerAgreement;
-import com.warrior.eem.entity.vo.ContractAndPracticalItem;
+import com.warrior.eem.entity.vo.PowerMonthPriceInfoItemVo;
+import com.warrior.eem.entity.vo.PowerMonthPriceReqVo;
 import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
+import com.warrior.eem.entity.vo.ContractAndPracticalResVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
 import com.warrior.eem.entity.vo.PowerDataVo;
@@ -128,8 +132,8 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param, String order) {
-		List<ContractAndPracticalItem> capis = new LinkedList<ContractAndPracticalItem>();
+	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param) {
+		List<ContractAndPracticalResVo> capis = new LinkedList<ContractAndPracticalResVo>();
 		SqlRequest req = null;
 		LogicalCondition cdt = null;
 		String startTime = param.getStartTime();
@@ -177,7 +181,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			req.setCdt(cdt);
 		}
 		Order or = new Order();
-		or.addOrder("month", (Order.ASC.equals(order) ? Order_Type.DESC : Order_Type.DESC));
+		or.addOrder("month", Order_Type.DESC);
 		req.setOrder(or);
 		List<PowerData> datas = (List<PowerData>) getDao().listDos(req);
 		long count = getDao().countDos(req);
@@ -206,10 +210,98 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
 			int size = spas.size();
 			datas.forEach(data -> {
+				ContractAndPracticalResVo monthItem = new ContractAndPracticalResVo();
+				SellPowerAgreement targetSpa = null;
+				for (int i = size - 1; i >= 0; i--) { // 年合约列表
+					SellPowerAgreement spa = spas.get(i);
+					if (data.getMonth().startsWith(spa.getValidYear())
+							&& data.getCustomer().getId() == spa.getCustomer().getId()) {
+						targetSpa = spa;
+						break;
+					}
+				}
+				if (targetSpa == null) {
+					throw new EemException("未找到月份（" + data.getMonth() + "）对应的售电合约信息");
+				}
+				try {
+					Method m = targetSpa.getMonthData().getClass().getMethod(targetSpa.getMonthData().convertMonthNumToMethodName(
+							data.getMonth().substring(data.getMonth().length() - 2, data.getMonth().length())));
+					String monthData = (String)m.invoke(targetSpa.getMonthData());
+					String[] monthQuantity = monthData.substring(1, monthData.length() - 1).split(":");
+					double contractQuantity = 0;
+					for(String quantity : monthQuantity) {
+						contractQuantity += Double.valueOf(quantity);
+					}
+					// 有效电量
+					double validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh()).doubleValue();
+					monthItem.setContractData(contractQuantity);
+					monthItem.setMonth(data.getMonth());
+					monthItem.setPracticalData(validKwh);
+					
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				} 
+				capis.add(monthItem);
+			});
+		}
+		return new PageVo(count, capis);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageVo listPowerMonthPriceData(PowerMonthPriceReqVo param, String order) {
+		List<PowerMonthPriceInfoItemVo> capis = new LinkedList<PowerMonthPriceInfoItemVo>();
+		SqlRequest req = null;
+		LogicalCondition cdt = null;
+		String startTime = param.getStartTime();
+		String endTime = param.getEndTime();
+		if (param != null) {
+			req = new SqlRequest();
+			cdt = LogicalCondition.emptyOfTrue();
+			if (ToolUtil.isStringEmpty(param.getStartTime()) && ToolUtil.isStringEmpty(param.getEndTime())) {
+			} else {
+				if (!ToolUtil.isStringEmpty(startTime) && !ToolUtil.isStringEmpty(endTime)) {
+					cdt = cdt.and(SimpleCondition.between("month", param.getStartTime(), param.getEndTime()));
+				} else {
+					throw new EemException("开始/结束时间必须同时选择或者不选");
+				}
+			}
+			if (!ToolUtil.isStringEmpty(param.getCustomerName())) {
+				Joiner joiner = new Joiner();
+				joiner.add("customer");
+				req.setJoiner(joiner);
+				cdt = cdt.and(SimpleCondition.like("customer.nickName", "%" + param.getCustomerName() + "%"));
+			}
+			req.setCdt(cdt);
+		}
+		Order or = new Order();
+		or.addOrder("month", Order.ASC.equalsIgnoreCase(order) ? Order_Type.ASC : Order_Type.DESC);
+		req.setOrder(or);
+		List<PowerData> datas = (List<PowerData>) getDao().listDos(req);
+		long count = getDao().countDos(req);
+		if (datas != null && datas.size() > 0) {
+			// 售电合约 单价（各个月份）
+			req = new SqlRequest();
+			cdt = LogicalCondition.emptyOfTrue();
+			if (!ToolUtil.isStringEmpty(param.getCustomerName())) {
+				Joiner joiner = new Joiner();
+				joiner.add("customer");
+				req.setJoiner(joiner);
+				cdt = cdt.and(SimpleCondition.like("customer.nickName", "%" + param.getCustomerName() + "%"));
+
+				if (!ToolUtil.isStringEmpty(startTime) && !ToolUtil.isStringEmpty(endTime)) {
+					cdt = cdt.and(SimpleCondition.between("validYear", param.getStartTime().substring(0, 3),
+							param.getStartTime().substring(0, 3)));
+				}
+			}
+			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+			int size = spas.size();
+			datas.forEach(data -> {
 				BigDecimal unitPrice = null;
 				for (int i = size - 1; i >= 0; i--) { // 年合约列表
 					SellPowerAgreement spa = spas.get(i);
-					if (data.getMonth().startsWith(spa.getValidYear())) {
+					if (data.getMonth().startsWith(spa.getValidYear())
+							&& data.getCustomer().getId() == spa.getCustomer().getId()) {
 						unitPrice = spa.createUnitPriceBySellType(data.getTradeType()); // 电单价
 						break;
 					}
@@ -230,7 +322,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	 * @param unitPrice
 	 * @return
 	 */
-	private ContractAndPracticalItem buildContractAndPracticalItem(PowerData data, BigDecimal unitPrice) {
+	private PowerMonthPriceInfoItemVo buildContractAndPracticalItem(PowerData data, BigDecimal unitPrice) {
 		// 有效电量
 		BigDecimal validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
 		// 无效电量
@@ -245,7 +337,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 
 		BigDecimal validPrice = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
 		double totalPrice = validPrice.doubleValue() + (validPrice.doubleValue() * num);
-		ContractAndPracticalItem item = new ContractAndPracticalItem();
+		PowerMonthPriceInfoItemVo item = new PowerMonthPriceInfoItemVo();
 		item.setCustomerName(data.getCustomer().getNickName());
 		item.setCustomerNo(data.getCustomerNo());
 		item.setEmNo(data.getEmNo());
