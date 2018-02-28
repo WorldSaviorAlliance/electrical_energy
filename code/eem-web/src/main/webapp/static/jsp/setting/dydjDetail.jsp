@@ -7,8 +7,11 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入名称" required id="name" />
+			<input type="text" class="form-control" placeholder="请输入名称" required id="name"  maxlength="20"/>
 		</div>
+		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="name">
+			最长20个字符
+		</label>
 	</div>
 	<div class="form-group" style="text-align: center;">
 		<button class="btn btn-primary">保存</button>

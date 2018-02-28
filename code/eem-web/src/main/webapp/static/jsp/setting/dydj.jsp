@@ -12,7 +12,7 @@
 				<div class="form-group">
                   <label class="col-sm-4 control-label">名称</label>
                   <div class="col-sm-8">
-                   <input type="text" class="form-control" id="name">
+                   <input type="text" class="form-control" id="search_name">
                   </div>
                 </div>
 			</div>

@@ -53,7 +53,7 @@ $(function()
 		$('#datas tr[type="empty_msg"]').hide();
 		$('#datas tr[type="data"]').remove();
 		var search = {
-			'name' : $('#name').val(),
+			'name' : $('#search_name').val(),
 			'startPage' : curpage,
 			'perPageCnt' : PAGE_COUNT
 			};

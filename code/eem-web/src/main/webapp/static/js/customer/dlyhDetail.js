@@ -38,7 +38,6 @@ function DlyhDetail(afterSaveCallbk, curData)
 			$('label.input_msg').hide();
 			$('label.input_msg[for="' + $(this).attr('id')+ '"]').show();
 		});
-
 	}
 	
 	function inintControlVal()
