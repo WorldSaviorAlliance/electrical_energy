@@ -5,8 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,7 +135,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	@Override
 	@Transactional(readOnly = true)
 	public PageVo listContractAndpracticalData(ContractAndPracticalReqVo param) {
-		List<ContractAndPracticalResVo> capis = new LinkedList<ContractAndPracticalResVo>();
+		final List<ContractAndPracticalResVo> capis = new LinkedList<ContractAndPracticalResVo>();
 		SqlRequest req = null;
 		LogicalCondition cdt = null;
 		String startTime = param.getStartTime();
@@ -185,8 +187,8 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		req.setOrder(or);
 		List<PowerData> datas = (List<PowerData>) getDao().listDos(req);
 		long count = getDao().countDos(req);
+		Map<String, ContractAndPracticalResVo> resMap = new HashMap<String, ContractAndPracticalResVo>();
 		if (datas != null && datas.size() > 0) {
-			// 售电合约 单价（各个月份）
 			req = new SqlRequest();
 			cdt = LogicalCondition.emptyOfTrue();
 			if (!ToolUtil.isStringEmpty(param.getCustomerId())) {
@@ -208,6 +210,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 				}
 			}
 			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+			if(spas == null || spas.size() == 0) {
+				throw new EemException("未找到这个时间段的售电合约信息");
+			}
 			int size = spas.size();
 			datas.forEach(data -> {
 				ContractAndPracticalResVo monthItem = new ContractAndPracticalResVo();
@@ -235,13 +240,29 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 					// 有效电量
 					double validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh()).doubleValue();
 					monthItem.setContractData(contractQuantity);
-					monthItem.setMonth(data.getMonth());
+					monthItem.setDate(data.getMonth());
 					monthItem.setPracticalData(validKwh);
-					
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 				} 
-				capis.add(monthItem);
+				if(param.getType() == ContractAndPracticalReqVo.MONTH_STATIC) {
+					capis.add(monthItem);
+				} else {
+					ContractAndPracticalResVo resItem = resMap.get(targetSpa.getValidYear());
+					if(resItem == null) {
+						monthItem.setDate(targetSpa.getValidYear());
+						resMap.put(targetSpa.getValidYear(), monthItem);
+					} else {
+						resItem.setContractData(resItem.getContractData() + monthItem.getContractData());
+						resItem.setPracticalData(resItem.getPracticalData() + monthItem.getPracticalData());
+					}
+				}
+			});
+		}
+		if(param.getType() == ContractAndPracticalReqVo.YEAR_STATIC) {
+			capis.clear();
+			resMap.forEach((year, item) -> {
+				capis.add(item);
 			});
 		}
 		return new PageVo(count, capis);
@@ -295,6 +316,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 				}
 			}
 			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+			if(spas == null || spas.size() == 0) {
+				throw new EemException("未找到这个时间段的售电合约信息");
+			}
 			int size = spas.size();
 			datas.forEach(data -> {
 				BigDecimal unitPrice = null;

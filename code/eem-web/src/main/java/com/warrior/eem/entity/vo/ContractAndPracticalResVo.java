@@ -15,7 +15,7 @@ public class ContractAndPracticalResVo implements Serializable {
 	/**
 	 * 时间
 	 */
-	private String month;
+	private String date;
 	
 	/**
 	 * 预测数据
@@ -39,12 +39,12 @@ public class ContractAndPracticalResVo implements Serializable {
 		return practicalData;
 	}
 	
-	public String getMonth() {
-		return month;
+	public String getDate() {
+		return date;
 	}
 
-	public void setMonth(String month) {
-		this.month = month;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public void setContractData(double contractData) {
