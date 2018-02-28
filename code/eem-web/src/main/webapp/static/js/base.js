@@ -476,6 +476,52 @@ function getAllDysSelecte(contorlId, valId)
 
 
 /**
+ * 获取所有的电压等级的下拉列表
+ */
+function getAllDydjSelecte(contorlId, valId)
+{
+	$('#' + contorlId).empty();
+	var search = {
+			'startPage' : FIRST_PAGE,
+			'perPageCnt' : MAX_COUNT
+		};
+	$.ajax({
+		url: rootpath + '/' + PATH_DYDJ + '/list',
+		type : 'POST', 
+		dataType: 'json',
+		data : JSON.stringify(search),
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);
+				if(ar.code == 0)
+				{
+					var datas = ar.data;
+					if(datas != null && datas.length != 0)
+					{
+						var opts = '<option>--请选择电压等级--</option>';
+						for(var i = 0; i < datas.length; i++)
+						{
+							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
+						}
+						$('#' + contorlId).append(opts);
+						if(valId != null)
+						{
+							$('#' + contorlId).val(valId);
+						}
+					}
+					$('#' + contorlId).niceSelect();
+				}
+			}
+			else
+			{
+				showSystemError();
+			}
+		}
+	});
+}
+
+/**
  * 获得所有页数
  * @param allCount
  * @returns

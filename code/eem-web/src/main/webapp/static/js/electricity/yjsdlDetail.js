@@ -55,6 +55,7 @@ function YjsdlDetail(afterSaveCallbk, curData)
 		if(g_curData == null)
 		{
 			getAllDlyhSelecte('customerId');
+			getAllDydjSelecte('voltageType');
 		}
 	}
 	
@@ -63,13 +64,12 @@ function YjsdlDetail(afterSaveCallbk, curData)
 		if(g_curData != null)
 		{
 			getAllDlyhSelecte('customerId', g_curData.customer.id);
+			getAllDydjSelecte('voltageType', g_curData.voltageLevel);
 			$('#customerId').niceSelect('update');
 			$('#customerNo').val(g_curData.customerNo);
 			$('#emNo').val(g_curData.emNo);
 			$('#month').val(g_curData.month);
 			$('#month').niceSelect('update');
-			$('#voltageType').val(g_curData.voltageType);
-			$('#voltageType').niceSelect('update');
 			$('#peakKwh').val(g_curData.peakKwh);
 			$('#flatKwh').val(g_curData.flatKwh);
 			$('#troughKwh').val(g_curData.troughKwh);

@@ -73,6 +73,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 		if(g_curData == null)
 		{
 			getAllDlyhSelecte('customerId');
+			getAllDydjSelecte('voltageType');
 		}
 		
 		$("#att_file").on("change",function(){
@@ -98,15 +99,15 @@ function SdhyDetail(afterSaveCallbk, curData)
 						var ar = JSON.parse(XHR.responseText);
 						if(ar.code == 0)
 						{
-							g_curData = ar.data;console.log(g_curData);
+							g_curData = ar.data;
 							getAllDlyhSelecte('customerId', g_curData.customer.id);
+							getAllDydjSelecte('voltageType', g_curData.voltageLevel);
 							$('#customerNo').val(g_curData.customerNo);
 							$('#name').val(g_curData.name);
 							$('#no').val(g_curData.No);
 							$('#file_path').val(g_curData.attachment);//附件
 							$('#validYear').val(g_curData.validYear);
 							$('#validYear').niceSelect('update');
-							$('#voltageType').val(g_curData.voltageType);
 							$('#tradePowerQuantity').val(g_curData.tradePowerQuantity);
 							$('#normalTradePrice').val(g_curData.normalTradePrice);
 							$('#supportTradePrice').val(g_curData.supportTradePrice);

@@ -51,6 +51,7 @@ function GdhyDetail(afterSaveCallbk, curData)
 		if(g_curData == null)
 		{
 			getAllDysSelecte('supplier');
+			getAllDydjSelecte('voltageLevel');
 		}
 		
 		$('#add_jy').unbind('click').click(function(){
@@ -125,7 +126,8 @@ function GdhyDetail(afterSaveCallbk, curData)
 							var temp = ar.data;console.log(g_curData);
 							$('#name').val(g_curData.name);
 							$('#number').val(g_curData.number);
-							getAllDysSelecte('supplier', g_curData);
+							getAllDysSelecte('supplier', g_curData.id);
+							getAllDydjSelecte('voltageLevel', g_curData.voltageLevel);
 						}
 					}
 					else
@@ -137,7 +139,6 @@ function GdhyDetail(afterSaveCallbk, curData)
 		}
 		else
 		{
-			g_table_month = new Month2DL('dl_datas', 'dj_datas', 'normalTradePrice', 'supportTradePrice', 'replaceTradePrice', 'marginTradePrice');
 			getAllDlyhSelecte('customerId');
 		}
 	}

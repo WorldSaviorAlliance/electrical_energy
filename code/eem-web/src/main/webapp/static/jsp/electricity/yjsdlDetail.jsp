@@ -44,9 +44,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">电压等级<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<select class="select detail_search" data-placeholder="请选择电压等级" id="voltageType">
-				<option value="110KV">110KV</option>
-				<option value="220KV">220KV</option>
+			<select class="select" data-placeholder="请选择电压等级" id="voltageType">
 			</select>
 		</div>
 	</div>
