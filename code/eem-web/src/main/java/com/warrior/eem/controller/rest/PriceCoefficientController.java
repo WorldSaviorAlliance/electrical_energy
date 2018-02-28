@@ -8,60 +8,55 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.PriceCoefficient;
 import com.warrior.eem.entity.vo.PageVo;
-import com.warrior.eem.entity.vo.UserCdtVo;
-import com.warrior.eem.entity.vo.UserVo;
-import com.warrior.eem.service.UserService;
-import com.warrior.eem.shiro.session.EemSession;
+import com.warrior.eem.entity.vo.PriceCoefficientCdtVo;
+import com.warrior.eem.entity.vo.PriceCoefficientVo;
+import com.warrior.eem.service.PriceCoefficientService;
 
 /**
- * 用户管理
+ * 电价系数控制器
  * 
  * @author cold_blade
  * @version 1.0.0
  */
 @Controller
-@RequestMapping("user")
-public class UserManagerController extends AbstractController {
+@RequestMapping("price_coefficient")
+public class PriceCoefficientController extends AbstractController {
 
 	@Autowired
-	private UserService service;
+	private PriceCoefficientService service;
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> createEntity(@RequestBody(required = false) UserVo userVo) {
-		service.createEntity(userVo);
+	public Result<Object> createEntity(@RequestBody(required = false) PriceCoefficientVo vo) {
+		service.createEntity(vo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody(required = false) UserVo userVo) {
-		User user = service.updateUser(userVo);
-		User curUser = EemSession.getCurrentUser();
-		if (null != curUser && curUser.getId() == user.getId()) {
-			EemSession.setCurrentUser(user);// 更新当前session中的用户信息
-		}
+	public Result<Object> updateEntity(@RequestBody(required = false) PriceCoefficientVo vo) {
+		service.updateEntity(vo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteEntity(String id) {
-		service.deleteEntity(convertId(id));
+	public Result<Object> deleteEntity(long id) {
+		service.deleteEntity(id);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<User> getEntity(String id) {
-		return Result.success((User) service.getEntity(convertId(id)));
+	public Result<PriceCoefficient> getEntity(long id) {
+		return Result.success((PriceCoefficient) service.getEntity(id));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> listEntities(@RequestBody(required = false) UserCdtVo cdt) {
+	public Result<Object> list(@RequestBody(required = false) PriceCoefficientCdtVo cdt) {
 		PageVo pageVo = service.listEntities(cdt);
 		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
+import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.RoleCdtVo;
 import com.warrior.eem.entity.vo.RoleVo;
 import com.warrior.eem.service.RoleService;
@@ -22,39 +24,39 @@ import com.warrior.eem.service.RoleService;
 @RequestMapping("role")
 public final class RoleController extends AbstractController {
 	@Autowired
-	private RoleService roleService;
+	private RoleService service;
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> createEntity(@RequestBody(required = false) RoleVo vo) {
-		roleService.createEntity(vo);
+		service.createEntity(vo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
 	public Result<Object> updateEntity(@RequestBody(required = false) RoleVo vo) {
-		roleService.updateEntity(vo);
+		service.updateEntity(vo);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(long id) {
-		roleService.deleteEntity(id);
+		service.deleteEntity(id);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<Object> getEntity(long id) {
-		roleService.getEntity(id);
-		return Result.success();
+	public Result<Role> getEntity(long id) {
+		return Result.success((Role) service.getEntity(id));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> list(@RequestBody(required = false) RoleCdtVo cdt) {
-		return Result.success(roleService.listEntities(cdt));
+		PageVo pageVo = service.listEntities(cdt);
+		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}
 }
