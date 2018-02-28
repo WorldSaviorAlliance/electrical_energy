@@ -3,6 +3,8 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.IDao;
@@ -22,6 +24,8 @@ import com.warrior.eem.util.EntityValidator;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractServiceImpl<T extends Serializable> implements IService {
+	
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	@Transactional

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.warrior.eem.dao.ElectricityAdjustmentDataDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.PowerDataDao;
@@ -25,9 +26,12 @@ import com.warrior.eem.dao.support.Page;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Order.Order_Type;
+import com.warrior.eem.entity.ElectricityAdjustmentData;
+import com.warrior.eem.entity.ElectricityAdjustmentData.AdjustmentType;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.PowerData;
 import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.SellPowerAgreement.Sell_Power_Price_Type;
 import com.warrior.eem.entity.vo.PowerMonthPriceInfoItemVo;
 import com.warrior.eem.entity.vo.PowerMonthPriceReqVo;
 import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
@@ -58,6 +62,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 
 	@Autowired
 	private SellPowerAgreementDao spaDao;
+
+	@Autowired
+	private ElectricityAdjustmentDataDao eadDao;
 
 	@Override
 	IDao<PowerData> getDao() {
@@ -210,46 +217,33 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 				}
 			}
 			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
-			if(spas == null || spas.size() == 0) {
+			if (spas == null || spas.size() == 0) {
 				throw new EemException("未找到这个时间段的售电合约信息");
 			}
-			int size = spas.size();
 			datas.forEach(data -> {
 				ContractAndPracticalResVo monthItem = new ContractAndPracticalResVo();
-				SellPowerAgreement targetSpa = null;
-				for (int i = size - 1; i >= 0; i--) { // 年合约列表
-					SellPowerAgreement spa = spas.get(i);
-					if (data.getMonth().startsWith(spa.getValidYear())
-							&& data.getCustomer().getId() == spa.getCustomer().getId()) {
-						targetSpa = spa;
-						break;
-					}
-				}
-				if (targetSpa == null) {
-					throw new EemException("未找到月份（" + data.getMonth() + "）对应的售电合约信息");
-				}
-				try {
-					Method m = targetSpa.getMonthData().getClass().getMethod(targetSpa.getMonthData().convertMonthNumToMethodName(
-							data.getMonth().substring(data.getMonth().length() - 2, data.getMonth().length())));
-					String monthData = (String)m.invoke(targetSpa.getMonthData());
-					String[] monthQuantity = monthData.substring(1, monthData.length() - 1).split(":");
-					double contractQuantity = 0;
-					for(String quantity : monthQuantity) {
-						contractQuantity += Double.valueOf(quantity);
-					}
-					// 有效电量
-					double validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh()).doubleValue();
-					monthItem.setContractData(contractQuantity);
-					monthItem.setDate(data.getMonth());
-					monthItem.setPracticalData(validKwh);
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				} 
-				if(param.getType() == ContractAndPracticalReqVo.MONTH_STATIC) {
+				SellPowerAgreement targetSpa = filterSellPowerAgreementByMonthAndCustomerId(spas,
+						data.getCustomer().getId(), data.getMonth());
+
+				double[] monthAdjustmentArr = getAdjustmentPowerQuantityAndPriceByMonth(data.getMonth(), targetSpa);
+				double[] monthSapqpArr = getSellAgreementPowerQuantityAndPriceByMonth(data.getMonth(), targetSpa);
+
+				// 实际电量
+				monthItem.setPracticalData(
+						data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh()).doubleValue());
+
+				// 预测电量（合约+-调整）
+				monthItem.setContractData(monthSapqpArr[0] + monthSapqpArr[1] + monthSapqpArr[2] + monthSapqpArr[3]
+						+ monthAdjustmentArr[0] + monthAdjustmentArr[1] + monthAdjustmentArr[2]
+						+ monthAdjustmentArr[3]);
+				// 日期
+				monthItem.setDate(data.getMonth());
+
+				if (param.getType() == ContractAndPracticalReqVo.MONTH_STATIC) {
 					capis.add(monthItem);
 				} else {
 					ContractAndPracticalResVo resItem = resMap.get(targetSpa.getValidYear());
-					if(resItem == null) {
+					if (resItem == null) {
 						monthItem.setDate(targetSpa.getValidYear());
 						resMap.put(targetSpa.getValidYear(), monthItem);
 					} else {
@@ -259,13 +253,38 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 				}
 			});
 		}
-		if(param.getType() == ContractAndPracticalReqVo.YEAR_STATIC) {
+		if (param.getType() == ContractAndPracticalReqVo.YEAR_STATIC) {
 			capis.clear();
 			resMap.forEach((year, item) -> {
 				capis.add(item);
 			});
 		}
 		return new PageVo(count, capis);
+	}
+
+	/**
+	 * 过滤得到对应的售电合约实体
+	 * 
+	 * @param spas
+	 * @param customerId
+	 * @param month
+	 * @return
+	 */
+	private SellPowerAgreement filterSellPowerAgreementByMonthAndCustomerId(List<SellPowerAgreement> spas,
+			Long customerId, String month) {
+		SellPowerAgreement targetSpa = null;
+		int size = spas.size();
+		for (int i = size - 1; i >= 0; i--) { // 年合约列表
+			SellPowerAgreement spa = spas.get(i);
+			if (month.startsWith(spa.getValidYear()) && customerId == spa.getCustomer().getId()) {
+				targetSpa = spa;
+				break;
+			}
+		}
+		if (targetSpa == null) {
+			throw new EemException("未找到月份（" + month + "）对应的售电合约信息");
+		}
+		return targetSpa;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -316,41 +335,113 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 				}
 			}
 			List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
-			if(spas == null || spas.size() == 0) {
+			if (spas == null || spas.size() == 0) {
 				throw new EemException("未找到这个时间段的售电合约信息");
 			}
-			int size = spas.size();
 			datas.forEach(data -> {
-				BigDecimal unitPrice = null;
-				for (int i = size - 1; i >= 0; i--) { // 年合约列表
-					SellPowerAgreement spa = spas.get(i);
-					if (data.getMonth().startsWith(spa.getValidYear())
-							&& data.getCustomer().getId() == spa.getCustomer().getId()) {
-						unitPrice = spa.createUnitPriceBySellType(data.getTradeType()); // 电单价
-						break;
-					}
-				}
-				if (unitPrice == null) {
-					throw new EemException("未找到月份（" + data.getMonth() + "）对应的售电合约信息");
-				}
-				capis.add(buildContractAndPracticalItem(data, unitPrice));
+				SellPowerAgreement targetSpa = filterSellPowerAgreementByMonthAndCustomerId(spas,
+						data.getCustomer().getId(), data.getMonth());
+				double[] monthAdjustmentArr = getAdjustmentPowerQuantityAndPriceByMonth(data.getMonth(), targetSpa);
+				double[] monthSapqpArr = getSellAgreementPowerQuantityAndPriceByMonth(data.getMonth(), targetSpa);
+				capis.add(buildContractAndPracticalItem(data, monthAdjustmentArr, monthSapqpArr));
 			});
 		}
 		return new PageVo(count, capis);
 	}
 
 	/**
-	 * 构建item对象
+	 * 获取售电合约month月对应的电量和电价数组信息 数组前四位为电量信息， 数组后四位为电价信息
 	 * 
-	 * @param data
-	 * @param unitPrice
+	 * @param month
+	 * @param sellAgreement
 	 * @return
 	 */
-	private PowerMonthPriceInfoItemVo buildContractAndPracticalItem(PowerData data, BigDecimal unitPrice) {
-		// 有效电量
+	private double[] getSellAgreementPowerQuantityAndPriceByMonth(String month, SellPowerAgreement sellAgreement) {
+		double[] monthPowerQuantityAndPriceArr = new double[8];
+		try {
+			Method m = sellAgreement.getMonthData().getClass().getMethod(sellAgreement.getMonthData()
+					.convertMonthNumToMethodName(month.substring(month.length() - 2, month.length())));
+			String monthData = (String) m.invoke(sellAgreement.getMonthData());
+			String[] monthPriceAndQuantityArr = monthData.split(";");
+			int i = 0;
+			for (String monthPriceAndQuantity : monthPriceAndQuantityArr) {
+				String[] pqArr = monthPriceAndQuantity.substring(1, monthPriceAndQuantity.length() - 1).split(":");
+				for (String pq : pqArr) {
+					monthPowerQuantityAndPriceArr[i] = Double.valueOf(pq);
+					i++;
+				}
+			}
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			logger.error("执行售电合约月电量或者电价解析失败，请联系管理员", e);
+			throw new EemException("执行售电合约月电量或者电价解析失败，请联系管理员");
+		}
+		return monthPowerQuantityAndPriceArr;
+	}
+
+	/**
+	 * 返回month月对应的调整电量和电价数组信息（ 数组前四位为电量信息， 数组后四位为电价信息）
+	 * 顺序与售电合约顺序保持一致(常规直购电交易电价:精准扶持直购电交易电价：自备替代直购电交易电价:富于电价)
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private double[] getAdjustmentPowerQuantityAndPriceByMonth(String month, SellPowerAgreement sellAgreement) {
+		double[] monthPowerQuantityAndPriceArr = new double[8];
+		// 调整合约
+		SqlRequest changeSellArgument = new SqlRequest();
+		Joiner join = new Joiner();
+		join.add("sellAgreement");
+		changeSellArgument.setJoiner(join);
+		changeSellArgument.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.equal("month", month))
+				.and(SimpleCondition.equal("sellAgreement.id", sellAgreement.getId())));
+		List<ElectricityAdjustmentData> eads = (List<ElectricityAdjustmentData>) eadDao.listDos(changeSellArgument);
+		double changedQuantity = 0;
+		if (eads != null && eads.size() > 0) {
+			for (ElectricityAdjustmentData ead : eads) {
+				int index = 3; // 富于电
+				if (Sell_Power_Price_Type.Normal.getName().equals(ead.getTradeType())) { // 常规直购电
+					index = 0;
+				} else if (Sell_Power_Price_Type.Support.getName().equals(ead.getTradeType())) { // 精准扶持直购电
+					index = 1;
+				} else if (Sell_Power_Price_Type.Replace.getName().equals(ead.getTradeType())) { // 自备替代直购电
+					index = 2;
+				}
+				changedQuantity = ead.getAdjustmentType().equals(AdjustmentType.ASC) ? ead.getAdjustment().doubleValue()
+						: -ead.getAdjustment().doubleValue();
+				monthPowerQuantityAndPriceArr[index] = changedQuantity;
+				monthPowerQuantityAndPriceArr[index + 4] = ead.getPrice().doubleValue();
+			}
+		}
+		return monthPowerQuantityAndPriceArr;
+	}
+
+	/**
+	 * 构建每月电费item对象
+	 * 
+	 * @param data
+	 * @param monthAdjustmentArr
+	 *            data month月对应的调整电量电价数组数据
+	 * @param monthSapqpArr
+	 *            data month月对应的售电合约电量电价数组数据
+	 * @return
+	 */
+	private PowerMonthPriceInfoItemVo buildContractAndPracticalItem(PowerData data, double[] monthAdjustmentArr,
+			double[] monthSapqpArr) {
+		// 实际有效电量
 		BigDecimal validKwh = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
-		// 无效电量
+		// 实际无效电量
 		BigDecimal invalidKwh = data.getIdleKwh();
+		int index = 3;
+		if (Sell_Power_Price_Type.Normal.getName().equals(data.getTradeType())) { // 常规直购电
+			index = 0;
+		} else if (Sell_Power_Price_Type.Support.getName().equals(data.getTradeType())) { // 精准扶持直购电
+			index = 1;
+		} else if (Sell_Power_Price_Type.Replace.getName().equals(data.getTradeType())) { // 自备替代直购电
+			index = 2;
+		}
+		// 单价
+		BigDecimal unitPrice = new BigDecimal(monthAdjustmentArr[index + 4] + monthSapqpArr[index + 4]);
 		double num = validKwh.doubleValue()
 				/ Math.sqrt(Math.pow(validKwh.doubleValue(), 2) + Math.pow(invalidKwh.doubleValue(), 2));
 
