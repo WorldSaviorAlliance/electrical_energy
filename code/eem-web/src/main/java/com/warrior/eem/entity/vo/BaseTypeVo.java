@@ -1,7 +1,6 @@
 package com.warrior.eem.entity.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.warrior.eem.annotation.FieldChecker;
 
@@ -19,7 +18,7 @@ public final class BaseTypeVo implements Serializable {
 	@FieldChecker(name = "名称", minLen = 1, maxLen = 20)
 	private String name;
 
-	private Date date;// 创建和修改的时候不传
+	private String date;// 创建和修改的时候不传
 
 	private String creator;// 创建和修改的时候不传
 
@@ -39,11 +38,11 @@ public final class BaseTypeVo implements Serializable {
 		this.name = name;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

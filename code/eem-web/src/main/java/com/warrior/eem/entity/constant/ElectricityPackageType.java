@@ -6,12 +6,12 @@ package com.warrior.eem.entity.constant;
  * @author cold_blade
  * @version 1.0.0
  */
-public enum PackageType {
+public enum ElectricityPackageType {
 	FIXED_RETURN("固定回报"), MARKET_LINKAGE("市场联动"), DEVIATION_CHECK("偏差考核");
 
 	private String desc;
 
-	private PackageType(String desc) {
+	private ElectricityPackageType(String desc) {
 		this.desc = desc;
 	}
 
@@ -26,7 +26,7 @@ public enum PackageType {
 	 * @param type
 	 * @return
 	 */
-	public static PackageType convert(int type) {
+	public static ElectricityPackageType convert(int type) {
 		switch (type) {
 		case 0:
 			return FIXED_RETURN;

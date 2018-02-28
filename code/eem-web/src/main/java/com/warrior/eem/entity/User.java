@@ -2,7 +2,10 @@ package com.warrior.eem.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
@@ -64,6 +68,9 @@ public class User implements Serializable {
 
 	@Column(name = "last_login_time")
 	private Timestamp lastLoginTime;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UserElectricityPackage> pkgs = new ArrayList<UserElectricityPackage>();
 
 	public Long getId() {
 		return id;
@@ -135,5 +142,34 @@ public class User implements Serializable {
 
 	public void setCustomer(PowerCustomer customer) {
 		this.customer = customer;
+	}
+
+	public List<ElectricityPackage> getElectricityPackages() {
+		List<ElectricityPackage> list = new ArrayList<>();
+		for (UserElectricityPackage elem : pkgs) {
+			list.add(elem.getPkg());
+		}
+		return list;
+	}
+
+	public void handleElectricityPackage(ElectricityPackage pkg) {
+		UserElectricityPackage uep = new UserElectricityPackage();
+		uep.setPkg(pkg);
+		uep.setUser(this);
+		pkgs.add(uep);
+		pkg.getOwners().add(uep);
+	}
+
+	public void removeElectricityPackage(ElectricityPackage pkg) {
+		UserElectricityPackage uep = null;
+		long id = pkg.getId();
+		for (int i = pkgs.size() - 1; i >= 0; --i) {
+			uep = pkgs.get(i);
+			if (uep.getPkg().getId() == id) {
+				pkgs.remove(i);
+				pkg.getOwners().remove(uep);
+				break;
+			}
+		}
 	}
 }

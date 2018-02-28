@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import com.warrior.eem.entity.vo.BaseTypeVo;
+import com.warrior.eem.util.ToolUtil;
 
 /**
  * 类型实体的基类
@@ -58,7 +59,7 @@ public class BaseType extends AbstractEntity {
 		vo.setId(getId());
 		vo.setName(name);
 		vo.setCreator(creator.getNickName());
-		vo.setDate(createDate);
+		vo.setDate(ToolUtil.formatDate(createDate));
 		return vo;
 	}
 }

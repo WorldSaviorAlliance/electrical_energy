@@ -7,6 +7,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.warrior.eem.service.AuthorityService;
+import com.warrior.eem.service.ElectricityPackageService;
+import com.warrior.eem.service.PriceCoefficientService;
 import com.warrior.eem.service.RoleService;
 import com.warrior.eem.service.UserService;
 
@@ -19,9 +21,15 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 
 	@Autowired
 	private AuthorityService authorityService;
-	
+
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private ElectricityPackageService elecPkgService;
+
+	@Autowired
+	private PriceCoefficientService priceCoefService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent e) {
@@ -34,6 +42,12 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 			}
 			if (!roleService.initAdminRole()) {// 初始化管理员角色
 				logger.info("Failed to initialize admin role.");
+			}
+//			if (!elecPkgService.initDefaultDataIfAbsent()) {// 初始化套餐
+//				logger.info("Failed to initialize electricity packages.");
+//			}
+			if (!priceCoefService.initDefaultDataIfAbsent()) {// 初始化电价系数
+				logger.info("Failed to initialize price coefficient.");
 			}
 		}
 	}

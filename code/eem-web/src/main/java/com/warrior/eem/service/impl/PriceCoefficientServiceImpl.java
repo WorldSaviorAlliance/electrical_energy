@@ -2,6 +2,8 @@ package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ import com.warrior.eem.service.PriceCoefficientService;
  * @version 1.0.0
  */
 @Service
-public final class PriceCoefficientServiceImpl extends AbstractServiceImpl<PriceCoefficient>
-		implements PriceCoefficientService {
+public final class PriceCoefficientServiceImpl extends AbstractServiceImpl<PriceCoefficient> implements
+		PriceCoefficientService {
 
 	@Autowired
 	private PriceCoefficientDao dao;
@@ -53,5 +55,19 @@ public final class PriceCoefficientServiceImpl extends AbstractServiceImpl<Price
 	@Override
 	PriceCoefficient convertVoToDoForCreate(Serializable vo) {
 		return convertVoToDoForUpdate(new PriceCoefficient(), vo);
+	}
+
+	@Override
+	@Transactional
+	public boolean initDefaultDataIfAbsent() {
+		if (dao.countDos(null) > 0) {
+			return true;
+		}
+		PriceCoefficient pc = new PriceCoefficient();
+		pc.setFlat(1);
+		pc.setPeak(1);
+		pc.setTrough(1);
+		dao.createDo(pc);
+		return dao.countDos(null) > 0;
 	}
 }

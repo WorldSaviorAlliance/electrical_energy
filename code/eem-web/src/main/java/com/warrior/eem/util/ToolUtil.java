@@ -1,6 +1,8 @@
 package com.warrior.eem.util;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,5 +57,15 @@ public class ToolUtil {
 	 */
 	public static boolean isStringEmpty(String str) {
 		return null == str ? true : str.isEmpty();
+	}
+
+	/**
+	 * 格式化日期("yyyy-MM-dd HH:mm:ss")
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String formatDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 	}
 }
