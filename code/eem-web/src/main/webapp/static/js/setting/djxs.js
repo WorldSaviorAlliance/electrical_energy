@@ -2,6 +2,7 @@
  * 电价系数
  */
 $(function(){
+	var g_curData = null;
 	init();
 	function init()
 	{
@@ -34,11 +35,11 @@ $(function(){
 	{
 		var search = {
 			'startPage' : FIRST_PAGE,
-			'perPageCnt' : MAX_COUNT
+			'perPageCnt' : 1
 		};
 		$.ajax({
 			url: rootpath + '/' + PATH_DJXS + '/list',
-			type : 'GET', 
+			type : 'POST', 
 			dataType: 'json',
 			data : JSON.stringify(search),
 		    contentType: 'application/json',
@@ -48,7 +49,14 @@ $(function(){
 					var ar = JSON.parse(XHR.responseText);
 					if(ar.code == 0)
 					{
-						var temp = ar.data;console.log(g_curData);
+						var temp = ar.data;console.log(temp);
+						if(temp != null && temp.length != 0)
+						{
+							$('#peak').val(temp[0].peak);
+							$('#flat').val(temp[0].peak);
+							$('#trough').val(temp[0].peak);
+							g_curData = temp[0];
+						}
 					}
 				}
 				else
@@ -61,10 +69,10 @@ $(function(){
 	
 	function doSaveAction()
 	{
-		var name = $('#name').val();
-
 		var temp = {
-			name : name
+			peak : $('#peak').val(),
+			flat : $('#flat').val(),
+			trough : $('#trough').val()
 		};
 		
 		var ajaxType = 'POST';
@@ -92,10 +100,6 @@ $(function(){
 					if(ar.code == 0)
 					{
 						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
-						if(g_afterSaveCallbk != null)
-						{
-							g_afterSaveCallbk();
-						}
 					}
 					else
 					{

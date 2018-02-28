@@ -66,7 +66,7 @@ $(function()
 			complete : function(XHR, TS) {
 				$('#datas tr[type="loading_msg"]').hide();
 				if (TS == "success") {
-					var ar = JSON.parse(XHR.responseText);
+					var ar = JSON.parse(XHR.responseText);console.log(ar);
 					if(ar.code == 0)
 					{
 						g_all_count = ar.count;

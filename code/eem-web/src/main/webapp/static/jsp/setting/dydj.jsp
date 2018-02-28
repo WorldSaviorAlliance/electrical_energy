@@ -27,7 +27,6 @@
 					<tr>
 						<th>电压等级</th>
 						<th>修改日期</th>
-						<th>添加人</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -35,7 +34,7 @@
 					<tr type="empty_msg" style="display: none;">
 						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
 							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
-							没有电力用户
+							没有电压等级
 						</td>
 					</tr>
 					<tr type="error_msg" style="display: none;">
