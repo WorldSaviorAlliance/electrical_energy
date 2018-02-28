@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * 电压类型
+ * 电压等级
  * 
  * @author cold_blade
  * @version 1.0.0

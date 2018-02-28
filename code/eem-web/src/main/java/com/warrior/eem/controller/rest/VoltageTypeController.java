@@ -15,7 +15,7 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.VoltageTypeService;
 
 /**
- * 电价单元控制器
+ * 电压等级控制器
  * 
  * @author cold_blade
  * @version 1.0.0

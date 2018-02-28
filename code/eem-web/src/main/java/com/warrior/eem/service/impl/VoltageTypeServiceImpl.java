@@ -22,7 +22,7 @@ import com.warrior.eem.util.EntityValidator;
 import com.warrior.eem.util.ToolUtil;
 
 /**
- * 电压类型服务的实现
+ * 电压等级服务的实现
  * 
  * @author cold_blade
  * @version 1.0.0
