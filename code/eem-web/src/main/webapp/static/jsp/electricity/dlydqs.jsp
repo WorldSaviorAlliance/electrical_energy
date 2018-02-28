@@ -10,7 +10,7 @@
 		<div class="col-sm-12" style="padding: 0px;">
 			<div class="col-md-3">
 				<div class="form-group">
-                  <label class="col-sm-4 control-label">电力用户名称</label>
+                  <label class="col-sm-4 control-label" style="width: auto;">电力用户名称</label>
                   <div class="col-sm-8">
                    <input type="text" class="form-control" id="search_name">
                   </div>
