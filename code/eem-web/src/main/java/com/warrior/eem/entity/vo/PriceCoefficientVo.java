@@ -15,11 +15,14 @@ public final class PriceCoefficientVo implements Serializable {
 
 	private long id;
 
-	@FieldChecker(name = "系数名", minLen = 1, maxLen = 20)
-	private String name;
+	@FieldChecker(name = "peak", minVal = 0)
+	private float peak;
 
-	@FieldChecker(name = "系数值", minVal = 1)
-	private int coefficient;
+	@FieldChecker(name = "flat", minVal = 0)
+	private float flat;
+
+	@FieldChecker(name = "trough", minVal = 0)
+	private float trough;
 
 	public long getId() {
 		return id;
@@ -29,19 +32,27 @@ public final class PriceCoefficientVo implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public float getPeak() {
+		return peak;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPeak(float peak) {
+		this.peak = peak;
 	}
 
-	public int getCoefficient() {
-		return coefficient;
+	public float getFlat() {
+		return flat;
 	}
 
-	public void setCoefficient(int coefficient) {
-		this.coefficient = coefficient;
+	public void setFlat(float flat) {
+		this.flat = flat;
+	}
+
+	public float getTrough() {
+		return trough;
+	}
+
+	public void setTrough(float trough) {
+		this.trough = trough;
 	}
 }

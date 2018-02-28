@@ -15,25 +15,36 @@ import javax.persistence.Table;
 public class PriceCoefficient extends AbstractEntity {
 	private static final long serialVersionUID = 48985656229981327L;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "peak")
+	private float peak;
 
-	@Column(name = "coefficient")
-	private int coefficient;
+	@Column(name = "flat")
+	private float flat;
 
-	public String getName() {
-		return name;
+	@Column(name = "trough")
+	private float trough;
+
+	public float getPeak() {
+		return peak;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPeak(float peak) {
+		this.peak = peak;
 	}
 
-	public int getCoefficient() {
-		return coefficient;
+	public float getFlat() {
+		return flat;
 	}
 
-	public void setCoefficient(int coefficient) {
-		this.coefficient = coefficient;
+	public void setFlat(float flat) {
+		this.flat = flat;
+	}
+
+	public float getTrough() {
+		return trough;
+	}
+
+	public void setTrough(float trough) {
+		this.trough = trough;
 	}
 }
