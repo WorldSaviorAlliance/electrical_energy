@@ -12,12 +12,12 @@
 				<div class="form-group">
                   <label class="col-sm-4 control-label">名称</label>
                   <div class="col-sm-8">
-                   <input type="text" class="form-control" id="name">
+                   <input type="text" class="form-control" id="search_name">
                   </div>
                 </div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
 			</div>
 		</div>
@@ -32,67 +32,23 @@
 					</tr>
 				</thead>
 				<tbody id="datas">
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有电力用户
 						</td>
 					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
 						</td>
 					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>110KV</td>
-						<td>2017-04-17 15:11:05</td>
-						<td>admin</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
 						</td>
 					</tr>
 				</tbody>
