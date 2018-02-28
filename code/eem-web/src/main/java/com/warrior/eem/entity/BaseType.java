@@ -3,12 +3,11 @@ package com.warrior.eem.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
+import com.warrior.eem.entity.vo.BaseTypeVo;
 
 /**
  * 类型实体的基类
@@ -16,6 +15,7 @@ import org.hibernate.annotations.LazyToOneOption;
  * @author cold_blade
  * @version 1.0.0
  */
+@MappedSuperclass
 public class BaseType extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -25,8 +25,7 @@ public class BaseType extends AbstractEntity {
 	@Column(name = "create_date")
 	private Date createDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User creator;
 
@@ -52,5 +51,14 @@ public class BaseType extends AbstractEntity {
 
 	public void setCreator(User creator) {
 		this.creator = creator;
+	}
+
+	public BaseTypeVo convert() {
+		BaseTypeVo vo = new BaseTypeVo();
+		vo.setId(getId());
+		vo.setName(name);
+		vo.setCreator(creator.getNickName());
+		vo.setDate(createDate);
+		return vo;
 	}
 }

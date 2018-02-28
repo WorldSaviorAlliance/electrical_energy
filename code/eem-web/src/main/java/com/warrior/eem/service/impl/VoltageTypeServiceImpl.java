@@ -1,7 +1,9 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,11 @@ import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
+import com.warrior.eem.entity.BaseType;
 import com.warrior.eem.entity.VoltageType;
 import com.warrior.eem.entity.vo.BaseTypeCdtVo;
 import com.warrior.eem.entity.vo.BaseTypeVo;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.VoltageTypeService;
 import com.warrior.eem.shiro.session.EemSession;
@@ -55,7 +59,7 @@ public class VoltageTypeServiceImpl extends AbstractServiceImpl<VoltageType>impl
 		SqlRequest request = new SqlRequest();
 		request.setPage(vo.getPage());
 		Order order = new Order();
-		order.addOrder("name", Order.Order_Type.ASC);
+		order.addOrder("id", Order.Order_Type.ASC);
 		request.setOrder(order);
 		request.setCdt(cdt);
 		return request;
@@ -82,5 +86,16 @@ public class VoltageTypeServiceImpl extends AbstractServiceImpl<VoltageType>impl
 		voltage.setName(typeVo.getName());
 		voltage.setCreator(EemSession.getCurrentUser());
 		return voltage;
+	}
+	
+	@Override
+	public PageVo listEntities(Serializable... conditions) {
+		PageVo pageVo = super.listEntities(conditions);
+		List<BaseTypeVo> vos = new ArrayList<>();
+		for (Object obj : pageVo.getDatas()) {
+			vos.add(((BaseType)obj).convert());
+		}
+		pageVo.setDatas(vos);
+		return pageVo;
 	}
 }
