@@ -9,23 +9,23 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">平段电价系数 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入平段电价系数" required id="name" />
+			<input type="text" class="form-control" placeholder="请输入平段电价系数" required value="1" readonly="readonly"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">高峰电价系数 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入高峰电价系数" required id="name" />
+			<input type="number" class="form-control" placeholder="请输入高峰电价系数" required value="1" id="peakKwh" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">低估电价系数 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入低估电价系数" required id="name" />
+			<input type="number" class="form-control" placeholder="请输入低估电价系数" required value="1" id="troughKwh" />
 		</div>
 	</div>
 	<div class="form-group" style="text-align: center;">
 		<button class="btn btn-primary">保存</button>
 	</div>	
 </form>
-<script type="text/javascript" src="<%=basePath%>static/js/electricity/bm.js"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/setting/djxs.js"></script>

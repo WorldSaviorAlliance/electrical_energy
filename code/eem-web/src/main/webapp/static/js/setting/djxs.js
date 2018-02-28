@@ -1,16 +1,12 @@
-//@ sourceURL=dydjDetail.js
-function DydjDetail(afterSaveCallbk, curData)
-{
-	var g_afterSaveCallbk = afterSaveCallbk;
-	var g_curData = curData;
+/**
+ * 电价系数
+ */
+$(function(){
 	init();
 	function init()
 	{
 		initControlAction();
-		if(g_curData != null)
-		{
-			initControlVal();
-		}
+		initControlVal();
 	}
 	
 	function initControlAction()
@@ -27,11 +23,7 @@ function DydjDetail(afterSaveCallbk, curData)
 		    	return false;
 		    }
 		});
-		
-		$('#cancel').unbind('click').click(function(){
-			$('div.eem_window_close').click();
-		})
-		
+
 		$('input').focus(function(){
 			$('label.input_msg').hide();
 			$('label.input_msg[for="' + $(this).attr('id')+ '"]').show();
@@ -40,10 +32,31 @@ function DydjDetail(afterSaveCallbk, curData)
 	
 	function initControlVal()
 	{
-		if(g_curData != null)
-		{
-			$('#name').val(getObjStr(g_curData.name));
-		}
+		var search = {
+			'startPage' : FIRST_PAGE,
+			'perPageCnt' : MAX_COUNT
+		};
+		$.ajax({
+			url: rootpath + '/' + PATH_DJXS + '/list',
+			type : 'GET', 
+			dataType: 'json',
+			data : JSON.stringify(search),
+		    contentType: 'application/json',
+			complete : function(XHR, TS) {
+				$('#datas tr[type="loading_msg"]').hide();
+				if (TS == "success") {
+					var ar = JSON.parse(XHR.responseText);
+					if(ar.code == 0)
+					{
+						var temp = ar.data;console.log(g_curData);
+					}
+				}
+				else
+				{
+					showSystemError();
+				}
+			}
+		});
 	}
 	
 	function doSaveAction()
@@ -55,19 +68,19 @@ function DydjDetail(afterSaveCallbk, curData)
 		};
 		
 		var ajaxType = 'POST';
-		var msgTitle = '添加电压等级';
+		var msgTitle = '添加电价系数';
 		if(g_curData != null)
 		{
 			ajaxType = 'PUT';
-			msgTitle = '修改电压等级';
+			msgTitle = '修改电价系数';
 			temp.id = g_curData.id;
 		}
 		
 		$('div.eem_window_close').click();
-    	var progress = showProgress('正在保存电压等级');
+    	var progress = showProgress('正在保存电价系数');
     	
 		$.ajax({
-			url: rootpath + '/' + PATH_DYDJ + '/info',
+			url: rootpath + '/' + PATH_DJXS + '/info',
 			type : ajaxType,
 			dataType: 'json',
 		    contentType: 'application/json',
@@ -96,6 +109,4 @@ function DydjDetail(afterSaveCallbk, curData)
 			}
 		});
 	}
-	
-	return this;
-}
+});
