@@ -119,7 +119,7 @@ $(function()
 	 */
 	function initTable(curpage, datas)
 	{
-		$('#datas').empty();
+		$('#datas tr[type="data"]').remove();
 		if(datas != null && datas.length != 0)
 		{
 			g_all_datas = datas;

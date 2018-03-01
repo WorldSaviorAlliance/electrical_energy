@@ -4,7 +4,12 @@ $(function(){
 	$('#loginBtn').click(function(){
 		doLoginAction();
 	});
-	
+	$('input').keyup(function (event) {
+		if (event.keyCode == "13") {
+			$("#loginBtn").click();
+			return false;	
+		}
+	});
 	function doLoginAction()
 	{
 		var username = $('#username').val();
