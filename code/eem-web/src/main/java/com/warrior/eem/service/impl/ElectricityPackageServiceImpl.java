@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.warrior.eem.dao.ElectricityPackageDao;
 import com.warrior.eem.dao.IDao;
+import com.warrior.eem.dao.UserDao;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.ElectricityPackage;
+import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.EntityFactory;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
@@ -25,11 +27,14 @@ import com.warrior.eem.service.ElectricityPackageService;
  * @version 1.0.0
  */
 @Service
-public class ElectricityPackageServiceImpl extends AbstractServiceImpl<ElectricityPackage> implements
-		ElectricityPackageService {
+public class ElectricityPackageServiceImpl extends AbstractServiceImpl<ElectricityPackage>
+		implements ElectricityPackageService {
 
 	@Autowired
 	private ElectricityPackageDao dao;
+
+	@Autowired
+	private UserDao userDao;
 
 	@Override
 	IDao<ElectricityPackage> getDao() {
@@ -77,5 +82,28 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 			dao.createDo(pkg);
 		}
 		return dao.countDos(null) > 0;
+	}
+
+	@Override
+	public boolean handleElectricityPackage(long pkgId, long userId) {
+		User user = userDao.getEntity(userId);
+		if (null == user || user.containsElectricityPackage(pkgId)) {
+			return false;
+		}
+		ElectricityPackage pkg = dao.getEntity(pkgId);
+		if (null == pkg) {
+			return false;
+		}
+		user.handleElectricityPackage(pkg);
+		return true;
+	}
+
+	@Override
+	public boolean cancelElectricityPackage(long pkgId, long userId) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			return false;
+		}
+		return user.cancelElectricityPackage(pkgId);
 	}
 }

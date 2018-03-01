@@ -38,7 +38,7 @@ public class ElectricityPackage extends AbstractEntity {
 	@Column(name = "min_electricity")
 	private float minElecticity;
 
-	@Column(name = "desc")
+	@Column(name = "desc_info")
 	private String desc;
 
 	@OneToMany(mappedBy = "pkg", cascade = CascadeType.ALL, orphanRemoval = true)

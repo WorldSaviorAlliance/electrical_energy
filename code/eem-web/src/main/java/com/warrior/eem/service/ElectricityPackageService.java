@@ -8,4 +8,22 @@ package com.warrior.eem.service;
  */
 public interface ElectricityPackageService extends IService {
 	boolean initDefaultDataIfAbsent();
+
+	/**
+	 * 办理套餐
+	 * 
+	 * @param pkgId
+	 * @param userId
+	 * @return
+	 */
+	boolean handleElectricityPackage(long pkgId, long userId);
+
+	/**
+	 * 取消套餐
+	 * 
+	 * @param pkgId
+	 * @param userId
+	 * @return
+	 */
+	boolean cancelElectricityPackage(long pkgId, long userId);
 }

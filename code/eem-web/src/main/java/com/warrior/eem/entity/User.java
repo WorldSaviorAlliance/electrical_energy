@@ -160,16 +160,25 @@ public class User implements Serializable {
 		pkg.getOwners().add(uep);
 	}
 
-	public void removeElectricityPackage(ElectricityPackage pkg) {
+	public boolean cancelElectricityPackage(long pkgId) {
 		UserElectricityPackage uep = null;
-		long id = pkg.getId();
 		for (int i = pkgs.size() - 1; i >= 0; --i) {
 			uep = pkgs.get(i);
-			if (uep.getPkg().getId() == id) {
+			if (uep.getPkg().getId() == pkgId) {
+				uep.getPkg().getOwners().remove(uep);
 				pkgs.remove(i);
-				pkg.getOwners().remove(uep);
-				break;
+				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean containsElectricityPackage(long pkgId) {
+		for (UserElectricityPackage elem : pkgs) {
+			if (elem.getPkg().getId() == pkgId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

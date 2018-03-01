@@ -48,15 +48,15 @@ public class UserManagerController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteEntity(String id) {
-		service.deleteEntity(convertId(id));
+	public Result<Object> deleteEntity(long id) {
+		service.deleteEntity(id);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<User> getEntity(String id) {
-		return Result.success((User) service.getEntity(convertId(id)));
+	public Result<User> getEntity(long id) {
+		return Result.success((User) service.getEntity(id));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
