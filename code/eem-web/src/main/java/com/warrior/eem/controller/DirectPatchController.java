@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.warrior.eem.shiro.session.EemSession;
 import com.warrior.eem.util.Constant;
 import com.warrior.eem.util.ToolUtil;
 
@@ -215,6 +216,7 @@ public class DirectPatchController {
 	@RequestMapping("/wybl")
 	public ModelAndView wybl(Map<String, Object> model, HttpServletRequest request)
 	{
+		model.put(Constant.STR_ID, EemSession.getCurrentUser().getId());
 		return ToolUtil.gotoDirect(model, Constant.DIR_WYBL, Constant.USER + Constant.DIR_WYBL);
 	}
 	

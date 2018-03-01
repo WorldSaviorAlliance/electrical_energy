@@ -8,17 +8,8 @@
 <form class="form-horizontal">
 	<div class="form-group">
 		<div class="col-sm-12" style="padding: 0px;">
-			<div class="col-md-3">
-				<div class="form-group">
-                  <label class="col-sm-4 control-label">套餐名称</label>
-                  <div class="col-sm-8">
-                   <input type="text" class="form-control" id="name">
-                  </div>
-                </div>
-			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
-				<button class="btn btn-info" id="add" type="button">办理</button>
+				<button class="btn btn-info" id="add" type="button">办理套餐</button>
 			</div>
 		</div>
 		<div class="col-sm-12" style="padding: 0px;">
@@ -32,6 +23,25 @@
 					</tr>
 				</thead>
 				<tbody id="datas">
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有任何套餐
+						</td>
+					</tr>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
+						</td>
+					</tr>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
+						</td>
+					</tr>
 					<tr>
 						<td>套餐1</td>
 						<td>2018-01-02 11:01:48</td>

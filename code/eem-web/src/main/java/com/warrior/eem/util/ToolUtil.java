@@ -29,6 +29,10 @@ public class ToolUtil {
 
 	public static ModelAndView gotoDirect(Map<String, Object> model, String name, String direct) {
 		Direct d = new Direct(name, direct);
+		if(model.get(Constant.STR_ID) != null)
+		{
+			d.setParam(model.get(Constant.STR_ID));
+		}
 		model.put(Constant.DIRECT, d.toJson());
 		String redirectPage = "template";
 		return new ModelAndView(redirectPage, model);

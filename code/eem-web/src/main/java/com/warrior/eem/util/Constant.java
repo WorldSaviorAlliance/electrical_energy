@@ -69,4 +69,5 @@ public class Constant {
 	public static String DIR_JBXX = "jbxx";
 	
 	public static final String DIRECT = "direct";
+	public static final String STR_ID = "id";
 }
