@@ -1,5 +1,8 @@
 package com.warrior.eem.controller.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,14 +58,24 @@ public class UserManagerController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<User> getEntity(long id) {
-		return Result.success((User) service.getEntity(id));
+	public Result<Object> getEntity(long id) {
+		User user = (User) service.getEntity(id);
+		if (null == user) {
+			return Result.failure("获取用户信息失败");
+		}
+		return Result.success(user.convert());
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> listEntities(@RequestBody(required = false) UserCdtVo cdt) {
 		PageVo pageVo = service.listEntities(cdt);
-		return Result.success(pageVo.getCount(), pageVo.getDatas());
+		List<UserVo> vos = new ArrayList<UserVo>();
+		for (Object obj : pageVo.getDatas()) {
+			vos.add(((User) obj).convert());
+		}
+		return Result.success(pageVo.getCount(), vos);
 	}
+
+	// TODO:需要增加权限设置以及密码修改的接口
 }

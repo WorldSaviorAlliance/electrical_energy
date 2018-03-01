@@ -23,6 +23,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import com.warrior.eem.entity.constant.UserStatus;
+import com.warrior.eem.entity.constant.UserType;
+import com.warrior.eem.entity.vo.UserVo;
 
 /**
  * 用户实体
@@ -43,11 +45,12 @@ public class User implements Serializable {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "nick_name")
-	private String nickName;
-
 	@Column(name = "password")
 	private String password;
+
+	@Column(name = "user_type")
+	@Enumerated(EnumType.ORDINAL)
+	private UserType type;
 
 	@Column(name = "user_status")
 	@Enumerated(EnumType.ORDINAL)
@@ -88,20 +91,20 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public UserType getType() {
+		return type;
+	}
+
+	public void setType(UserType type) {
+		this.type = type;
 	}
 
 	public UserStatus getStatus() {
@@ -180,5 +183,22 @@ public class User implements Serializable {
 			}
 		}
 		return false;
+	}
+
+	public boolean containsCustomer(long customerId) {
+		if (null == customer) {
+			return false;
+		}
+		return customer.getId() == customerId;
+	}
+
+	public UserVo convert() {//TODO:
+		UserVo vo = new UserVo();
+		vo.setId(id);
+		vo.setName(name);
+		if (UserType.ELECTRICITY == type) {
+
+		}
+		return vo;
 	}
 }

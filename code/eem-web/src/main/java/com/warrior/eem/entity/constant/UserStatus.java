@@ -7,7 +7,7 @@ package com.warrior.eem.entity.constant;
  */
 public enum UserStatus {
 
-	ACTIVE("active"), DISABLE("disable"), ALL("");
+	ACTIVE("active"), DISABLE("disable"), INVALID("");
 
 	private UserStatus(String desc) {
 		this.desc = desc;
@@ -37,7 +37,7 @@ public enum UserStatus {
 		case 1:
 			return DISABLE;
 		default:
-			return ALL;
+			return INVALID;
 		}
 	}
 }

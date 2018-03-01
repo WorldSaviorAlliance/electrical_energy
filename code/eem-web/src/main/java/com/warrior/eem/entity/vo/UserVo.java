@@ -18,21 +18,16 @@ public final class UserVo implements Serializable {
 	@FieldChecker(name = "用户名", minLen = 6, maxLen = 20)
 	private String name;
 
-	@FieldChecker(name = "用户昵称", minLen = 6, maxLen = 20)
-	private String nickName;
-
 	@FieldChecker(name = "用户密码", minLen = 6, maxLen = 12)
 	private String password;
 
-	@FieldChecker(name = "用户状态")
-	// 0表示激活 1表示禁用
-	private int status;
+	private int type;
 
-	@FieldChecker(name = "用户角色")
-	private long roleId;
-
-	@FieldChecker(name = "电力客户")
 	private long customerId;
+
+	private String addTime;
+
+	private String customerName;
 
 	public long getId() {
 		return id;
@@ -50,14 +45,6 @@ public final class UserVo implements Serializable {
 		this.name = name;
 	}
 
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -66,20 +53,12 @@ public final class UserVo implements Serializable {
 		this.password = password;
 	}
 
-	public int getStatus() {
-		return status;
+	public int getType() {
+		return type;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public long getCustomerId() {
@@ -88,5 +67,21 @@ public final class UserVo implements Serializable {
 
 	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getAddTime() {
+		return addTime;
+	}
+
+	public void setAddTime(String addTime) {
+		this.addTime = addTime;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 }

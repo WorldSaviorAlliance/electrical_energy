@@ -21,6 +21,7 @@ import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.UserStatus;
+import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.ui.Base64AndMD5Util;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
@@ -36,7 +37,7 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired
@@ -78,22 +79,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		Page page = new Page(cdt.getStartPage(), cdt.getPerPageCnt());
 		req.setPage(page);
 		Order order = new Order();
-		order.addOrder("nick_name", Order_Type.DESC);
+		order.addOrder("id", Order_Type.ASC);
 		req.setOrder(order);
 		LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 		if (!ToolUtil.isStringEmpty(cdt.getName())) {
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
-		if (!ToolUtil.isStringEmpty(cdt.getNickName())) {
-			sqlCdt = sqlCdt.and(SimpleCondition.like("nick_name", "%" + cdt.getNickName() + "%"));
-		}
-		UserStatus status = UserStatus.convert2UserStatus(cdt.getStatus());
-		if (UserStatus.ALL != status) {
-			sqlCdt = sqlCdt.and(SimpleCondition.equal("status", status));
-		}
-		if (cdt.getRoleId() > 0) {
-			sqlCdt = sqlCdt.and(SimpleCondition.equal("role_id", cdt.getRoleId()));
-		}
+		sqlCdt = sqlCdt.and(SimpleCondition.not("status", UserStatus.DISABLE));
 		req.setCdt(sqlCdt);
 		return req;
 	}
@@ -120,26 +112,27 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		return user;
 	}
 
-	private void updateUser(User user, UserVo userVo) {
-		if (!ToolUtil.isStringEmpty(userVo.getName())) {
-			user.setName(userVo.getName());
+	private void updateUser(User user, UserVo vo) {
+		if (!ToolUtil.isStringEmpty(vo.getName())) {
+			user.setName(vo.getName());
 		}
-		if (!ToolUtil.isStringEmpty(userVo.getNickName())) {
-			user.setNickName(userVo.getNickName());
+		if (vo.getCustomerId() != -1 && !user.containsCustomer(vo.getCustomerId())) {
+			user.setCustomer(customerDao.getEntity(vo.getCustomerId()));
 		}
-		if (!ToolUtil.isStringEmpty(userVo.getPassword())) {
-			user.setPassword(userVo.getPassword());
+	}
+
+	@Override
+	@Transactional
+	public void deleteEntity(Serializable id) {
+		if (id == null) {
+			throw new EemException("id不能为空");
 		}
-		UserStatus status = UserStatus.convert2UserStatus(userVo.getStatus());
-		if (UserStatus.ALL != status) {
-			user.setStatus(status);
+		User user = (User) getEntity(id);
+		if (null == user) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
 		}
-		if (userVo.getRoleId() != -1) {
-			user.setRole(roleDao.getReference(userVo.getRoleId()));
-		}
-		if (userVo.getCustomerId() != -1) {
-			user.setCustomer(customerDao.getReference(userVo.getCustomerId()));
-		}
+		user.setStatus(UserStatus.DISABLE);
+		userDao.updateDo(user);
 	}
 
 	@Override
@@ -164,8 +157,8 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		User admin = new User();
 		admin.setName("admin");
 		admin.setPassword(Base64AndMD5Util.encodeByBase64AndMd5("mirror-0"));
-		admin.setNickName("admin");
 		admin.setStatus(UserStatus.ACTIVE);
+		admin.setType(UserType.SYSTEM);
 		Timestamp time = ToolUtil.getCurrentTime();
 		admin.setAddTime(time);
 		admin.setLastLoginTime(time);

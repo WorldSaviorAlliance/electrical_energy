@@ -10,7 +10,7 @@ import com.warrior.eem.annotation.FieldChecker;
  * @author cold_blade
  * @version 1.0.0
  */
-public final class UserCdtVo implements Serializable {
+public final class UserCdtVo implements Serializable {//TODO:需要针对修改
 	private static final long serialVersionUID = -3423702454229024923L;
 
 	@FieldChecker(name = "用户名", minLen = 0, maxLen = 20)
