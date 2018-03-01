@@ -157,7 +157,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 			}
 			// cq.having(restrictions);
 		}
-		
+
 		TypedQuery<?> tq = em.createQuery(cq);
 		// page
 		if (page != null) {
@@ -177,7 +177,7 @@ public abstract class AbstractDaoImpl<T> implements IDao<T> {
 
 	@Override
 	public List<?> listDosBySql(String sql) {
-		return em.createNamedQuery(sql, getEntityClass()).getResultList();
+		return em.createNativeQuery(sql).getResultList();
 	}
 
 	/**

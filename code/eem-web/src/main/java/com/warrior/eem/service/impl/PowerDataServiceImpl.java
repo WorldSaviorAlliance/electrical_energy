@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -466,5 +467,164 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		item.setTroughPrice(data.getTroughKwh());
 		item.setVoltageType(data.getVoltageType());
 		return item;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, BigDecimal> statisticsCurrentMonthPowerInfo() {
+		LocalDate date = LocalDate.now();
+		SqlRequest req = new SqlRequest();
+		Joiner joiner = new Joiner();
+		joiner.add("customer");
+		req.setJoiner(joiner);
+		// 售电合约
+		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.equal("validYear", date.getYear() + ""))
+				.and(SimpleCondition.equal("customer.id", EemSession.getCurrentUser().getCustomer().getId())));
+		List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+		if (spas == null || spas.size() == 0) {
+			throw new EemException("未签署" + date.getYear() + "年售电合约");
+		}
+		// 电量查询
+		String month = date.getYear() + (date.getMonthValue() < 10 ? "0" + date.getMonthValue()
+		: "" + date.getMonthValue());
+		final double[] spaPrices = getSellAgreementPowerQuantityAndPriceByMonth(month, spas.get(0));
+		final double[] adpPrices = getAdjustmentPowerQuantityAndPriceByMonth(month, spas.get(0));
+		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.equal("month", month))
+				.and(SimpleCondition.equal("customer.id", EemSession.getCurrentUser().getCustomer().getId())));
+		List<PowerData> pds = (List<PowerData>) pdDao.listDos(req);
+
+		final Map<String, BigDecimal> res = new HashMap<String, BigDecimal>();
+		res.put("invalidQuantity", BigDecimal.ZERO);
+		res.put("validQuantity", BigDecimal.ZERO);
+		res.put("totalPrice", BigDecimal.ZERO);
+		pds.forEach(pd -> {
+			int index = 3;
+			if (Sell_Power_Price_Type.Normal.getName().equals(pd.getTradeType())) {
+				index = 0;
+			} else if (Sell_Power_Price_Type.Support.getName().equals(pd.getTradeType())) {
+				index = 1;
+			} else if (Sell_Power_Price_Type.Replace.getName().equals(pd.getTradeType())) {
+				index = 2;
+			}
+			BigDecimal unitPrice = new BigDecimal(spaPrices[index + 4] + adpPrices[index + 4]);
+
+			// 无用功电量
+			res.get("invalidQuantity").add(pd.getIdleKwh());
+
+			// 有用功电量
+			res.get("validQuantity").add(pd.getFlatKwh().add(pd.getPeakKwh()).add(pd.getTroughKwh()));
+
+			// 需要乘以系数
+			res.get("totalPrice").add((pd.getFlatKwh().multiply(unitPrice)).add(pd.getPeakKwh().multiply(unitPrice))
+					.add(pd.getTroughKwh().multiply(unitPrice)));
+		});
+		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, BigDecimal> statisticsYearPowerQuantity() {
+		SqlRequest req = new SqlRequest();
+		Joiner joiner = new Joiner();
+		joiner.add("customer");
+		req.setJoiner(joiner);
+		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.like("month", LocalDate.now().getYear() + "%"))
+				.and(SimpleCondition.equal("customer.id", EemSession.getCurrentUser().getCustomer().getId())));
+		List<PowerData> pds = (List<PowerData>) pdDao.listDos(req);
+		final Map<String, BigDecimal> res = new HashMap<String, BigDecimal>();
+		res.put("invalidQuantity", BigDecimal.ZERO);
+		res.put("flatQuantity", BigDecimal.ZERO);
+		res.put("peakQuantity", BigDecimal.ZERO);
+		res.put("troughQuantity", BigDecimal.ZERO);
+		pds.forEach(pd -> {
+			// 平段电量
+			res.get("flatQuantity").add(pd.getFlatKwh());
+
+			// 高峰电量
+			res.get("peakQuantity").add(pd.getPeakKwh());
+
+			// 低谷电量
+			res.get("troughQuantity").add(pd.getTroughKwh());
+
+		});
+		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, BigDecimal> statisticsYearPowerPrice() {
+		SqlRequest req = new SqlRequest();
+		LocalDate date = LocalDate.now();
+		// 售电合约
+		Joiner joiner = new Joiner();
+		joiner.add("customer");
+		req.setJoiner(joiner);
+		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.equal("validYear", date.getYear() + ""))
+				.and(SimpleCondition.equal("customer.id", EemSession.getCurrentUser().getCustomer().getId())));
+		List<SellPowerAgreement> spas = (List<SellPowerAgreement>) spaDao.listDos(req);
+		if (spas == null || spas.size() == 0) {
+			throw new EemException("未签署" + date.getYear() + "年售电合约");
+		}
+		// 电量查询
+		String month = date.getYear() + (date.getMonthValue() < 10 ? "0" + date.getMonthValue()
+				: "" + date.getMonthValue());
+		final double[] spaPrices = getSellAgreementPowerQuantityAndPriceByMonth(month, spas.get(0));
+		final double[] adpPrices = getAdjustmentPowerQuantityAndPriceByMonth(month, spas.get(0));
+		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.like("month", date.getYear() + "" + "%"))
+				.and(SimpleCondition.equal("customer.id", EemSession.getCurrentUser().getCustomer().getId())));
+		List<PowerData> pds = (List<PowerData>) pdDao.listDos(req);
+		final Map<String, BigDecimal> res = new HashMap<String, BigDecimal>();
+		res.put("flatPrice", BigDecimal.ZERO);
+		res.put("peakPrice", BigDecimal.ZERO);
+		res.put("troughPrice", BigDecimal.ZERO);
+		pds.forEach(pd -> {
+			int index = 3;
+			if (Sell_Power_Price_Type.Normal.getName().equals(pd.getTradeType())) {
+				index = 0;
+			} else if (Sell_Power_Price_Type.Support.getName().equals(pd.getTradeType())) {
+				index = 1;
+			} else if (Sell_Power_Price_Type.Replace.getName().equals(pd.getTradeType())) {
+				index = 2;
+			}
+			BigDecimal unitPrice = new BigDecimal(spaPrices[index + 4] + adpPrices[index + 4]);
+
+			// 平段电费
+			res.get("flatPrice").add(pd.getIdleKwh().multiply(unitPrice));
+
+			// 高峰电费
+			res.get("peakPrice").add(pd.getFlatKwh().multiply(unitPrice));
+
+			// 低谷电费
+			res.get("troughPrice").add(pd.getPeakKwh().multiply(unitPrice));
+		});
+		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Map<String, Object>> listMonthPowerQuantity() {
+		List<Object[]> pds = null;
+		List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+		if (EemSession.getCurrentUser().getCustomer() != null) {
+			pds = (List<Object[]>) pdDao.listDosBySql(
+					"select sum(flat_kwh),sum(trough_kwh),sum(peak_kwh),month from power_data where month like '"
+							+ LocalDate.now().getYear() + "%' and customer_id = "
+							+ EemSession.getCurrentUser().getCustomer().getId() + " group by month order by month asc");
+		}
+		if (pds != null) {
+			pds.forEach(objArr -> {
+				Map<String, Object> tempItem = new HashMap<String, Object>();
+				// 平段电量
+				tempItem.put("flatQuantity", objArr[0]);
+				// 高峰电量
+				tempItem.put("troughQuantity", objArr[1]);
+				// 低谷电量
+				tempItem.put("peakQuantity", objArr[2]);
+
+				tempItem.put("month", objArr[3]);
+				res.add(tempItem);
+			});
+		}
+		return res;
 	}
 }
