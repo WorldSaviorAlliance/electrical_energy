@@ -10,14 +10,14 @@
 		<div class="col-sm-12" style="padding: 0px;">
 			<div class="col-md-3">
 				<div class="form-group">
-                  <label class="col-sm-4 control-label">用户名称</label>
+                  <label class="col-sm-4 control-label" style="width: auto;">用户名称</label>
                   <div class="col-sm-8">
-                   <input type="text" class="form-control" id="name">
+                   <input type="text" class="form-control" id="search_name">
                   </div>
                 </div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="button">查询</button>
+				<button class="btn btn-primary" id="search" type="do_search">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
 			</div>
 		</div>
@@ -33,6 +33,25 @@
 					</tr>
 				</thead>
 				<tbody id="datas">
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有用户
+						</td>
+					</tr>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
+						</td>
+					</tr>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
+						</td>
+					</tr>
 					<tr>
 						<td>张三</td>
 						<td>电力用户</td>

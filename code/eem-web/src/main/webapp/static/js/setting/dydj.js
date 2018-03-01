@@ -131,7 +131,7 @@ $(function()
 		$('a[flag="del"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
 			confirm('是否删除该电压等级？', function(){
-				delDlyh(id);
+				delDydj(id);
 				return true;
 			});
 		});
@@ -161,7 +161,7 @@ $(function()
 	/*
 	 * 删除对应的电压等级
 	 */
-	function delDlyh(id)
+	function delDydj(id)
 	{
 		$.ajax({
 			url: rootpath + '/' + PATH_DYDJ + '/info?id=' + id,
