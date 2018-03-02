@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +23,7 @@ import com.warrior.eem.service.UserService;
  * @author cold_blade
  * @version 1.0.0
  */
-@Repository
+@Controller
 @RequestMapping("electricity_package")
 public class ElectricityPackageController extends AbstractController {
 	@Autowired
