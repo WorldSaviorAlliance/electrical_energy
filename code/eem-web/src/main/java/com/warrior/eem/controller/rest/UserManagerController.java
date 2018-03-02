@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
@@ -51,14 +52,14 @@ public class UserManagerController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteEntity(long id) {
+	public Result<Object> deleteEntity(@RequestParam Long id) {
 		service.deleteEntity(id);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<Object> getEntity(long id) {
+	public Result<Object> getEntity(@RequestParam Long id) {
 		User user = (User) service.getEntity(id);
 		if (null == user) {
 			return Result.failure("获取用户信息失败");
@@ -77,5 +78,18 @@ public class UserManagerController extends AbstractController {
 		return Result.success(pageVo.getCount(), vos);
 	}
 
-	// TODO:需要增加权限设置以及密码修改的接口
+	@RequestMapping(value = "set_role", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> setRole(@RequestParam Long userId, @RequestParam Long roleId) {
+		service.setRole(userId, roleId);
+		return Result.success();
+	}
+
+	@RequestMapping(value = "modify_pwd", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> modifyPassword(@RequestParam Long userId, @RequestParam String oldPwd,
+			@RequestParam String newPwd) {
+		service.modifyPassword(userId, oldPwd, newPwd);
+		return Result.success();
+	}
 }

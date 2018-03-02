@@ -13,4 +13,8 @@ public interface UserService extends IService {
 	boolean createAdminIfAbsent();
 	
 	User updateUser(UserVo vo);
+	
+	void setRole(Long userId, Long roleId);
+	
+	void modifyPassword(Long userId, String oldPwd, String newPwd);
 }

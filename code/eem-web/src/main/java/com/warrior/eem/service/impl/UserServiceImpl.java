@@ -3,7 +3,6 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
+import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
@@ -37,9 +37,7 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
-	private final Logger logger = Logger.getLogger(getClass());
-
+public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
 	@Autowired
 	private UserDao userDao;
 
@@ -68,6 +66,35 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	}
 
 	@Override
+	@Transactional
+	public void setRole(Long userId, Long roleId) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		Role role = roleDao.getEntity(roleId);
+		if (null == role) {
+			throw new EemException("无效的权限id：" + userId);
+		}
+		user.setRole(role);
+		userDao.updateDo(user);
+	}
+
+	@Override
+	@Transactional
+	public void modifyPassword(Long userId, String oldPwd, String newPwd) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		if (!user.getPassword().equals(Base64AndMD5Util.encodeByBase64AndMd5(oldPwd))) {
+			throw new EemException("密码不正确");
+		}
+		user.setPassword(Base64AndMD5Util.encodeByBase64AndMd5(newPwd));
+		userDao.updateDo(user);
+	}
+
+	@Override
 	SqlRequest buildListSqlRequest(Serializable... conditions) {
 		UserCdtVo cdt = (UserCdtVo) conditions[0];
 		try {
@@ -76,8 +103,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			throw new EemException("用户列表查询条件解析失败");
 		}
 		SqlRequest req = new SqlRequest();
-		Page page = new Page(cdt.getStartPage(), cdt.getPerPageCnt());
-		req.setPage(page);
+		req.setPage(new Page(cdt.getStartPage(), cdt.getPerPageCnt()));
 		Order order = new Order();
 		order.addOrder("id", Order_Type.ASC);
 		req.setOrder(order);
@@ -124,12 +150,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Override
 	@Transactional
 	public void deleteEntity(Serializable id) {
-		if (id == null) {
-			throw new EemException("id不能为空");
-		}
 		User user = (User) getEntity(id);
 		if (null == user) {
-			throw new EemException("未找到id（" + id + "）对应的数据");
+			throw new EemException("无效的用户id：" + id);
 		}
 		user.setStatus(UserStatus.DISABLE);
 		userDao.updateDo(user);
@@ -142,7 +165,6 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			return true;
 		}
 		userDao.createDo(buildAdmin());
-		logger.info("creat admin user...");
 		return checkExistAdminUser();
 	}
 
