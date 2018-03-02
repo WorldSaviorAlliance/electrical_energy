@@ -58,7 +58,7 @@ public class BaseType extends AbstractEntity {
 		BaseTypeVo vo = new BaseTypeVo();
 		vo.setId(getId());
 		vo.setName(name);
-		vo.setCreator(creator.getNickName());
+		vo.setCreator(creator.getName());
 		vo.setDate(ToolUtil.formatDate(createDate));
 		return vo;
 	}

@@ -36,7 +36,7 @@ public class LogonController extends AbstractController {
 		}
 		SecurityUtils.getSubject().login(new UsernamePasswordToken(vo.getUserName(), vo.getPassword()));
 		Map<String, Object> um = new HashMap<String, Object>();
-		um.put("nickName", EemSession.getCurrentUser().getNickName());
+		um.put("name", EemSession.getCurrentUser().getName());
 		um.put("id", EemSession.getCurrentUser().getId());
 		return Result.success(um);
 	}
