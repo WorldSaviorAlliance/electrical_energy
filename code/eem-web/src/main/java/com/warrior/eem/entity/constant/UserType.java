@@ -26,7 +26,7 @@ public enum UserType {
 	 * @param status
 	 * @return
 	 */
-	public static UserType convert2UserStatus(int type) {
+	public static UserType convert(int type) {
 		switch (type) {
 		case 0:
 			return ELECTRICITY;

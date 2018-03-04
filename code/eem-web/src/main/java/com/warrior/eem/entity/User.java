@@ -25,6 +25,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.vo.UserVo;
+import com.warrior.eem.util.ToolUtil;
 
 /**
  * 用户实体
@@ -192,13 +193,18 @@ public class User implements Serializable {
 		return customer.getId() == customerId;
 	}
 
-	public UserVo convert() {//TODO:
+	public UserVo convert() {
 		UserVo vo = new UserVo();
 		vo.setId(id);
 		vo.setName(name);
+		vo.setType(type.ordinal());
 		if (UserType.ELECTRICITY == type) {
-
+			vo.setCustomerId(customer.getId());
+			vo.setCustomerName(customer.getName());
+		} else {
+			vo.setCustomerName("");
 		}
+		vo.setAddTime(ToolUtil.formatDate(addTime));
 		return vo;
 	}
 }

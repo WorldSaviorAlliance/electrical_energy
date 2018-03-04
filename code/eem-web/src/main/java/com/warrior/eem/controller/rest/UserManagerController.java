@@ -41,8 +41,8 @@ public class UserManagerController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> updateEntity(@RequestBody(required = false) UserVo userVo) {
-		User user = service.updateUser(userVo);
+	public Result<Object> updateEntity(@RequestParam Long userId, @RequestParam String newName) {
+		User user = service.modifyName(userId, newName);
 		User curUser = EemSession.getCurrentUser();
 		if (null != curUser && curUser.getId() == user.getId()) {
 			EemSession.setCurrentUser(user);// 更新当前session中的用户信息

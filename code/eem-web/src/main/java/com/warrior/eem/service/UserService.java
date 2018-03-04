@@ -1,7 +1,6 @@
 package com.warrior.eem.service;
 
 import com.warrior.eem.entity.User;
-import com.warrior.eem.entity.vo.UserVo;
 
 /**
  * 用户的服务接口
@@ -11,10 +10,10 @@ import com.warrior.eem.entity.vo.UserVo;
  */
 public interface UserService extends IService {
 	boolean createAdminIfAbsent();
-	
-	User updateUser(UserVo vo);
-	
-	void setRole(Long userId, Long roleId);
-	
+
+	User setRole(Long userId, Long roleId);
+
 	void modifyPassword(Long userId, String oldPwd, String newPwd);
+
+	User modifyName(Long userId, String newName);
 }

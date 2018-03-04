@@ -37,7 +37,7 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	@Autowired
 	private UserDao userDao;
 
@@ -53,21 +53,8 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 	}
 
 	@Override
-	public User updateUser(UserVo vo) {
-		try {
-			EntityValidator.checkEntity(vo);
-		} catch (IllegalAccessException | SecurityException e1) {
-			throw new EemException("更新实体解析参数失败");
-		}
-		User user = queryUser(vo.getId());
-		updateUser(user, vo);
-		userDao.updateDo(user);
-		return user;
-	}
-
-	@Override
 	@Transactional
-	public void setRole(Long userId, Long roleId) {
+	public User setRole(Long userId, Long roleId) {
 		User user = userDao.getEntity(userId);
 		if (null == user) {
 			throw new EemException("无效的用户id：" + userId);
@@ -78,12 +65,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		}
 		user.setRole(role);
 		userDao.updateDo(user);
+		return user;
 	}
 
 	@Override
 	@Transactional
 	public void modifyPassword(Long userId, String oldPwd, String newPwd) {
-		User user = userDao.getEntity(userId);
+		User user = (User) getEntity(userId);
 		if (null == user) {
 			throw new EemException("无效的用户id：" + userId);
 		}
@@ -92,6 +80,18 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		}
 		user.setPassword(Base64AndMD5Util.encodeByBase64AndMd5(newPwd));
 		userDao.updateDo(user);
+	}
+
+	@Override
+	@Transactional
+	public User modifyName(Long userId, String newName) {
+		User user = (User) getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		user.setName(newName);
+		userDao.updateDo(user);
+		return user;
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		if (!ToolUtil.isStringEmpty(cdt.getName())) {
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
-		sqlCdt = sqlCdt.and(SimpleCondition.not("status", UserStatus.DISABLE));
+		sqlCdt = sqlCdt.and(new SimpleCondition("status", Sql_Operator.EQ, UserStatus.ACTIVE));
 		req.setCdt(sqlCdt);
 		return req;
 	}
@@ -123,28 +123,20 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 
 	@Override
 	User convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
-		User user = (User) dbo;
-		updateUser(user, (UserVo) vo);
-		return user;
+		return null;
 	}
 
 	@Override
 	User convertVoToDoForCreate(Serializable vo) {
 		User user = new User();
+		UserVo userVo = (UserVo) vo;
+		user.setName(userVo.getName());
+		user.setPassword(Base64AndMD5Util.encodeByBase64AndMd5(userVo.getPassword()));
+		user.setType(UserType.convert(userVo.getType()));
 		Timestamp time = ToolUtil.getCurrentTime();
 		user.setAddTime(time);
 		user.setStatus(UserStatus.ACTIVE);
-		updateUser(user, (UserVo) vo);
 		return user;
-	}
-
-	private void updateUser(User user, UserVo vo) {
-		if (!ToolUtil.isStringEmpty(vo.getName())) {
-			user.setName(vo.getName());
-		}
-		if (vo.getCustomerId() != -1 && !user.containsCustomer(vo.getCustomerId())) {
-			user.setCustomer(customerDao.getEntity(vo.getCustomerId()));
-		}
 	}
 
 	@Override
@@ -185,13 +177,5 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		admin.setAddTime(time);
 		admin.setLastLoginTime(time);
 		return admin;
-	}
-
-	private User queryUser(long userId) {
-		User user = userDao.getReference(userId);
-		if (ToolUtil.isStringEmpty(user.getName())) {
-			user = userDao.getEntity(userId);
-		}
-		return user;
 	}
 }
