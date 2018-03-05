@@ -35,6 +35,10 @@ public class SimpleCondition implements Condition {
 	public static SimpleCondition equal(String propName, Object values) {
 		return new SimpleCondition(propName, Sql_Operator.EQ, values);
 	}
+	
+	public static SimpleCondition notEqual(String propName, Object values) {
+		return new SimpleCondition(propName, Sql_Operator.NOT_EQ, values);
+	}
 
 	public static SimpleCondition ge(String propName, Object values) {
 		return new SimpleCondition(propName, Sql_Operator.GE, values);
@@ -80,8 +84,15 @@ public class SimpleCondition implements Condition {
 		return new SimpleCondition(propName, Sql_Operator.BETWEEN, new Object[] { bgVal, endVal });
 	}
 
+	/**
+	 * 过期未定
+	 * @param propName
+	 * @param values
+	 * @return
+	 */
+	@Deprecated
 	public static SimpleCondition not(String propName, Object values) {
-		return new SimpleCondition(propName, Sql_Operator.BETWEEN, values);
+		return new SimpleCondition(propName, Sql_Operator.NOT, values);
 	}
 
 	public String getPropName() {

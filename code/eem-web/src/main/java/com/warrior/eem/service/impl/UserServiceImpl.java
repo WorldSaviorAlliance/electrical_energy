@@ -113,8 +113,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
 		sqlCdt = sqlCdt.and(new SimpleCondition("status", Sql_Operator.EQ, UserStatus.ACTIVE));
-		//TODO:不等的条件貌似有异常
-		//sqlCdt = sqlCdt.and(new SimpleCondition("name", Sql_Operator.NOT_EQ, "admin"));
+		sqlCdt = sqlCdt.and(new SimpleCondition("name", Sql_Operator.NOT_EQ, "admin"));
 		req.setCdt(sqlCdt);
 		return req;
 	}

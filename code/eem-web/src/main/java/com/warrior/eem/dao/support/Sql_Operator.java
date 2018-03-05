@@ -30,7 +30,8 @@ public enum Sql_Operator {
 	NOT_IN("不在某个范围内", "not in", new Class[] { Expression.class, Object[].class }),
 	BETWEEN("在某个区间", "between", new Class[] { Expression.class, Comparable.class, Comparable.class }), 
 	EXISTS("存在", "exists", new Class[] { Subquery.class }), // 待优化
-	NOT_EQ("非", "not equal", new Class[] { Expression.class }), 
+	NOT_EQ("不等于", "notEqual", new Class[] { Expression.class, Object.class }), 
+	NOT("非", "not", new Class[] { Expression.class }), 
 	LIKE("模糊like匹配", "like", new Class[] { Expression.class, String.class });
 
 	String optName;
