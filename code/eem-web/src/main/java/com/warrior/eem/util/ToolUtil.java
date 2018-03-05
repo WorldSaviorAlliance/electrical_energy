@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.warrior.eem.entity.ui.Direct;
+import com.warrior.eem.shiro.session.EemSession;
 
 public class ToolUtil {
 	public static String getBasePath(HttpServletRequest request) {
@@ -29,10 +30,7 @@ public class ToolUtil {
 
 	public static ModelAndView gotoDirect(Map<String, Object> model, String name, String direct) {
 		Direct d = new Direct(name, direct);
-		if(model.get(Constant.STR_ID) != null)
-		{
-			d.setParam(model.get(Constant.STR_ID));
-		}
+		d.setParam(EemSession.getCurrentUser().getId());  //把当前登录用户的ID发到前端去
 		model.put(Constant.DIRECT, d.toJson());
 		String redirectPage = "template";
 		return new ModelAndView(redirectPage, model);

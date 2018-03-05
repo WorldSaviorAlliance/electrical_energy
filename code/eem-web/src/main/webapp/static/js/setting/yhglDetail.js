@@ -22,6 +22,11 @@ function YhglDetail(afterSaveCallbk, curData)
 		    }
 		});
 		
+		$('input').focus(function(){
+			$('label.input_msg').hide();
+			$('label.input_msg[for="' + $(this).attr('id')+ '"]').show();
+		});
+		
 		$('.detail_search').niceSelect();
 		if(g_curData == null)
 		{
