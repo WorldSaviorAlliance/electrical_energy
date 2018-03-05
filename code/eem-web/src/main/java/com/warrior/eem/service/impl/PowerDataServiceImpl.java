@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -443,16 +444,14 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		}
 		// 单价
 		BigDecimal unitPrice = new BigDecimal(monthAdjustmentArr[index + 4] + monthSapqpArr[index + 4]);
-		double num = validKwh.doubleValue()
-				/ Math.sqrt(Math.pow(validKwh.doubleValue(), 2) + Math.pow(invalidKwh.doubleValue(), 2));
-
 		// TODO 需要乘以系数
 		data.setFlatKwh(data.getFlatKwh().multiply(unitPrice)); // 平段
 		data.setPeakKwh(data.getPeakKwh().multiply(unitPrice)); // 高峰
 		data.setTroughKwh(data.getTroughKwh().multiply(unitPrice)); // 低谷
 
 		BigDecimal validPrice = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
-		double totalPrice = validPrice.doubleValue() + (validPrice.doubleValue() * num);
+		double totalPrice = validPrice.doubleValue() + calculateInvalidEnergyCharge(validKwh.doubleValue(),
+				invalidKwh.doubleValue(), validPrice.doubleValue());
 		PowerMonthPriceInfoItemVo item = new PowerMonthPriceInfoItemVo();
 		item.setCustomerName(data.getCustomer().getNickName());
 		item.setCustomerNo(data.getCustomerNo());
@@ -485,8 +484,8 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			throw new EemException("未签署" + date.getYear() + "年售电合约");
 		}
 		// 电量查询
-		String month = date.getYear() + (date.getMonthValue() < 10 ? "0" + date.getMonthValue()
-		: "" + date.getMonthValue());
+		String month = date.getYear()
+				+ (date.getMonthValue() < 10 ? "0" + date.getMonthValue() : "" + date.getMonthValue());
 		final double[] spaPrices = getSellAgreementPowerQuantityAndPriceByMonth(month, spas.get(0));
 		final double[] adpPrices = getAdjustmentPowerQuantityAndPriceByMonth(month, spas.get(0));
 		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.equal("month", month))
@@ -518,6 +517,10 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			res.get("totalPrice").add((pd.getFlatKwh().multiply(unitPrice)).add(pd.getPeakKwh().multiply(unitPrice))
 					.add(pd.getTroughKwh().multiply(unitPrice)));
 		});
+		res.put("totalPrice",
+				res.get("totalPrice")
+						.add(new BigDecimal(calculateInvalidEnergyCharge(res.get("validQuantity").doubleValue(),
+								res.get("invalidQuantity").doubleValue(), res.get("totalPrice").doubleValue()))));
 		return res;
 	}
 
@@ -566,8 +569,8 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			throw new EemException("未签署" + date.getYear() + "年售电合约");
 		}
 		// 电量查询
-		String month = date.getYear() + (date.getMonthValue() < 10 ? "0" + date.getMonthValue()
-				: "" + date.getMonthValue());
+		String month = date.getYear()
+				+ (date.getMonthValue() < 10 ? "0" + date.getMonthValue() : "" + date.getMonthValue());
 		final double[] spaPrices = getSellAgreementPowerQuantityAndPriceByMonth(month, spas.get(0));
 		final double[] adpPrices = getAdjustmentPowerQuantityAndPriceByMonth(month, spas.get(0));
 		req.setCdt(LogicalCondition.emptyOfTrue().and(SimpleCondition.like("month", date.getYear() + "" + "%"))
@@ -626,5 +629,28 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			});
 		}
 		return res;
+	}
+
+	/**
+	 * 计算无用功电费
+	 * 
+	 * @return
+	 */
+	private double calculateInvalidEnergyCharge(double validKwh, double invalidKwh, double validEnergyCharge) {
+		double p = validKwh / Math.sqrt(Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2));
+		p = Double.valueOf(new DecimalFormat("0.00").format(p));
+		if (p < 0.9) {//
+			if (p <= 0.89 && p >= 0.7) {
+				return validEnergyCharge * 0.5 * ((0.89 - p) * 100 + 1) / 100;
+			} else if (p <= 0.69 && p >= 0.65) {
+				return validEnergyCharge * 1 * ((0.69 - p) * 100 + 1) / 100;
+			} else {
+				return validEnergyCharge * 2 * ((0.64 - p) * 100 + 1) / 100;
+			}
+		} else if (p > 0.9) {
+			return -(validEnergyCharge * 1.5 * (p - 0.9));
+		} else {
+			return 0;
+		}
 	}
 }
