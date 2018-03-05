@@ -9,9 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
 @Entity
 @Table(name = "city")
 public class City extends AbstractEntity {
@@ -21,7 +18,6 @@ public class City extends AbstractEntity {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@JoinColumn(name = "province_id")
 	private Province province;
 

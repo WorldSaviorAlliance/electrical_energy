@@ -15,7 +15,7 @@ public final class UserVo implements Serializable {
 
 	private long id = -1;
 
-	@FieldChecker(name = "用户名", minLen = 6, maxLen = 20)
+	@FieldChecker(name = "用户名", minLen = 2, maxLen = 20)
 	private String name;
 
 	@FieldChecker(name = "用户密码", minLen = 6, maxLen = 12)

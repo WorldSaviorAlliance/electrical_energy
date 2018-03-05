@@ -117,7 +117,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		if (null != authorityIds && !authorityIds.isEmpty()) {
 			Authority authority;
 			for (Long id : authorityIds) {
-				authority = authorityDao.queryAuthority(id);
+				authority = authorityDao.getEntity(id);
 				if (null != authority) {
 					role.getAuthorities().add(authority);
 				}

@@ -19,12 +19,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.vo.UserVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.util.ToolUtil;
 
 /**
@@ -58,12 +57,10 @@ public class User implements Serializable {
 	private UserStatus status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@JoinColumn(name = "role_id")
 	private Role role;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@JoinColumn(name = "customer_id")
 	private PowerCustomer customer;
 
@@ -199,12 +196,31 @@ public class User implements Serializable {
 		vo.setName(name);
 		vo.setType(type.ordinal());
 		if (UserType.ELECTRICITY == type) {
-			vo.setCustomerId(customer.getId());
-			vo.setCustomerName(customer.getName());
+			if (null != customer) {//TODO:延迟加载的问题
+//				vo.setCustomerId(customer.getId());
+//				vo.setCustomerName(customer.getName());
+			}
 		} else {
 			vo.setCustomerName("");
 		}
 		vo.setAddTime(ToolUtil.formatDate(addTime));
 		return vo;
+	}
+	
+	public void checkPermission(String res, ResourceOperation op) {
+		boolean hasPermission = false;
+		for (Authority authority : role.getAuthorities()) {
+			if (authority.hasPermission(res, op)) {
+				hasPermission = true;
+			}
+		}
+		if (!hasPermission) {
+			throw new EemException("no " + res + ":" + op.toString() + "permission");
+		}
+	}
+
+	public void checkPermission(String res, ResourceOperation op, Long resId) {
+		// TODO:更小的权限设计,以后版本扩展
+		checkPermission(res, op);
 	}
 }

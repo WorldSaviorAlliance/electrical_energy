@@ -9,9 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
 @Entity
 @Table(name = "province")
 public class Province extends AbstractEntity {
@@ -21,7 +18,6 @@ public class Province extends AbstractEntity {
 	private String name;
 
 	@OneToMany(mappedBy = "province", cascade = CascadeType.ALL, orphanRemoval = true)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
 	private List<City> cities = new ArrayList<City>();
 
 	public String getName() {

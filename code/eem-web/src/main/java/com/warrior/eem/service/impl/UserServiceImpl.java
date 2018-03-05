@@ -18,6 +18,7 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
+import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.UserStatus;
@@ -43,7 +44,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Autowired
 	private RoleDao roleDao;
-
+	
 	@Autowired
 	private PowerCustomerDao customerDao;
 
@@ -112,6 +113,8 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
 		sqlCdt = sqlCdt.and(new SimpleCondition("status", Sql_Operator.EQ, UserStatus.ACTIVE));
+		//TODO:不等的条件貌似有异常
+		//sqlCdt = sqlCdt.and(new SimpleCondition("name", Sql_Operator.NOT_EQ, "admin"));
 		req.setCdt(sqlCdt);
 		return req;
 	}
@@ -133,6 +136,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		user.setName(userVo.getName());
 		user.setPassword(Base64AndMD5Util.encodeByBase64AndMd5(userVo.getPassword()));
 		user.setType(UserType.convert(userVo.getType()));
+		if (UserType.ELECTRICITY == user.getType()) {
+			PowerCustomer customer = customerDao.getEntity(userVo.getCustomerId());
+			if (null != customer) {
+				user.setCustomer(customer);
+			}
+		}
 		Timestamp time = ToolUtil.getCurrentTime();
 		user.setAddTime(time);
 		user.setStatus(UserStatus.ACTIVE);

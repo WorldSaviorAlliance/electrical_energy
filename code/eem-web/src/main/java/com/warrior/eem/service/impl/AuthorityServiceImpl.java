@@ -12,7 +12,7 @@ import com.warrior.eem.dao.AuthorityDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.Authority;
-import com.warrior.eem.entity.constant.DefaultAuthority;
+import com.warrior.eem.entity.constant.EntityFactory;
 import com.warrior.eem.service.AuthorityService;
 
 /**
@@ -57,7 +57,7 @@ public final class AuthorityServiceImpl extends AbstractServiceImpl<Authority>im
 		if (authorityDao.countDos(null) > 0) {
 			return true;
 		}
-		List<Authority> authorities = DefaultAuthority.getDefaultAuthorities();
+		List<Authority> authorities = EntityFactory.getDefaultAuthorities();
 		for (Authority elem : authorities) {
 			authorityDao.createDo(elem);
 		}

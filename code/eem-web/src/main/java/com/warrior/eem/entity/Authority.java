@@ -1,6 +1,5 @@
 package com.warrior.eem.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,11 +7,12 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.warrior.eem.entity.constant.ResourceOperation;
 
 /**
  * 权限
@@ -23,18 +23,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "authority")
-public class Authority implements Serializable {
+public class Authority extends AbstractEntity {
 	private static final long serialVersionUID = -2284317545043121017L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "resource")
+	private String res;
 
-	@Column(name = "func")
-	private String func;
-
-	@Column(name = "func_name")
-	private String funcName;
+	@Column(name = "op")
+	@Enumerated(EnumType.ORDINAL)
+	private ResourceOperation op;
 
 	@OneToMany(mappedBy = "authority", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoleAuthority> owners = new ArrayList<>();
@@ -42,33 +39,25 @@ public class Authority implements Serializable {
 	public Authority() {
 	}
 
-	public Authority(String func, String funcName) {
-		this.func = func;
-		this.funcName = funcName;
-	}
-	
-	public Long getId() {
-		return id;
+	public Authority(String res, ResourceOperation op) {
+		this.res = res;
+		this.op = op;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public String getRes() {
+		return res;
 	}
 
-	public String getFunc() {
-		return func;
+	public void setRes(String res) {
+		this.res = res;
 	}
 
-	public void setFunc(String func) {
-		this.func = func;
+	public ResourceOperation getOp() {
+		return op;
 	}
 
-	public String getFuncName() {
-		return funcName;
-	}
-
-	public void setFuncName(String funcName) {
-		this.funcName = funcName;
+	public void setOp(ResourceOperation op) {
+		this.op = op;
 	}
 
 	public List<RoleAuthority> getOwners() {
@@ -83,11 +72,18 @@ public class Authority implements Serializable {
 			return false;
 		}
 		Authority other = (Authority) obj;
-		return other.func.equals(func) && other.funcName.equals(funcName);
+		return other.res.equals(res) && other.op == op;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(func, funcName);
+		return Objects.hash(res, op);
+	}
+	
+	public boolean hasPermission(String res, ResourceOperation op) {
+		if (this.res.equals(res) && null != op) {
+			return this.op.ordinal() >= op.ordinal();
+		}
+		return false;
 	}
 }

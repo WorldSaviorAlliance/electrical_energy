@@ -3,7 +3,20 @@ package com.warrior.eem.entity.constant;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.warrior.eem.entity.Authority;
+import com.warrior.eem.entity.BuyContractUserInfo;
+import com.warrior.eem.entity.BuyElectricityContract;
+import com.warrior.eem.entity.ElectricityAdjustmentData;
 import com.warrior.eem.entity.ElectricityPackage;
+import com.warrior.eem.entity.OperationLog;
+import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerSupplier;
+import com.warrior.eem.entity.PriceCoefficient;
+import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.SellPowerAgreementMonthData;
+import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.VoltageType;
 
 /**
  * 获取实体的默认值
@@ -49,5 +62,39 @@ public final class EntityFactory {
 				+ "10%~20%是各承担50%，大于20%时由客户承担70%。");
 		list.add(elecPkg);
 		return list;
+	}
+
+	/**
+	 * 获取默认的权限列表
+	 * 
+	 * @return
+	 */
+	public static List<Authority> getDefaultAuthorities() {
+		List<Authority> authorities = new ArrayList<>();
+		List<String> entities = getResources();
+		for (String elem : entities) {
+			authorities.add(new Authority(elem, ResourceOperation.READ));
+			authorities.add(new Authority(elem, ResourceOperation.WRITE));
+			authorities.add(new Authority(elem, ResourceOperation.COM_CONTROL));
+		}
+		return authorities;
+	}
+
+	private static List<String> getResources() {
+		List<String> entities = new ArrayList<>();
+		entities.add(BuyContractUserInfo.class.getSimpleName());
+		entities.add(BuyElectricityContract.class.getSimpleName());
+		entities.add(ElectricityAdjustmentData.class.getSimpleName());
+		entities.add(ElectricityPackage.class.getSimpleName());
+		entities.add(OperationLog.class.getSimpleName());
+		entities.add(PowerCustomer.class.getSimpleName());
+		entities.add(PowerSupplier.class.getSimpleName());
+		entities.add(PriceCoefficient.class.getSimpleName());
+		entities.add(Role.class.getSimpleName());
+		entities.add(SellPowerAgreement.class.getSimpleName());
+		entities.add(SellPowerAgreementMonthData.class.getSimpleName());
+		entities.add(User.class.getSimpleName());
+		entities.add(VoltageType.class.getSimpleName());
+		return entities;
 	}
 }
