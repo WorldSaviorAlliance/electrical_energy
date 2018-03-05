@@ -7,22 +7,28 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">用户名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入用户名称" required id="name" />
+			<input type="text" class="form-control" placeholder="请输入用户名称" required id="name"  maxlength="20" minlength="2"/>
 		</div>
+		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="name">
+			长度范围2到20个字符
+		</label>
 	</div>
 	<div class="form-group" style="display: none;" id="pasword_div">
 		<label class="col-sm-2 control-label">初始密码 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入初始密码" required id="password" />
+			<input type="password" class="form-control" placeholder="请输入初始密码" required id="password"  maxlength="12" minlength="6"/>
 		</div>
+		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="password">
+			长度范围6到12个字符
+		</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">用户类型<span	class="asterisk">*</span></label>
 		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择用户类型" id="userType">
-					<option value="0">电力用户</option>
-					<option value="1">系统用户</option>
-				</select>
+				<option value="0">电力用户</option>
+				<option value="1">系统用户</option>
+			</select>
 		</div>
 	</div>
 	<div class="form-group">

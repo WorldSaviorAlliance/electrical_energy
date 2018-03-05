@@ -102,6 +102,8 @@ $(function()
 				
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
+							'<td>' + (temp.type == 0 ? '电力用户' : '系统用户') + '</td>' +
+							'<td>' + getObjStr(temp.customerName) + '</td>' +
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+

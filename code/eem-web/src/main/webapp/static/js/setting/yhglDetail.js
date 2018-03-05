@@ -13,16 +13,13 @@ function YhglDetail(afterSaveCallbk, curData)
 	{
 		$("#detail_form").validate({
 		    highlight: function(element) {
-		      $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		    	$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 		    },
 		    success: function(element) {
-		      $(element).closest('.form-group').removeClass('has-error');
+		    	$(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
-		    	$('div.eem_window_close').click();
-		    	showProgress('测试提交进度');
-		    	showDynamicMessage('标题', '内容', 1);
-		    	return false;
+		    	return doSaveAction();
 		    }
 		});
 		
@@ -34,6 +31,15 @@ function YhglDetail(afterSaveCallbk, curData)
 		}
 		else
 		{
+			if(g_curData.type == 0) //电力用户
+			{
+				getAllDlyhSelecte('customerId');
+				$('#customerId').show();
+			}
+			else //系统用户 //TODO 还需要配置对应的权限
+			{
+				$('#customerId').hide();
+			}
 			initControlVal();
 			$('#pasword_div').hide();
 		}
@@ -49,8 +55,43 @@ function YhglDetail(afterSaveCallbk, curData)
 	
 	function doSaveAction()
 	{
+		var customer = parseInt($('#customerId').val());
+		var name = $('#name').val();
+		var password = $('#password').val();
+		var userType = $('#userType').val();
+		if(name == '')
+		{
+			showDynamicMessage(STR_CONFIRM, '用户名不能为空', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
+		
+		if(name.length > 20 || name.length < 2)
+		{
+			showDynamicMessage(STR_CONFIRM, '用户名长度范围2到20个字符', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
+		
+		if(password == '')
+		{
+			showDynamicMessage(STR_CONFIRM, '密码不能为空', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
+		if(password.length > 12 || password.length < 6)
+		{
+			showDynamicMessage(STR_CONFIRM, '密码长度范围6到12个字符', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
+		if(userType == 0 && customer == -1)
+		{
+			showDynamicMessage(STR_CONFIRM, '请选择对应的电力用户', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
+		
 		var temp = {
-			name : $('#name').val()
+			name : name,
+			password : password,
+			type : userType,
+			customerId : customer
 		};
 		
 		var ajaxType = 'POST';
@@ -98,6 +139,8 @@ function YhglDetail(afterSaveCallbk, curData)
 				}
 			}
 		});
+		
+		return false;
 	}
 	return this;
 }

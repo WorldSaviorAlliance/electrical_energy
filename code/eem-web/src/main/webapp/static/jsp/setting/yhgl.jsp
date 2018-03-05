@@ -17,7 +17,7 @@
                 </div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-primary" id="search" type="do_search">查询</button>
+				<button class="btn btn-primary" id="do_search" type="button">查询</button>
 				<button class="btn btn-info" id="add" type="button">添加</button>
 			</div>
 		</div>
@@ -50,56 +50,6 @@
 							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
 							 	<span>正在获取数据中…….</span>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>张三</td>
-						<td>电力用户</td>
-						<td></td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>张三</td>
-						<td>电力用户</td>
-						<td></td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>张三</td>
-						<td>电力用户</td>
-						<td></td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>张三</td>
-						<td>电力用户</td>
-						<td></td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>张三</td>
-						<td>电力用户</td>
-						<td></td>
-						<td>2017-04-17 15:11:05</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify">修改</a>
-							<a class="btn btn-danger btn-xs" flag="del">删除</a>
 						</td>
 					</tr>
 				</tbody>
