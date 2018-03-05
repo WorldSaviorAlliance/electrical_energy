@@ -1,4 +1,3 @@
-//@ sourceURL=yhglDetail.js
 function YhglDetail(afterSaveCallbk, curData)
 {
 	var g_afterSaveCallbk = afterSaveCallbk;
