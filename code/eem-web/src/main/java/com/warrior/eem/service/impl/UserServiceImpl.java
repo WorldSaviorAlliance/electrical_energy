@@ -268,4 +268,14 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		}
 		return vos;
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Serializable getEntity(Serializable id) {
+		User user = (User) super.getEntity(id);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + id);
+		}
+		return user.convert();
+	}
 }

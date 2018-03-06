@@ -62,11 +62,8 @@ public class UserManagerController extends AbstractController {
 	@ResponseBody
 	public Result<Object> getEntity(@RequestParam Long id) {
 		checkPerimisession(ResourceOperation.READ, id);
-		User user = (User) service.getEntity(id);
-		if (null == user) {
-			return Result.failure("获取用户信息失败");
-		}
-		return Result.success(user.convert());
+		UserVo userVo = (UserVo) service.getEntity(id);
+		return Result.success(userVo);
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
