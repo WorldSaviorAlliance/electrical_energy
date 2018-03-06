@@ -22,7 +22,7 @@ $(function()
 	{
 		$('#add').unbind('click').click(function(){
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/wyblDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/user/wyblDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
@@ -140,7 +140,7 @@ $(function()
 		$('a[flag="modify"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/customer/dysDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/user/wyblDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
@@ -149,7 +149,7 @@ $(function()
 		            hasBottomBtn : false,
 		            afterShow : function(){
 		            	var curData = getCurDataById(id, g_all_datas);
-		            	g_page_dys_detail = new DysDetail(getAllData, curData);
+		            	g_page_wybl_detail = new WyblDetail(getAllData, curData);
 		            }
 		        });	
 			});

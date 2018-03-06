@@ -8,7 +8,7 @@
 <form class="form-horizontal">
 	<div class="form-group">
 		<div class="col-sm-12" style="padding: 0px;">
-			<div class="col-md-2">
+			<div class="col-md-2" style="padding-left: 0px; margin-bottom: 15px;">
 				<button class="btn btn-info" id="add" type="button">办理套餐</button>
 			</div>
 		</div>
@@ -40,51 +40,6 @@
 							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
 							 	<span>正在获取数据中…….</span>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>套餐1</td>
-						<td>2018-01-02 11:01:48</td>
-						<td>固定回报</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail">详情</a>
-							<a class="btn btn-danger btn-xs" flag="del">退订</a>
-						</td>
-					</tr>
-					<tr>
-						<td>套餐1</td>
-						<td>2018-01-02 11:01:48</td>
-						<td>固定回报</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail">详情</a>
-							<a class="btn btn-danger btn-xs" flag="del">退订</a>
-						</td>
-					</tr>
-					<tr>
-						<td>套餐1</td>
-						<td>2018-01-02 11:01:48</td>
-						<td>固定回报</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail">详情</a>
-							<a class="btn btn-danger btn-xs" flag="del">退订</a>
-						</td>
-					</tr>
-					<tr>
-						<td>套餐1</td>
-						<td>2018-01-02 11:01:48</td>
-						<td>固定回报</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail">详情</a>
-							<a class="btn btn-danger btn-xs" flag="del">退订</a>
-						</td>
-					</tr>
-					<tr>
-						<td>套餐1</td>
-						<td>2018-01-02 11:01:48</td>
-						<td>固定回报</td>
-						<td>
-							<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail">详情</a>
-							<a class="btn btn-danger btn-xs" flag="del">退订</a>
 						</td>
 					</tr>
 				</tbody>
