@@ -68,6 +68,9 @@ public class Constant {
 	public static String NAME_JBXX = "基本信息";
 	public static String DIR_JBXX = "jbxx";
 	
+	public static String NAME_WDHT = "我的合同";
+	public static String DIR_WDHT = "wdht";
+	
 	public static final String DIRECT = "direct";
 	public static final String STR_ID = "id";
 }

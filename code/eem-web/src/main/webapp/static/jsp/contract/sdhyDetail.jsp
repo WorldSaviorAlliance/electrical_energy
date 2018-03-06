@@ -134,7 +134,7 @@
 		</table>
 	</div>
 	<div class="form-group" style="text-align: center;">
-		<button class="btn btn-primary">保存</button>
+		<button class="btn btn-primary" id="btn_save">保存</button>
 	    <button class="btn btn-default" type="button" style="margin-left: 15px;" id="cancel">取消</button>
 	</div>	
 </form>

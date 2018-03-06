@@ -1,3 +1,5 @@
+<%@page import="com.warrior.eem.entity.constant.UserType"%>
+<%@page import="com.warrior.eem.shiro.session.EemSession"%>
 <%@page import="com.warrior.eem.util.Constant"%>
 <%@page import="com.warrior.eem.util.ToolUtil"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
@@ -43,6 +45,10 @@
 	    
 	    <div class="navbar-collapse collapse navbar-right" id="navbar-wrapper" aria-expanded="false" style="height: 1px;">
 	    	<ul id="menu-primary" class="nav navbar-nav" style="margin-top: 9px;">
+	    		<%
+					if(EemSession.getCurrentUser().getType() == UserType.SYSTEM)
+					{
+				%>
 	    		<li class="dropdown" id="header_change_password">
 					<a title="首页" href="<%=headerPath %>home" >
 						<i class="fa fa-home fa-lg" title="首页"></i>
@@ -95,6 +101,13 @@
 						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
 					</ul>
 				</li>
+				<%
+					}
+				%>
+				<%
+					if(EemSession.getCurrentUser().getType() == UserType.ELECTRICITY)
+					{
+				%>
 				<li class="dropdown" id="header_change_password"> <!-- 这里后面指定为普通用户的Home -->
 					<a title="能效管理" href="<%=headerPath %>nx" >
 						<i class="fa fa-home fa-lg" title="能效管理"></i>
@@ -114,10 +127,13 @@
 					</a>
 					<ul class="dropdown-menu extended inbox eem-dropdown-menu" style="min-width: 150px;margin-left: 3px;height: auto;overflow: auto;">
 						<li class="eem-dropdown-menu"><a href="<%=headerPath%>jbxx"><i class="fa fa-american-sign-language-interpreting"></i><span style="margin-left:5px;">基本信息</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>sdhy"><i class="fa fa-resistance"></i><span style="margin-left:5px;">我的合同</span></a></li>
+						<li class="eem-dropdown-menu"><a href="<%=headerPath%>wdht"><i class="fa fa-resistance"></i><span style="margin-left:5px;">我的合同</span></a></li>
 						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
 					</ul>
 				</li>
+				<%
+					}
+				%>
 				<li class="dropdown" id="header_exist">
 					<a title="注销" href="#" style="color: #FFFFFF;">
 						<i class="fa fa-sign-out fa-lg" title="注销"></i>

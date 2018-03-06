@@ -230,4 +230,17 @@ public class DirectPatchController {
 	{
 		return ToolUtil.gotoDirect(model, Constant.DIR_JBXX, Constant.USER + Constant.DIR_JBXX);
 	}
+	
+	/**
+	 * 我的合同
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/wdht")
+	public ModelAndView wdht(Map<String, Object> model, HttpServletRequest request)
+	{
+		return ToolUtil.gotoDirect(model, Constant.DIR_WDHT, Constant.USER + Constant.DIR_WDHT);
+	}
+	
 }

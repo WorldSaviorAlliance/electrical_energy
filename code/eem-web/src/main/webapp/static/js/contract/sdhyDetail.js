@@ -1,14 +1,24 @@
-//@ sourceURL=sdhyDetail.js
-function SdhyDetail(afterSaveCallbk, curData)
+function SdhyDetail(afterSaveCallbk, curData, onlyView)
 {
 	var g_table_month = null;
 	var g_afterSaveCallbk = afterSaveCallbk;
 	var g_curData = curData;
+	var g_onlyView = onlyView;
 	init();
 	function init()
 	{
 		initControlAction();
 		initControlVal();
+		
+		if(g_onlyView)
+		{
+			setTimeout(function(){
+				$('input').attr('readOnly', true);
+				$('#btn_save').hide();
+				$('#cancel').hide();
+				$('#att_file').hide();
+			}, 300);
+		}
 	}
 	
 	function initControlAction()
@@ -101,7 +111,7 @@ function SdhyDetail(afterSaveCallbk, curData)
 						{
 							g_curData = ar.data;
 							getAllDlyhSelecte('customerId', g_curData.customer.id);
-							getAllDydjSelecte('voltageType', g_curData.voltageLevel);
+							getAllDydjSelecte('voltageType', g_curData.voltageType);
 							$('#customerNo').val(g_curData.customerNo);
 							$('#name').val(g_curData.name);
 							$('#no').val(g_curData.No);
