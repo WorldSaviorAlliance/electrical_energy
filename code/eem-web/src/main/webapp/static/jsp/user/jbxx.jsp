@@ -45,3 +45,5 @@
 		</div>
 	</div>
 </form>
+
+<script type="text/javascript" src="<%=basePath%>static/js/user/jbxx.js"></script>
