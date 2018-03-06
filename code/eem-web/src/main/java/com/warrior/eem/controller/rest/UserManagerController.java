@@ -1,8 +1,5 @@
 package com.warrior.eem.controller.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,11 +68,7 @@ public class UserManagerController extends AbstractController {
 	@ResponseBody
 	public Result<Object> listEntities(@RequestBody(required = false) UserCdtVo cdt) {
 		PageVo pageVo = service.listEntities(cdt);
-		List<UserVo> vos = new ArrayList<UserVo>();
-		for (Object obj : pageVo.getDatas()) {
-			vos.add(((User) obj).convert());
-		}
-		return Result.success(pageVo.getCount(), vos);
+		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}
 
 	@RequestMapping(value = "set_role", method = RequestMethod.POST)

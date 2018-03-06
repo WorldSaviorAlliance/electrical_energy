@@ -25,7 +25,7 @@ public final class UserVo implements Serializable {
 
 	private long customerId;
 
-	private String addTime;
+	private String createTime;
 
 	private String customerName;
 
@@ -69,12 +69,12 @@ public final class UserVo implements Serializable {
 		this.customerId = customerId;
 	}
 
-	public String getAddTime() {
-		return addTime;
+	public String getCreateTime() {
+		return createTime;
 	}
 
-	public void setAddTime(String addTime) {
-		this.addTime = addTime;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 	public String getCustomerName() {

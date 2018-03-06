@@ -2,6 +2,8 @@ package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.ui.Base64AndMD5Util;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
 import com.warrior.eem.exception.EemException;
@@ -168,6 +171,18 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		return checkExistAdminUser();
 	}
 
+	@Override
+	@Transactional
+	public PageVo listEntities(Serializable... conditions) {
+		PageVo pageVo = super.listEntities(conditions);
+		List<UserVo> vos = new ArrayList<UserVo>();
+		for (Object obj : pageVo.getDatas()) {
+			vos.add(((User) obj).convert());
+		}
+		pageVo.setDatas(vos);
+		return pageVo;
+	}
+	
 	private boolean checkExistAdminUser() {
 		SqlRequest req = new SqlRequest();
 		SimpleCondition scdt = new SimpleCondition("name", Sql_Operator.EQ, "admin");

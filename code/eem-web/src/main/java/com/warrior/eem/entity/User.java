@@ -196,17 +196,15 @@ public class User implements Serializable {
 		vo.setName(name);
 		vo.setType(type.ordinal());
 		if (UserType.ELECTRICITY == type) {
-			if (null != customer) {//TODO:延迟加载的问题
-//				vo.setCustomerId(customer.getId());
-//				vo.setCustomerName(customer.getName());
-			}
+			vo.setCustomerId(customer.getId());
+			vo.setCustomerName(customer.getName());
 		} else {
 			vo.setCustomerName("");
 		}
-		vo.setAddTime(ToolUtil.formatDate(addTime));
+		vo.setCreateTime(ToolUtil.formatDate(addTime));
 		return vo;
 	}
-	
+
 	public void checkPermission(String res, ResourceOperation op) {
 		boolean hasPermission = false;
 		for (Authority authority : role.getAuthorities()) {
