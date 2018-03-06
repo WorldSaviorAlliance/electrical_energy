@@ -141,7 +141,7 @@ $(function()
 		$('a[flag="modify"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/setting/dydjDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/setting/yhglDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
@@ -153,7 +153,7 @@ $(function()
 		            },
 		            afterShow : function(){
 		            	var curData = getCurDataById(id, g_all_datas);
-		            	g_page_dydj_detail = new DydjDetail(getAllData, curData);
+		            	g_page_yhgl_detail = new YhglDetail(getAllData, curData);
 		            }
 		        });	
 			});

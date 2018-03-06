@@ -37,23 +37,15 @@ function YhglDetail(afterSaveCallbk, curData)
 		{
 			if(g_curData.type == 0) //电力用户
 			{
-				getAllDlyhSelecte('customerId');
+				getAllDlyhSelecte('customerId', g_curData.customerId);
 				$('#customerId').show();
 			}
 			else //系统用户 //TODO 还需要配置对应的权限
 			{
 				$('#customerId').hide();
 			}
-			initControlVal();
-			$('#pasword_div').hide();
-		}
-	}
-	
-	function initControlVal()
-	{
-		if(g_curData != null)
-		{
 			$('#name').val(getObjStr(g_curData.name));
+			$('#pasword_div').hide();
 		}
 	}
 	
@@ -75,16 +67,20 @@ function YhglDetail(afterSaveCallbk, curData)
     		return false;
 		}
 		
-		if(password == '')
+		if(g_curData == null)
 		{
-			showDynamicMessage(STR_CONFIRM, '密码不能为空', MESSAGE_TYPE_ERROR);
-    		return false;
+			if(password == '')
+			{
+				showDynamicMessage(STR_CONFIRM, '密码不能为空', MESSAGE_TYPE_ERROR);
+	    		return false;
+			}
+			if(password.length > 12 || password.length < 6)
+			{
+				showDynamicMessage(STR_CONFIRM, '密码长度范围6到12个字符', MESSAGE_TYPE_ERROR);
+	    		return false;
+			}
 		}
-		if(password.length > 12 || password.length < 6)
-		{
-			showDynamicMessage(STR_CONFIRM, '密码长度范围6到12个字符', MESSAGE_TYPE_ERROR);
-    		return false;
-		}
+		
 		if(userType == 0 && customer == -1)
 		{
 			showDynamicMessage(STR_CONFIRM, '请选择对应的电力用户', MESSAGE_TYPE_ERROR);
@@ -104,7 +100,8 @@ function YhglDetail(afterSaveCallbk, curData)
 		{
 			ajaxType = 'PUT';
 			msgTitle = '修改用户';
-			temp.id = g_curData.id;
+			temp.userId = g_curData.id;
+			temp.newName = name;
 		}
 		else
 		{

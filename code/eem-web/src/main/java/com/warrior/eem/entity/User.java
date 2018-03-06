@@ -201,8 +201,12 @@ public class User implements Serializable {
 		} else {
 			vo.setCustomerName("");
 		}
-		vo.setRoleId(role.getId());
-		vo.setRoleName(role.getName());
+		if(null != role)
+		{
+			vo.setRoleId(role.getId());
+			vo.setRoleName(role.getName());
+		}
+		
 		vo.setCreateTime(ToolUtil.formatDate(addTime));
 		return vo;
 	}
