@@ -34,9 +34,6 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent e) {
 		if (e.getApplicationContext().getParent() == null) {
-			if (!userService.createAdminIfAbsent()) {// 默认新增一个admin用户
-				logger.info("Failed to insert admin user.");
-			}
 			if (!authorityService.initDefaultDataIfAbsent()) {// 初始化权限表
 				logger.info("Failed to initialize authority table.");
 			}
@@ -48,6 +45,9 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 			}
 			if (!priceCoefService.initDefaultDataIfAbsent()) {// 初始化电价系数
 				logger.info("Failed to initialize price coefficient.");
+			}
+			if (!userService.createAdminIfAbsent()) {// 默认新增一个admin用户
+				logger.info("Failed to insert admin user.");
 			}
 		}
 	}

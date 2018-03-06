@@ -1,5 +1,7 @@
 package com.warrior.eem.service;
 
+import com.warrior.eem.entity.Role;
+
 /**
  * 
  * @author cold_blade
@@ -13,4 +15,11 @@ public interface RoleService extends IService {
 	 * @throws IOException
 	 */
 	boolean initAdminRole();
+
+	/**
+	 * 查询管理员角色
+	 * 
+	 * @return
+	 */
+	Role queryAdminRole();
 }

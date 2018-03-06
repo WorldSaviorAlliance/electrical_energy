@@ -63,7 +63,7 @@ public final class EntityFactory {
 		list.add(elecPkg);
 		return list;
 	}
-
+	
 	/**
 	 * 获取默认的权限列表
 	 * 

@@ -41,13 +41,13 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
 	@Autowired
 	private UserDao userDao;
 
 	@Autowired
 	private RoleDao roleDao;
-	
+
 	@Autowired
 	private PowerCustomerDao customerDao;
 
@@ -182,7 +182,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		pageVo.setDatas(vos);
 		return pageVo;
 	}
-	
+
 	private boolean checkExistAdminUser() {
 		SqlRequest req = new SqlRequest();
 		SimpleCondition scdt = new SimpleCondition("name", Sql_Operator.EQ, "admin");
@@ -196,9 +196,20 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		admin.setPassword(Base64AndMD5Util.encodeByBase64AndMd5("mirror-0"));
 		admin.setStatus(UserStatus.ACTIVE);
 		admin.setType(UserType.SYSTEM);
+		Role adminRole = queryAdminRole();
+		if (null != adminRole) {
+			admin.setRole(adminRole);
+		}
 		Timestamp time = ToolUtil.getCurrentTime();
 		admin.setAddTime(time);
 		admin.setLastLoginTime(time);
 		return admin;
+	}
+
+	private Role queryAdminRole() {
+		SqlRequest req = new SqlRequest();
+		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, "管理员"));
+		List<?> roles = roleDao.listDos(req);
+		return roles.isEmpty() ? null : (Role) roles.get(0);
 	}
 }

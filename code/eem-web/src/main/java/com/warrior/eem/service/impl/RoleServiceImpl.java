@@ -62,6 +62,15 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		roleDao.createDo(admin);
 		return checkExist("管理员");
 	}
+	
+	@Override
+	@Transactional
+	public Role queryAdminRole() {
+		SqlRequest req = new SqlRequest();
+		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, "管理员"));
+		List<?> roles = roleDao.listDos(req);
+		return roles.isEmpty() ? null : (Role) roles.get(0);
+	}
 
 	@Override
 	SqlRequest buildListSqlRequest(Serializable... conditions) {
