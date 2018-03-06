@@ -1,6 +1,10 @@
 package com.warrior.eem.service;
 
+import java.util.List;
+
+import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.vo.ElectricityPackageVo;
 
 /**
  * 用户的服务接口
@@ -16,4 +20,12 @@ public interface UserService extends IService {
 	void modifyPassword(Long userId, String oldPwd, String newPwd);
 
 	User modifyName(Long userId, String newName);
+	
+	boolean containsElectricityPackage(Long userId, Long pkgId);
+	
+	void handleElectricityPackage(Long userId, ElectricityPackage pkg);
+	
+	void cancelElectricityPackage(Long userId, Long pkgId);
+	
+	List<ElectricityPackageVo> getElectricityPackages(Long userId);
 }

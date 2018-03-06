@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
@@ -32,6 +33,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> createEntity(@RequestBody(required = false) UserVo userVo) {
+		checkPerimisession(ResourceOperation.WRITE, null);
 		service.createEntity(userVo);
 		return Result.success();
 	}
@@ -39,6 +41,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
 	public Result<Object> updateEntity(@RequestParam Long userId, @RequestParam String newName) {
+		checkPerimisession(ResourceOperation.WRITE, userId);
 		User user = service.modifyName(userId, newName);
 		User curUser = EemSession.getCurrentUser();
 		if (null != curUser && curUser.getId() == user.getId()) {
@@ -50,6 +53,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(@RequestParam Long id) {
+		checkPerimisession(ResourceOperation.WRITE, id);
 		service.deleteEntity(id);
 		return Result.success();
 	}
@@ -57,6 +61,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<Object> getEntity(@RequestParam Long id) {
+		checkPerimisession(ResourceOperation.READ, id);
 		User user = (User) service.getEntity(id);
 		if (null == user) {
 			return Result.failure("获取用户信息失败");
@@ -67,6 +72,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> listEntities(@RequestBody(required = false) UserCdtVo cdt) {
+		checkPerimisession(ResourceOperation.READ, null);
 		PageVo pageVo = service.listEntities(cdt);
 		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}
@@ -74,6 +80,7 @@ public class UserManagerController extends AbstractController {
 	@RequestMapping(value = "set_role", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> setRole(@RequestParam Long userId, @RequestParam Long roleId) {
+		checkPerimisession(ResourceOperation.WRITE, userId);
 		service.setRole(userId, roleId);
 		return Result.success();
 	}
@@ -82,7 +89,12 @@ public class UserManagerController extends AbstractController {
 	@ResponseBody
 	public Result<Object> modifyPassword(@RequestParam Long userId, @RequestParam String oldPwd,
 			@RequestParam String newPwd) {
+		checkPerimisession(ResourceOperation.WRITE, userId);
 		service.modifyPassword(userId, oldPwd, newPwd);
 		return Result.success();
+	}
+
+	private void checkPerimisession(ResourceOperation op, Long id) {
+		//EemSession.checkPermission(User.class.getSimpleName(), op, id);TODO:懒加载异常
 	}
 }

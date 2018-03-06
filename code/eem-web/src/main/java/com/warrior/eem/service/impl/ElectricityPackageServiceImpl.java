@@ -4,17 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.ElectricityPackageDao;
 import com.warrior.eem.dao.IDao;
-import com.warrior.eem.dao.UserDao;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.entity.ElectricityPackage;
-import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.EntityFactory;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
@@ -32,9 +29,6 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 
 	@Autowired
 	private ElectricityPackageDao dao;
-
-	@Autowired
-	private UserDao userDao;
 
 	@Override
 	IDao<ElectricityPackage> getDao() {
@@ -62,6 +56,14 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public Serializable getEntity(Serializable id) {
+		ElectricityPackage pkg = (ElectricityPackage) dao.getEntity(id);
+		return pkg.convert();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
 	public PageVo listEntities(Serializable... conditions) {
 		PageVo pageVo = super.listEntities(conditions);
 		List<ElectricityPackageVo> vos = new ArrayList<>();
@@ -82,28 +84,5 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 			dao.createDo(pkg);
 		}
 		return dao.countDos(null) > 0;
-	}
-
-	@Override
-	public boolean handleElectricityPackage(long pkgId, long userId) {
-		User user = userDao.getEntity(userId);
-		if (null == user || user.containsElectricityPackage(pkgId)) {
-			return false;
-		}
-		ElectricityPackage pkg = dao.getEntity(pkgId);
-		if (null == pkg) {
-			return false;
-		}
-		user.handleElectricityPackage(pkg);
-		return true;
-	}
-
-	@Override
-	public boolean cancelElectricityPackage(long pkgId, long userId) {
-		User user = userDao.getEntity(userId);
-		if (null == user) {
-			return false;
-		}
-		return user.cancelElectricityPackage(pkgId);
 	}
 }

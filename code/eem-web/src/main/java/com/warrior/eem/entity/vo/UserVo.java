@@ -25,9 +25,13 @@ public final class UserVo implements Serializable {
 
 	private long customerId;
 
-	private String createTime;
-
 	private String customerName;
+
+	private long roleId = -1;
+	
+	private String roleName;
+	
+	private String createTime;
 
 	public long getId() {
 		return id;
@@ -83,5 +87,21 @@ public final class UserVo implements Serializable {
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
+	}
+
+	public long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(long roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }

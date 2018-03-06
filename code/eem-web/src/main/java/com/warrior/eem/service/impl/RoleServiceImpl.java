@@ -3,10 +3,9 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.AuthorityDao;
 import com.warrior.eem.dao.IDao;
@@ -55,7 +54,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		}
 		Role admin = new Role();
 		admin.setName("管理员");
-		List<?> authorities = authorityDao.listDos(null);
+		List<?> authorities = authorityDao.queryAll();
 		for (Object obj : authorities) {
 			admin.addAuthority((Authority) obj);
 		}

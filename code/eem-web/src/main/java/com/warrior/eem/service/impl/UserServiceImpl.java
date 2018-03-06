@@ -20,12 +20,14 @@ import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
+import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.ui.Base64AndMD5Util;
+import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
@@ -99,6 +101,16 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 	}
 
 	@Override
+	@Transactional
+	public boolean containsElectricityPackage(Long userId, Long pkgId) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			return false;
+		}
+		return user.containsElectricityPackage(pkgId);
+	}
+
+	@Override
 	SqlRequest buildListSqlRequest(Serializable... conditions) {
 		UserCdtVo cdt = (UserCdtVo) conditions[0];
 		try {
@@ -142,6 +154,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 			PowerCustomer customer = customerDao.getEntity(userVo.getCustomerId());
 			if (null != customer) {
 				user.setCustomer(customer);
+			}
+		}
+		if (-1 != userVo.getRoleId()) {
+			Role role = roleDao.getEntity(userVo.getRoleId());
+			if (null != role) {
+				user.setRole(role);
 			}
 		}
 		Timestamp time = ToolUtil.getCurrentTime();
@@ -211,5 +229,43 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, "管理员"));
 		List<?> roles = roleDao.listDos(req);
 		return roles.isEmpty() ? null : (Role) roles.get(0);
+	}
+
+	@Override
+	@Transactional
+	public void handleElectricityPackage(Long userId, ElectricityPackage pkg) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		user.handleElectricityPackage(pkg);
+	}
+
+	@Override
+	@Transactional
+	public void cancelElectricityPackage(Long userId, Long pkgId) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		user.cancelElectricityPackage(pkgId);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ElectricityPackageVo> getElectricityPackages(Long userId) {
+		User user = userDao.getEntity(userId);
+		if (null == user) {
+			throw new EemException("无效的用户id：" + userId);
+		}
+		List<ElectricityPackage> pkgs = user.getElectricityPackages();
+		if (pkgs.isEmpty()) {
+			return new ArrayList<>();
+		}
+		List<ElectricityPackageVo> vos = new ArrayList<>(pkgs.size());
+		for (ElectricityPackage pkg : pkgs) {
+			vos.add(pkg.convert());
+		}
+		return vos;
 	}
 }

@@ -56,7 +56,7 @@ public class User implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private UserStatus status;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id")
 	private Role role;
 
@@ -201,20 +201,19 @@ public class User implements Serializable {
 		} else {
 			vo.setCustomerName("");
 		}
+		vo.setRoleId(role.getId());
+		vo.setRoleName(role.getName());
 		vo.setCreateTime(ToolUtil.formatDate(addTime));
 		return vo;
 	}
 
 	public void checkPermission(String res, ResourceOperation op) {
-		boolean hasPermission = false;
 		for (Authority authority : role.getAuthorities()) {
 			if (authority.hasPermission(res, op)) {
-				hasPermission = true;
+				return;
 			}
 		}
-		if (!hasPermission) {
-			throw new EemException("no " + res + ":" + op.toString() + "permission");
-		}
+		throw new EemException("no " + res + ":" + op.toString() + "permission");
 	}
 
 	public void checkPermission(String res, ResourceOperation op, Long resId) {

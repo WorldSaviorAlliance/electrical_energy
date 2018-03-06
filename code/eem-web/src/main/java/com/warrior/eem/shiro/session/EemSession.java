@@ -68,12 +68,13 @@ public class EemSession {
 	 * 
 	 * @param res
 	 * @param op
+	 * @param id
 	 */
-	public static void checkPermission(String res, ResourceOperation op) {
+	public static void checkPermission(String res, ResourceOperation op, Long id) {
 		User user = getCurrentUser();
 		if (null == user) {
 			throw new EemException("Session expired");
 		}
-		user.checkPermission(res, op);
+		user.checkPermission(res, op, id);
 	}
 }

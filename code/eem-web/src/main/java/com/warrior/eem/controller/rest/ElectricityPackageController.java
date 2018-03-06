@@ -1,12 +1,12 @@
 package com.warrior.eem.controller.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
@@ -16,6 +16,7 @@ import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.ElectricityPackageService;
 import com.warrior.eem.service.UserService;
+import com.warrior.eem.shiro.session.EemSession;
 
 /**
  * 套餐控制器
@@ -33,17 +34,12 @@ public class ElectricityPackageController extends AbstractController {
 	private UserService userService;
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
-	public @ResponseBody Result<Object> getEntity(long pkgId, long userId) {
-		ElectricityPackage pkg = (ElectricityPackage) service.getEntity(pkgId);
-		if (null == pkg) {
-			return Result.failure("获取套餐失败");
+	public @ResponseBody Result<Object> getEntity(@RequestParam Long pkgId) {
+		ElectricityPackageVo vo = (ElectricityPackageVo) service.getEntity(pkgId);
+		User user = EemSession.getCurrentUser();
+		if (null != user) {
+			vo.setHandled(userService.containsElectricityPackage(user.getId(), pkgId));
 		}
-		User user = (User) userService.getEntity(userId);
-		if (null == user) {
-			return Result.failure("Session过期");
-		}
-		ElectricityPackageVo vo = pkg.convert();
-		vo.setHandled(user.containsElectricityPackage(pkg.getId()));
 		return Result.success(vo);
 	}
 
@@ -55,40 +51,37 @@ public class ElectricityPackageController extends AbstractController {
 	 * @return
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.POST)
-	public @ResponseBody Result<Object> list(long userId) {
-		List<ElectricityPackageVo> vos = new ArrayList<>();
+	public @ResponseBody Result<Object> list(@RequestParam Long userId) {
+		PageVo pageVo;
 		if (-1 == userId) {
-			PageVo pageVo = service.listEntities();
-			for (Object elem : pageVo.getDatas()) {
-				vos.add(((ElectricityPackage) elem).convert());
-			}
+			pageVo = service.listEntities();
 		} else {
-			User user = (User) userService.getEntity(userId);
-			if (null == user) {
-				return Result.failure("未找到指定用户");
-			}
-			for (ElectricityPackage elem : user.getElectricityPackages()) {
-				vos.add(elem.convert());
-			}
+			List<ElectricityPackageVo> vos = userService.getElectricityPackages(userId);
+			pageVo = new PageVo();
+			pageVo.setCount(Long.valueOf(vos.size()));
+			pageVo.setDatas(vos);
 		}
-		return Result.success(vos.size(), vos);
+		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}
 
 	@RequestMapping(value = "handle_elec_pkg", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<Object> handlePackage(long pkgId, long userId) {
-		if (service.handleElectricityPackage(pkgId, userId)) {
-			return Result.success();
+	public @ResponseBody Result<Object> handlePackage(@RequestParam Long pkgId) {
+		User user = EemSession.getCurrentUser();
+		if (null == user) {
+			return Result.failure("Session expired");
 		}
-		return Result.failure("办理套餐失败");
+		ElectricityPackage pkg = (ElectricityPackage) service.getEntity(pkgId);
+		userService.handleElectricityPackage(user.getId(), pkg);
+		return Result.success();
 	}
 
 	@RequestMapping(value = "cancel_elec_pkg", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<Object> cancelPackage(long pkgId, long userId) {
-		if (service.cancelElectricityPackage(pkgId, userId)) {
-			return Result.success();
+	public @ResponseBody Result<Object> cancelPackage(@RequestParam Long pkgId) {
+		User user = EemSession.getCurrentUser();
+		if (null == user) {
+			return Result.failure("Session expired");
 		}
-		return Result.failure("取消套餐失败");
+		userService.cancelElectricityPackage(user.getId(), pkgId);
+		return Result.success();
 	}
 }

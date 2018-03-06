@@ -1,5 +1,7 @@
 package com.warrior.eem.dao;
 
+import java.util.List;
+
 import com.warrior.eem.entity.Authority;
 
 /**
@@ -8,5 +10,5 @@ import com.warrior.eem.entity.Authority;
  * @version 1.0.0
  */
 public interface AuthorityDao extends IDao<Authority> {
-	
+	List<Authority> queryAll();
 }
