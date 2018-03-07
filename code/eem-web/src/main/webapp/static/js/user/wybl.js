@@ -86,26 +86,18 @@ $(function()
 		$('#datas tr[type="data"]').remove();
 		if(datas != null && datas.length != 0)
 		{
-			g_all_datas = datas;
+			g_all_datas = datas;console.log(g_all_datas);
 			var trs = '';
 			for(var i = 0; i < datas.length; i++)
 			{
 				var temp = datas[i];
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.nickName) + '</td>'+
-							'<td>' + getObjStr(temp.province) + '-' +getObjStr(temp.city) + '</td>'+
-							'<td>' + getPowerTypeStr(temp.powerType) + '</td>'+
-							'<td>' + getObjStr(temp.capacity) + '</td>'+
-							'<td>' + getNatureType(temp.natureType) + '</td>'+					
-							'<td>' + getObjStr(temp.contactName) + '</td>'+
-							'<td>' + getObjStr(temp.contactPhone) + '</td>'+
-							'<td>' + getObjStr(temp.contactPosition) + '</td>'+
-							'<td>' + getObjStr(temp.contactEmail) + '</td>'+
-							'<td>' + getObjStr(temp.createTime) + '</td>'+
+							'<td>' + getObjStr(temp.time) + '</td>'+
+							'<td>' + getObjStr(temp.type) + '</td>'+
 							'<td>'+
-								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+
-								'<a class="btn btn-danger btn-xs" flag="del" id="' + temp.id + '">删除</a>'+
+								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail" id="' + temp.id + '">详情</a>'+
+								'<a class="btn btn-danger btn-xs" flag="del" id="' + temp.id + '">退订</a>'+
 							'</td>'+
 						'</tr>';
 			}
@@ -137,22 +129,10 @@ $(function()
 			});
 		});
 		
-		$('a[flag="modify"]').unbind('click').click(function(){
+		$('a[flag="detail"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
-			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/user/wyblDetail.jsp', function(){
-				$(this).EemWindow({
-					height : WINDOW_HEIGHT,
-					width : WINDOW_WIDTH,
-		            title: '修改套餐',
-		            content: addDiv,
-		            hasBottomBtn : false,
-		            afterShow : function(){
-		            	var curData = getCurDataById(id, g_all_datas);
-		            	g_page_wybl_detail = new WyblDetail(getAllData, curData);
-		            }
-		        });	
-			});
+			var curData = getCurDataById(id, g_all_datas);
+			alert(curData.desc);
 		});
 	}
 	
@@ -162,8 +142,8 @@ $(function()
 	function delTc(id)
 	{
 		$.ajax({
-			url: rootpath + '/' + PATH_WYBL + '/info?id=' + id,
-			type : 'DELETE', 
+			url: rootpath + '/' + PATH_WYBL + '/cancel_elec_pkg?pkgId=' + id,
+			type : 'POST', 
 			dataType: 'json',
 		    contentType: 'application/json',
 			complete : function(XHR, TS) {

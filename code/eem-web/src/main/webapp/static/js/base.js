@@ -129,11 +129,11 @@ function loadContent(direct)
 window.alert = function(msg, type)
 {
 	var tempType = (type != undefined) ? type : 0;
-	if(typeof msg == "string" && msg.indexOf(STR_SUC) != -1)
+	if(typeof msg == "string" && msg.indexOf('成功') != -1)
 	{
 		tempType = 0;
 	}
-	else if(typeof msg == "string" && (msg.indexOf(STR_FAILE) != -1 || msg.indexOf(STR_ERROR) != -1 ))
+	else if(typeof msg == "string" && (msg.indexOf('失败') != -1 || msg.indexOf('错误') != -1 ))
 	{
 		tempType = 1;
 	}
@@ -531,3 +531,4 @@ function getTotalPage(allCount)
 {
 	return allCount / PAGE_COUNT + (allCount % PAGE_COUNT != 0 ? 1 : 0);
 }
+
