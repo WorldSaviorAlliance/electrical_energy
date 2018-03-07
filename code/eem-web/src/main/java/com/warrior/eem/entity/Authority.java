@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.warrior.eem.entity.constant.ResourceOperation;
+import com.warrior.eem.entity.vo.AuthorityVo;
 
 /**
  * 权限
@@ -85,5 +86,12 @@ public class Authority extends AbstractEntity {
 			return this.op.ordinal() >= op.ordinal();
 		}
 		return false;
+	}
+	
+	public AuthorityVo convert() {
+		AuthorityVo vo = new AuthorityVo();
+		vo.setId(getId());
+		vo.setDesc(res + ":" + op.toString());
+		return vo;
 	}
 }

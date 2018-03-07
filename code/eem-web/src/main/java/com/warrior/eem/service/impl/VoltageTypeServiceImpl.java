@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.VoltageTypeDao;
@@ -14,7 +15,6 @@ import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
-import com.warrior.eem.entity.BaseType;
 import com.warrior.eem.entity.VoltageType;
 import com.warrior.eem.entity.vo.BaseTypeCdtVo;
 import com.warrior.eem.entity.vo.BaseTypeVo;
@@ -43,6 +43,16 @@ public class VoltageTypeServiceImpl extends AbstractServiceImpl<VoltageType>impl
 		return dao;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Serializable getEntity(Serializable id) {
+		VoltageType type = (VoltageType) super.getEntity(id);
+		if (null == type) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
+		}
+		return type.convert();
+	}
+	
 	@Override
 	SqlRequest buildListSqlRequest(Serializable... conditions) {
 		BaseTypeCdtVo vo = (BaseTypeCdtVo) conditions[0];
@@ -89,11 +99,12 @@ public class VoltageTypeServiceImpl extends AbstractServiceImpl<VoltageType>impl
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public PageVo listEntities(Serializable... conditions) {
 		PageVo pageVo = super.listEntities(conditions);
 		List<BaseTypeVo> vos = new ArrayList<>();
 		for (Object obj : pageVo.getDatas()) {
-			vos.add(((BaseType)obj).convert());
+			vos.add(((VoltageType) obj).convert());
 		}
 		pageVo.setDatas(vos);
 		return pageVo;

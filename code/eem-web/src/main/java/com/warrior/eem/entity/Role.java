@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.warrior.eem.entity.vo.RoleVo;
 import com.warrior.eem.util.ToolUtil;
 
 /**
@@ -81,5 +82,20 @@ public class Role implements Serializable {
 	
 	public boolean isValid() {
 		return !ToolUtil.isStringEmpty(name);
+	}
+	
+	public RoleVo convert() {
+		RoleVo vo = new RoleVo();
+		vo.setId(getId());
+		vo.setName(name);
+		return vo;
+	}
+
+	public RoleVo convert2Desc() {
+		RoleVo vo = new RoleVo();
+		vo.setId(getId());
+		vo.setName(name);
+		vo.setAuthorities(authorities);
+		return vo;
 	}
 }

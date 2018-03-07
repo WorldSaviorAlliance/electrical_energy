@@ -1,6 +1,7 @@
 package com.warrior.eem.service;
 
 import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.vo.PageVo;
 
 /**
  * 
@@ -22,4 +23,11 @@ public interface RoleService extends IService {
 	 * @return
 	 */
 	Role queryAdminRole();
+	
+	/**
+	 * 列举权限列表
+	 * 
+	 * @return
+	 */
+	PageVo listAuthorities();
 }

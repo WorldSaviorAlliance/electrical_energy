@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.RoleCdtVo;
 import com.warrior.eem.entity.vo.RoleVo;
@@ -42,21 +42,28 @@ public final class RoleController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteEntity(long id) {
+	public Result<Object> deleteEntity(@RequestParam Long id) {
 		service.deleteEntity(id);
 		return Result.success();
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<Role> getEntity(long id) {
-		return Result.success((Role) service.getEntity(id));
+	public Result<Object> getEntity(@RequestParam Long id) {
+		return Result.success(service.getEntity(id));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> list(@RequestBody(required = false) RoleCdtVo cdt) {
 		PageVo pageVo = service.listEntities(cdt);
+		return Result.success(pageVo.getCount(), pageVo.getDatas());
+	}
+
+	@RequestMapping(value = "list_authority", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> listAuthorities() {
+		PageVo pageVo = service.listAuthorities();
 		return Result.success(pageVo.getCount(), pageVo.getDatas());
 	}
 }

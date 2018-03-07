@@ -1,6 +1,7 @@
 package com.warrior.eem.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.Authority;
 import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.vo.AuthorityVo;
+import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.RoleCdtVo;
 import com.warrior.eem.entity.vo.RoleVo;
 import com.warrior.eem.exception.EemException;
@@ -44,6 +47,31 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 	@Override
 	IDao<Role> getDao() {
 		return roleDao;
+	}
+	
+	@Override
+	@Transactional
+	public Serializable getEntity(Serializable id) {
+		Role role = (Role) super.getEntity(id);
+		if (null == role) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
+		}
+		return role.convert2Desc();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public PageVo listEntities(Serializable... conditions) {
+		PageVo pageVo = super.listEntities(conditions);
+		int cnt = pageVo.getCount().intValue();
+		if (cnt > 0) {
+			List<RoleVo> vos = new ArrayList<>(cnt);
+			for (Object obj : pageVo.getDatas()) {
+				vos.add(((Role) obj).convert());
+			}
+			pageVo.setDatas(vos);
+		}
+		return pageVo;
 	}
 	
 	@Override
@@ -120,7 +148,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 	}
 
 	private void updateAuthority(Role role, RoleVo roleVo) {
-		List<Long> authorityIds = roleVo.getAuthorities();
+		List<Long> authorityIds = roleVo.getAuthorityIds();
 		role.getAuthorities().clear();
 		if (null != authorityIds && !authorityIds.isEmpty()) {
 			Authority authority;
@@ -137,5 +165,24 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		SqlRequest req = new SqlRequest();
 		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, name));
 		return roleDao.countDos(req) > 0;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public PageVo listAuthorities() {
+		PageVo pageVo = new PageVo();
+		List<Authority> authorities = authorityDao.queryAll();
+		if (null == authorities || authorities.isEmpty()) {
+			pageVo.setCount(Long.valueOf(0));
+		} else {
+			int size = authorities.size();
+			List<AuthorityVo> vos = new ArrayList<>(size);
+			for (Authority authority : authorities) {
+				vos.add(authority.convert());
+			}
+			pageVo.setCount(Long.valueOf(size));
+			pageVo.setDatas(vos);
+		}
+		return pageVo;
 	}
 }

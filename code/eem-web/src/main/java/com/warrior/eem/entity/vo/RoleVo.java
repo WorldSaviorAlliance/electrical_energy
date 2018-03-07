@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.warrior.eem.annotation.FieldChecker;
+import com.warrior.eem.entity.Authority;
+import com.warrior.eem.entity.RoleAuthority;
 
 /**
  * 角色的界面数据模型
@@ -20,7 +22,9 @@ public final class RoleVo implements Serializable {
 	@FieldChecker(name = "权限名称", minLen = 1, maxLen = 20)
 	private String name;
 
-	private List<Long> authorities;
+	private List<Long> authorityIds;
+	
+	private List<String> authorityDesc;
 
 	public long getId() {
 		return id;
@@ -38,14 +42,34 @@ public final class RoleVo implements Serializable {
 		this.name = name;
 	}
 
-	public List<Long> getAuthorities() {
-		return authorities;
+	public List<Long> getAuthorityIds() {
+		return authorityIds;
 	}
 
-	public void addAuthority(long authorityId) {
-		if (null == authorities) {
-			authorities = new ArrayList<>();
+	public void setAuthorityIds(List<Long> authorityIds) {
+		this.authorityIds = authorityIds;
+	}
+
+	public List<String> getAuthorityDesc() {
+		return authorityDesc;
+	}
+
+	public void setAuthorityDesc(List<String> authorityDesc) {
+		this.authorityDesc = authorityDesc;
+	}
+	
+	public void setAuthorities(List<RoleAuthority> authorities) {
+		if (null == authorities || authorities.isEmpty()) {
+			return;
 		}
-		authorities.add(authorityId);
+		int size = authorities.size();
+		authorityIds = new ArrayList<>(size);
+		authorityDesc = new ArrayList<>(size);
+		Authority authority;
+		for (RoleAuthority elem : authorities) {
+			authority = elem.getAuthority();
+			authorityIds.add(authority.getId());
+			authorityDesc.add(authority.getRes() + ":" + authority.getOp().toString());
+		}
 	}
 }
