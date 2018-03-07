@@ -1,6 +1,7 @@
 package com.warrior.eem.service.impl;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -308,5 +309,15 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		}
 	};
+
+	@Override
+	public void downloadAgreement(OutputStream out, String fileName) {
+		FileUtil.downloadFile(baseDir + fileName, out);
+	}
+
+	@Override
+	public boolean isExists(String fileName) {
+		return FileUtil.isExists(baseDir + fileName);
+	}
 
 }

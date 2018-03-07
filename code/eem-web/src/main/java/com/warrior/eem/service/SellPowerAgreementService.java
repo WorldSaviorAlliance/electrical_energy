@@ -1,5 +1,6 @@
 package com.warrior.eem.service;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -41,4 +42,13 @@ public interface SellPowerAgreementService extends IService {
 	 * @param id
 	 */
 	void deleteAgreement(Serializable id);
+	
+	/**
+	 * 下载合约
+	 * @param out
+	 * @param fileName
+	 */
+	void downloadAgreement(OutputStream out, String fileName);
+	
+	boolean isExists(String fileName);
 }

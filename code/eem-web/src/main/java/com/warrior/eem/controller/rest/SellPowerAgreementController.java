@@ -1,6 +1,11 @@
 package com.warrior.eem.controller.rest;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +20,9 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
+import com.warrior.eem.util.FileUtil;
 
 /**
  * 售电合约 controller
@@ -65,6 +72,26 @@ public class SellPowerAgreementController extends AbstractController {
 		Integer[] pageInfo = buildPageInfo(page, perPage);
 		PageVo pv = spaService.listEntities(cdt, pageInfo[0], pageInfo[1]);
 		return Result.success(pv.getCount(), pv.getDatas());
+	}
+
+	@RequestMapping(value = "download", method = RequestMethod.GET)
+	public void downloadSellPowerAgreement(HttpServletResponse res,
+			@RequestParam(required = false, name = "file") String fileName) {
+		try {
+			if(!spaService.isExists(fileName)) {
+				throw new EemException("附件" + fileName + "不存在");
+			}
+			res.setStatus(HttpStatus.OK.value());
+			res.setContentType("application/octet-stream");
+			res.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+			res.setCharacterEncoding("utf-8");
+			spaService.downloadAgreement(res.getOutputStream(), fileName);
+		} catch (IOException e) {
+			throw new EemException("获取响应流失败");
+		} catch (EemException e) {
+			res.addHeader("Content-Disposition", "");
+			throw e;
+		}
 	}
 
 }
