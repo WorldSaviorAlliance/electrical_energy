@@ -508,14 +508,14 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			BigDecimal unitPrice = new BigDecimal(spaPrices[index + 4] + adpPrices[index + 4]);
 
 			// 无用功电量
-			res.get("invalidQuantity").add(pd.getIdleKwh());
+			res.put("invalidQuantity", res.get("invalidQuantity").add(pd.getIdleKwh()));
 
 			// 有用功电量
-			res.get("validQuantity").add(pd.getFlatKwh().add(pd.getPeakKwh()).add(pd.getTroughKwh()));
+			res.put("validQuantity", res.get("validQuantity").add(pd.getFlatKwh().add(pd.getPeakKwh()).add(pd.getTroughKwh())));
 
 			// 需要乘以系数
-			res.get("totalPrice").add((pd.getFlatKwh().multiply(unitPrice)).add(pd.getPeakKwh().multiply(unitPrice))
-					.add(pd.getTroughKwh().multiply(unitPrice)));
+			res.put("totalPrice", res.get("totalPrice").add((pd.getFlatKwh().multiply(unitPrice)).add(pd.getPeakKwh().multiply(unitPrice))
+					.add(pd.getTroughKwh().multiply(unitPrice))));
 		});
 		res.put("totalPrice",
 				res.get("totalPrice")
