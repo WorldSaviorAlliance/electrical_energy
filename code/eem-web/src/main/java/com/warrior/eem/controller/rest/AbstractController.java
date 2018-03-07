@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.warrior.eem.common.Result;
+import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.enums.CodeStatus;
 import com.warrior.eem.exception.EemException;
+import com.warrior.eem.shiro.session.EemSession;
 
 /**
  * 抽象rest control类
@@ -105,5 +108,20 @@ public class AbstractController {
 			}
 		}
 		return new Integer[]{pageNum, perPageNum};
+	}
+	
+	/**
+	 * 权限检测
+	 * 
+	 * @param res
+	 * @param op
+	 * @param id
+	 */
+	void checkPerimisession(String res, ResourceOperation op, Long id) {
+		User user = EemSession.getCurrentUser();
+		if (null == user) {
+			throw new EemException("Session expired");
+		}
+		user.checkPermission(res, op, id);
 	}
 }

@@ -13,6 +13,9 @@ import com.warrior.eem.entity.vo.ElectricityPackageVo;
  * @version 1.0.0
  */
 public interface UserService extends IService {
+	
+	User login(String name, String pwd);
+	
 	boolean createAdminIfAbsent();
 
 	User setRole(Long userId, Long roleId);

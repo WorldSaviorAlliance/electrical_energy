@@ -278,4 +278,24 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		}
 		return user.convert();
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User login(String name, String pwd) {
+		SqlRequest req = new SqlRequest();
+		LogicalCondition c = LogicalCondition.emptyOfTrue();
+		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, name));
+		c = c.and(new SimpleCondition("password", Sql_Operator.EQ,
+				Base64AndMD5Util.encodeByBase64AndMd5(String.valueOf(pwd))));
+		req.setCdt(c);
+		List<?> users = userDao.listDos(req);
+		if (users == null || users.size() == 0) {
+			throw new EemException("用户名或者密码有误");
+		}
+		User user = (User) users.get(0);
+		if (null != user.getRole()) {
+			user.getRole().getAuthorities();// 加载权限列表
+		}
+		return user;
+	}
 }

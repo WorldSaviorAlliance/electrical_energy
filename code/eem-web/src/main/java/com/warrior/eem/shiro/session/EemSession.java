@@ -1,13 +1,9 @@
 package com.warrior.eem.shiro.session;
 
-
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 
 import com.warrior.eem.entity.User;
-import com.warrior.eem.entity.constant.ResourceOperation;
-import com.warrior.eem.exception.EemException;
 
 /**
  * eem session管理
@@ -61,20 +57,5 @@ public class EemSession {
 	 */
 	public static void setCurrentUser(User user) {
 		getSession().setAttribute(CUR_USER, user);
-	}
-	
-	/**
-	 * 权限检测
-	 * 
-	 * @param res
-	 * @param op
-	 * @param id
-	 */
-	public static void checkPermission(String res, ResourceOperation op, Long id) {
-		User user = getCurrentUser();
-		if (null == user) {
-			throw new EemException("Session expired");
-		}
-		user.checkPermission(res, op, id);
 	}
 }

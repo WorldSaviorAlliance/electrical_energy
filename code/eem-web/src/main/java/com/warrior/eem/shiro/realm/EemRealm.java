@@ -1,7 +1,5 @@
 package com.warrior.eem.shiro.realm;
 
-import java.util.List;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,14 +11,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.warrior.eem.dao.UserDao;
-import com.warrior.eem.dao.support.LogicalCondition;
-import com.warrior.eem.dao.support.SimpleCondition;
-import com.warrior.eem.dao.support.SqlRequest;
-import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.entity.User;
-import com.warrior.eem.entity.ui.Base64AndMD5Util;
-import com.warrior.eem.exception.EemException;
+import com.warrior.eem.service.UserService;
 import com.warrior.eem.shiro.session.EemSession;
 
 /**
@@ -30,9 +22,8 @@ import com.warrior.eem.shiro.session.EemSession;
  *
  */
 public class EemRealm extends AuthorizingRealm {
-
 	@Autowired
-	private UserDao userDao;
+	private UserService userService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -45,21 +36,11 @@ public class EemRealm extends AuthorizingRealm {
 		return az;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
-		SqlRequest req = new SqlRequest();
-		LogicalCondition c = LogicalCondition.emptyOfTrue();
-		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, upt.getUsername()));
-		c = c.and(new SimpleCondition("password", Sql_Operator.EQ,
-				Base64AndMD5Util.encodeByBase64AndMd5(String.valueOf(upt.getPassword()))));
-		req.setCdt(c);
-		List<User> users = (List<User>) userDao.listDos(req);
-		if (users == null || users.size() == 0) {
-			throw new EemException("用户名或者密码有误");
-		}
-		EemSession.setCurrentUser(users.get(0));
+		User user = userService.login(upt.getUsername(), String.valueOf(upt.getPassword()));
+		EemSession.setCurrentUser(user);
 		return new SimpleAuthenticationInfo(upt.getUsername(), upt.getPassword(), getName());
 	}
 }
