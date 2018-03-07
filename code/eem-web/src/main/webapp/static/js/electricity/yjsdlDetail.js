@@ -64,7 +64,7 @@ function YjsdlDetail(afterSaveCallbk, curData)
 		if(g_curData != null)
 		{
 			getAllDlyhSelecte('customerId', g_curData.customer.id);
-			getAllDydjSelecte('voltageType', g_curData.voltageLevel);
+			getAllDydjSelecte('voltageType', g_curData.voltageType);
 			$('#customerId').niceSelect('update');
 			$('#customerNo').val(g_curData.customerNo);
 			$('#emNo').val(g_curData.emNo);

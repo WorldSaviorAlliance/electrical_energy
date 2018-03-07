@@ -637,6 +637,10 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	 * @return
 	 */
 	private double calculateInvalidEnergyCharge(double validKwh, double invalidKwh, double validEnergyCharge) {
+		if(Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2) == 0)
+		{
+			return 0;
+		}
 		double p = validKwh / Math.sqrt(Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2));
 		p = Double.valueOf(new DecimalFormat("0.00").format(p));
 		if (p < 0.9) {//

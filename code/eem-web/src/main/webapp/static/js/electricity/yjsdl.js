@@ -136,9 +136,9 @@ $(function()
 							'<td>' + gettradeType(temp.tradeType) + '</td>'+					
 							'<td>' + parseInt(temp.peakKwh) + '万kWh</td>'+
 							'<td>' + parseInt(temp.flatKwh) + '万kWh</td>'+
-							'<td>' + parseInt(temp.troughKwh) + '万kWh</td>'+
-							'<td>' + parseInt(temp.idleKwh) + '万kWh</td>'+
+							'<td>' + parseInt(temp.troughKwh) + '万kWh</td>'+							
 							'<td>' + (parseInt(temp.peakKwh) + parseInt(temp.flatKwh) + parseInt(temp.troughKwh) + parseInt(temp.idleKwh)) + '万kWh</td>'+
+							'<td>' + parseInt(temp.idleKwh) + '万kWh</td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+

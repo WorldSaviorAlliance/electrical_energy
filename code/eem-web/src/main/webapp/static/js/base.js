@@ -502,7 +502,7 @@ function getAllDydjSelecte(contorlId, valId)
 						var opts = '<option>--请选择电压等级--</option>';
 						for(var i = 0; i < datas.length; i++)
 						{
-							opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
+							opts += '<option value="' + datas[i].name + '">' + datas[i].name + '</option>';
 						}
 						$('#' + contorlId).append(opts);
 						if(valId != null)
