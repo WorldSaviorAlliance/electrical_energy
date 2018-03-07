@@ -2,7 +2,6 @@ package com.warrior.eem.service;
 
 import java.util.List;
 
-import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 
@@ -26,7 +25,7 @@ public interface UserService extends IService {
 	
 	boolean containsElectricityPackage(Long userId, Long pkgId);
 	
-	void handleElectricityPackage(Long userId, ElectricityPackage pkg);
+	void handleElectricityPackage(Long userId, Long pkg);
 	
 	void cancelElectricityPackage(Long userId, Long pkgId);
 	

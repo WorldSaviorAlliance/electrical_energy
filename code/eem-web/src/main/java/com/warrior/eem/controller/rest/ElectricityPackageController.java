@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
-import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
@@ -70,8 +69,7 @@ public class ElectricityPackageController extends AbstractController {
 		if (null == user) {
 			return Result.failure("Session expired");
 		}
-		ElectricityPackage pkg = (ElectricityPackage) service.getEntity(pkgId);
-		userService.handleElectricityPackage(user.getId(), pkg);
+		userService.handleElectricityPackage(user.getId(), pkgId);
 		return Result.success();
 	}
 

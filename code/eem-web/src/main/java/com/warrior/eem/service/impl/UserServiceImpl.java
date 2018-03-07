@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.warrior.eem.dao.ElectricityPackageDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.RoleDao;
@@ -52,6 +53,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 
 	@Autowired
 	private PowerCustomerDao customerDao;
+	
+	@Autowired
+	private ElectricityPackageDao pkgDao;
 
 	@Override
 	IDao<User> getDao() {
@@ -233,10 +237,14 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 
 	@Override
 	@Transactional
-	public void handleElectricityPackage(Long userId, ElectricityPackage pkg) {
+	public void handleElectricityPackage(Long userId, Long pkgId) {
 		User user = userDao.getEntity(userId);
 		if (null == user) {
 			throw new EemException("无效的用户id：" + userId);
+		}
+		ElectricityPackage pkg = pkgDao.getEntity(pkgId);
+		if (null == pkg) {
+			throw new EemException("无效的套餐id：" + pkgId);
 		}
 		user.handleElectricityPackage(pkg);
 	}
@@ -263,8 +271,11 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 			return new ArrayList<>();
 		}
 		List<ElectricityPackageVo> vos = new ArrayList<>(pkgs.size());
+		ElectricityPackageVo vo;
 		for (ElectricityPackage pkg : pkgs) {
-			vos.add(pkg.convert());
+			vo = pkg.convert();
+			vo.setHandled(true);
+			vos.add(vo);
 		}
 		return vos;
 	}
