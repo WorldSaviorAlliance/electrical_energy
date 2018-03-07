@@ -27,6 +27,8 @@ public final class ElectricityPackageVo implements Serializable {
 	private String desc;
 
 	private boolean handled;
+	
+	private String handleTime;
 
 	public long getId() {
 		return id;
@@ -82,5 +84,13 @@ public final class ElectricityPackageVo implements Serializable {
 
 	public void setHandled(boolean handled) {
 		this.handled = handled;
+	}
+
+	public String getHandleTime() {
+		return handleTime;
+	}
+
+	public void setHandleTime(String handleTime) {
+		this.handleTime = handleTime;
 	}
 }

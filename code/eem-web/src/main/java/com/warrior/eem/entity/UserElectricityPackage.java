@@ -1,7 +1,7 @@
 package com.warrior.eem.entity;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 import javax.persistence.Column;

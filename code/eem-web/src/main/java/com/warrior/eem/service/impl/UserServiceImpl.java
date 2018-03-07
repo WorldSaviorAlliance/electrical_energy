@@ -25,6 +25,7 @@ import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.UserElectricityPackage;
 import com.warrior.eem.entity.constant.UserStatus;
 import com.warrior.eem.entity.constant.UserType;
 import com.warrior.eem.entity.ui.Base64AndMD5Util;
@@ -266,15 +267,16 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		if (null == user) {
 			throw new EemException("无效的用户id：" + userId);
 		}
-		List<ElectricityPackage> pkgs = user.getElectricityPackages();
+		List<UserElectricityPackage> pkgs = user.getElectricityPackages();
 		if (pkgs.isEmpty()) {
 			return new ArrayList<>();
 		}
 		List<ElectricityPackageVo> vos = new ArrayList<>(pkgs.size());
 		ElectricityPackageVo vo;
-		for (ElectricityPackage pkg : pkgs) {
-			vo = pkg.convert();
+		for (UserElectricityPackage pkg : pkgs) {
+			vo = pkg.getPkg().convert();
 			vo.setHandled(true);
+			vo.setHandleTime(ToolUtil.formatTime(pkg.getAddTime()));
 			vos.add(vo);
 		}
 		return vos;

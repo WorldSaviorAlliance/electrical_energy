@@ -145,18 +145,15 @@ public class User implements Serializable {
 		this.customer = customer;
 	}
 
-	public List<ElectricityPackage> getElectricityPackages() {
-		List<ElectricityPackage> list = new ArrayList<>();
-		for (UserElectricityPackage elem : pkgs) {
-			list.add(elem.getPkg());
-		}
-		return list;
+	public List<UserElectricityPackage> getElectricityPackages() {
+		return pkgs;
 	}
 
 	public void handleElectricityPackage(ElectricityPackage pkg) {
 		UserElectricityPackage uep = new UserElectricityPackage();
 		uep.setPkg(pkg);
 		uep.setUser(this);
+		uep.setAddTime(ToolUtil.getCurrentTime());
 		pkgs.add(uep);
 		pkg.getOwners().add(uep);
 	}
