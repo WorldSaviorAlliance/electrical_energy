@@ -209,9 +209,11 @@ public class User implements Serializable {
 	}
 
 	public void checkPermission(String res, ResourceOperation op) {
-		for (Authority authority : role.getAuthorities()) {
-			if (authority.hasPermission(res, op)) {
-				return;
+		if (null != role) {//理论上每个用户都应该属于一种角色的
+			for (Authority authority : role.getAuthorities()) {
+				if (authority.hasPermission(res, op)) {
+					return;
+				}
 			}
 		}
 		throw new EemException("no " + res + ":" + op.toString() + "permission");

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
+import com.warrior.eem.entity.ElectricityAdjustmentData;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.ElectricityAdjustmentDataCondition;
 import com.warrior.eem.entity.vo.ElectricityAdjustmentDataUpdateVO;
 import com.warrior.eem.entity.vo.PageVo;
@@ -22,6 +24,7 @@ import com.warrior.eem.service.ElectricityAdjustmentDataService;
 @Controller
 @RequestMapping(value = "/adjustment_data")
 public class ElectricityAdjustmentDataController extends AbstractController {
+	private static final String RES_NAME = ElectricityAdjustmentData.class.getSimpleName();
 
 	@Autowired
 	private ElectricityAdjustmentDataService adjustService;
@@ -29,6 +32,7 @@ public class ElectricityAdjustmentDataController extends AbstractController {
 	@ResponseBody
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
 	public Result<Object> saveAndUpdateElectricityAdjustmentData(@RequestBody ElectricityAdjustmentDataUpdateVO adjustmentDataVo) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, adjustmentDataVo.getId());
 		adjustService.saveOrUpdateElectricityAdjustmentData(adjustmentDataVo);
 		return Result.success();
 	}
@@ -36,6 +40,7 @@ public class ElectricityAdjustmentDataController extends AbstractController {
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	public Result<Object> deleteElectricityAdjustmentData(@RequestParam(name = "id") Long id) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, id);
 		adjustService.deleteEntity(id);
 		return Result.success();
 	}
@@ -46,6 +51,7 @@ public class ElectricityAdjustmentDataController extends AbstractController {
 			@RequestBody(required = false) ElectricityAdjustmentDataCondition condition,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		Integer[] pageObject = buildPageInfo(page, perPage);
 		PageVo pageVo = adjustService.listEntities(condition, pageObject[0], pageObject[1]);
 		return Result.success(pageVo.getCount(), pageVo.getDatas());

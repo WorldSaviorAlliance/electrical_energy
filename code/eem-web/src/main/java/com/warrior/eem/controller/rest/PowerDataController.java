@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.warrior.eem.common.Result;
 import com.warrior.eem.dao.support.Order;
 import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerData;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.ContractAndPracticalReqVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.PowerDataCdtVo;
@@ -27,13 +29,15 @@ import com.warrior.eem.service.PowerDataService;
 @Controller
 @RequestMapping("power_data")
 public class PowerDataController extends AbstractController {
-
+	private static final String RES_NAME = PowerData.class.getSimpleName();
+	
 	@Autowired
 	private PowerDataService pdService;
 
 	@RequestMapping(value = "info", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> createEntity(@RequestBody(required = false) PowerDataVo vo) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, null);
 		pdService.createEntity(vo);
 		return Result.success();
 	}
@@ -41,6 +45,7 @@ public class PowerDataController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.PUT)
 	@ResponseBody
 	public Result<Object> updateEntity(@RequestBody(required = false) PowerDataVo vo) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, vo.getId());
 		pdService.updateEntity(vo);
 		return Result.success();
 	}
@@ -48,6 +53,7 @@ public class PowerDataController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, convertId(id));
 		pdService.deleteEntity(convertId(id));
 		return Result.success();
 	}
@@ -55,6 +61,7 @@ public class PowerDataController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<PowerCustomer> getEntity(String id) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		return Result.success((PowerCustomer) pdService.getEntity(convertId(id)));
 	}
 
@@ -65,6 +72,7 @@ public class PowerDataController extends AbstractController {
 			@RequestParam(name = "per_page", required = false) String perPage,
 			@RequestParam(name = "sort_by", required = false) String sortBy,
 			@RequestParam(name = "order", required = false) String order) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		Integer[] pageInfo = buildPageInfo(page, perPage);
 		String sortProp = "month";
 		String orderProp = "DESC";
@@ -88,6 +96,7 @@ public class PowerDataController extends AbstractController {
 	@ResponseBody
 	public Result<Object> statisContractAndpracticalData(
 			@RequestBody(required = false) ContractAndPracticalReqVo param) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		PageVo pv = pdService.listContractAndpracticalData(param);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}
@@ -103,6 +112,7 @@ public class PowerDataController extends AbstractController {
 	public Result<Object> listPowerMonthPriceData(
 			@RequestParam(name = "order", defaultValue = "DESC", required = false) String order,
 			@RequestBody(required = false) PowerMonthPriceReqVo param) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		PageVo pv = pdService.listPowerMonthPriceData(param, order);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}

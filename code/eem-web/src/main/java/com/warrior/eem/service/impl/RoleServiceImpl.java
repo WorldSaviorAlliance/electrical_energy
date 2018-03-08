@@ -20,6 +20,7 @@ import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.Authority;
 import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.AuthorityVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.RoleCdtVo;
@@ -82,7 +83,9 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		}
 		Role admin = new Role();
 		admin.setName("管理员");
-		List<?> authorities = authorityDao.queryAll();
+		SqlRequest request = new SqlRequest();
+		request.setCdt(SimpleCondition.equal("op", ResourceOperation.COM_CONTROL));
+		List<?> authorities = authorityDao.listDos(request);
 		for (Object obj : authorities) {
 			admin.addAuthority((Authority) obj);
 		}

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.warrior.eem.common.Result;
+import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.User;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.service.ElectricityPackageService;
@@ -26,6 +28,8 @@ import com.warrior.eem.shiro.session.EemSession;
 @Controller
 @RequestMapping("electricity_package")
 public class ElectricityPackageController extends AbstractController {
+	private static final String RES_NAME = ElectricityPackage.class.getSimpleName();
+	
 	@Autowired
 	private ElectricityPackageService service;
 
@@ -34,6 +38,7 @@ public class ElectricityPackageController extends AbstractController {
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	public @ResponseBody Result<Object> getEntity(@RequestParam Long pkgId) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		ElectricityPackageVo vo = (ElectricityPackageVo) service.getEntity(pkgId);
 		User user = EemSession.getCurrentUser();
 		if (null != user) {
@@ -51,6 +56,7 @@ public class ElectricityPackageController extends AbstractController {
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	public @ResponseBody Result<Object> list(@RequestParam Long userId) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		PageVo pageVo;
 		if (-1 == userId) {
 			pageVo = service.listEntities();
@@ -65,6 +71,7 @@ public class ElectricityPackageController extends AbstractController {
 
 	@RequestMapping(value = "handle_elec_pkg", method = RequestMethod.POST)
 	public @ResponseBody Result<Object> handlePackage(@RequestParam Long pkgId) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, pkgId);
 		User user = EemSession.getCurrentUser();
 		if (null == user) {
 			return Result.failure("Session expired");
@@ -75,6 +82,7 @@ public class ElectricityPackageController extends AbstractController {
 
 	@RequestMapping(value = "cancel_elec_pkg", method = RequestMethod.POST)
 	public @ResponseBody Result<Object> cancelPackage(@RequestParam Long pkgId) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, pkgId);
 		User user = EemSession.getCurrentUser();
 		if (null == user) {
 			return Result.failure("Session expired");

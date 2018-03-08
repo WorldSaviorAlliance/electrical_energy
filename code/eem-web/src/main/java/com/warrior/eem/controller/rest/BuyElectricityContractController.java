@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.warrior.eem.common.Result;
+import com.warrior.eem.entity.BuyElectricityContract;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.BuyContractSearchVo;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
@@ -37,6 +39,7 @@ import com.warrior.eem.service.BuyElectricityContractService;
 @Controller
 @RequestMapping(value = "/buy_agreement")
 public class BuyElectricityContractController extends AbstractController {
+	private static final String RES_NAME = BuyElectricityContract.class.getSimpleName();
 
 	@Autowired
 	private BuyElectricityContractService buyContractService;
@@ -55,6 +58,7 @@ public class BuyElectricityContractController extends AbstractController {
 	public Result<Object> createOrUpdateBuyContract(BuyElectricityContractUpdateVo buyContract,
 			@RequestParam(name = "infos", required = false) String infos, @RequestParam(name = "file", required = false) MultipartFile file,
 			@RequestParam(name = "ids", required = false) String deleteIds) throws Exception {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, null);
 		ObjectMapper om = new ObjectMapper();
 		JavaType javaType = null;
 		Set<BuyContractUserInfoUpdateVo> contractUserInfos = null;
@@ -77,6 +81,7 @@ public class BuyElectricityContractController extends AbstractController {
 	public Result<Object> listBuyContracts(@RequestBody(required = false) BuyContractSearchVo searchCondition,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String pageSize) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		Integer[] pageInfo = buildPageInfo(page, pageSize);
 		PageVo pageVO = buyContractService.listEntities(searchCondition, pageInfo[0], pageInfo[1]);
 		return Result.success(pageVO.getCount(), pageVO.getDatas());
@@ -85,6 +90,7 @@ public class BuyElectricityContractController extends AbstractController {
 	@ResponseBody
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	public Result<Object> deleteBuyContract(@RequestParam(name = "id") Long id) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, id);
 		buyContractService.deleteEntity(id);
 		return Result.success();
 	}
@@ -93,12 +99,14 @@ public class BuyElectricityContractController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	public Result<BuyElectricityContractVo> getBuyContractUserInfoByContractId(
 			@RequestParam(name = "id") Long id) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		return Result.success(buyContractService.getBuyContractUserInfoByContractId(id));
 	}
 	
 	@RequestMapping(value = "download", method = RequestMethod.GET)
 	public void downloadAgreement(HttpServletResponse res,
 			@RequestParam(required = false, name = "file") String fileName) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		try {
 			if(!buyContractService.isExists(fileName)) {
 				throw new EemException("附件" + fileName + "不存在");

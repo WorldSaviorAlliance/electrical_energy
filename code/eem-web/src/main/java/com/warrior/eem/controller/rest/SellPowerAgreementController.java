@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.warrior.eem.common.Result;
 import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
@@ -32,6 +33,7 @@ import com.warrior.eem.service.SellPowerAgreementService;
 @Controller
 @RequestMapping("sell_agreement")
 public class SellPowerAgreementController extends AbstractController {
+	private static final String RES_NAME = SellPowerAgreement.class.getSimpleName();
 
 	@Autowired
 	private SellPowerAgreementService spaService;
@@ -41,6 +43,7 @@ public class SellPowerAgreementController extends AbstractController {
 	public Result<Object> createEntity(SellPowerAgreementVo sellPowerAgreementVo,
 			SellPowerAgreementMonthDataVo sellPowerAgreementMonthVo,
 			@RequestParam(name = "att_file", required = false) MultipartFile attrFile) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, null);
 		if (sellPowerAgreementVo != null && sellPowerAgreementVo.getId() != null
 				&& sellPowerAgreementVo.getId().trim().length() > 0) { // update
 			spaService.saveAndUpdateAgreement(attrFile, sellPowerAgreementVo, sellPowerAgreementMonthVo);
@@ -53,6 +56,7 @@ public class SellPowerAgreementController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Result<Object> deleteEntity(String id) {
+		checkPerimisession(RES_NAME, ResourceOperation.WRITE, convertId(id));
 		spaService.deleteAgreement(convertId(id));
 		return Result.success();
 	}
@@ -60,6 +64,7 @@ public class SellPowerAgreementController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<SellPowerAgreement> getEntity(String id) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		return Result.success((SellPowerAgreement) spaService.getEntity(convertId(id)));
 	}
 
@@ -68,6 +73,7 @@ public class SellPowerAgreementController extends AbstractController {
 	public Result<Object> listEntities(@RequestBody(required = false) SellAgreementCdtVo cdt,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "per_page", required = false) String perPage) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		Integer[] pageInfo = buildPageInfo(page, perPage);
 		PageVo pv = spaService.listEntities(cdt, pageInfo[0], pageInfo[1]);
 		return Result.success(pv.getCount(), pv.getDatas());
@@ -76,6 +82,7 @@ public class SellPowerAgreementController extends AbstractController {
 	@RequestMapping(value = "download", method = RequestMethod.GET)
 	public void downloadAgreement(HttpServletResponse res,
 			@RequestParam(required = false, name = "file") String fileName) {
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		try {
 			if(!spaService.isExists(fileName)) {
 				throw new EemException("附件" + fileName + "不存在");
