@@ -54,7 +54,7 @@
 		       <div class="col-md-8">
 		            <div class="panel panel-default">
 		                <div class="panel-body">
-		                    <div class="piechar_title">月度电量趋势图</div>
+		                    <div class="piechar_title">月度电量趋势图(万kWh)</div>
 		                    <div id="month" style="height:220px;" class="bg_load">
 		                    </div>
 		                </div>

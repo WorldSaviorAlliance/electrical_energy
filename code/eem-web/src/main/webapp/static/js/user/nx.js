@@ -76,21 +76,29 @@ $(function(){
 				var ar = JSON.parse(XHR.responseText);
 				if(ar.code == 0)
 				{
-					console.log(ar.data);
+					setMonthChart(ar.data);
 				}
-				setMonthChart();
 			}
 		}
 	});
 	
-	function setMonthChart()
+	function setMonthChart(allData)
 	{
 		var now = new Date();
 		var time = [];
-		var month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-		for(var i = 0; i < 12; i++)
+		var allFlat = [];
+		var allPeak = [];
+		var allThrough = [];
+		if(allData == null || allData.length == 0)
 		{
-			time.push(now.getFullYear() + month[i]);
+			return;
+		}
+		for(var i = 0; i < allData.length; i++)
+		{
+			time.push(allData[i].month);
+			allFlat.push(allData[i].flatQuantity);
+			allPeak.push(allData[i].peakQuantity);
+			allThrough.push(allData[i].troughQuantity);
 		}
 		var option = {
 			    tooltip : {
@@ -132,17 +140,17 @@ $(function(){
 			        {
 			            name:'低谷',
 			            type:'bar',
-			            data:[320, 332, 301, 334, 390, 330, 320]
+			            data: allThrough
 			        },
 			        {
 			            name:'平段',
 			            type:'bar',
-			            data:[120, 132, 101, 134, 90, 230, 210]
+			            data: allFlat
 			        },
 			        {
 			            name:'高峰',
 			            type:'bar',
-			            data:[220, 182, 191, 234, 290, 330, 310]
+			            data: allPeak
 			        }
 			    ]
 			};
