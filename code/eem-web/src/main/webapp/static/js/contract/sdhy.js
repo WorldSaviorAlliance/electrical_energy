@@ -110,7 +110,7 @@ $(function()
 							'<td>' + getObjStr(temp.validYear) + '</td>'+
 							'<td>' + getObjStr(temp.tradePowerQuantity) + '</td>'+					
 							'<td>' + getObjStr(temp.voltageType) + '</td>'+
-							'<td></td>'+
+							'<td><a target="blank" href="' + rootpath + '/' + PATH_SDHY + '/download?file=' + temp.attachment + '">下载</a></td>'+
 							'<td>' + getObjStr(temp.createTime) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改合约</a>'+
