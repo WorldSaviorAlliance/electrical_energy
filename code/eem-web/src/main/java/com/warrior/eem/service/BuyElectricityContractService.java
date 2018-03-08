@@ -1,5 +1,6 @@
 package com.warrior.eem.service;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
 
@@ -18,4 +19,18 @@ public interface BuyElectricityContractService extends IService {
 	BuyElectricityContract getBuyContractById(Long id);
 
 	BuyElectricityContractVo getBuyContractUserInfoByContractId(Long id);
+	
+	/**
+	 * 下载合约
+	 * @param out
+	 * @param fileName
+	 */
+	void downloadAgreement(OutputStream out, String fileName);
+	
+	/**
+	 * 检测附件是否存在
+	 * @param fileName
+	 * @return
+	 */
+	boolean isExists(String fileName);
 }

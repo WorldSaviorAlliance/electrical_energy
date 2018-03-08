@@ -1,11 +1,15 @@
 package com.warrior.eem.controller.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +26,7 @@ import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractVo;
 import com.warrior.eem.entity.vo.PageVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.BuyElectricityContractService;
 
 /**
@@ -89,5 +94,25 @@ public class BuyElectricityContractController extends AbstractController {
 	public Result<BuyElectricityContractVo> getBuyContractUserInfoByContractId(
 			@RequestParam(name = "id") Long id) {
 		return Result.success(buyContractService.getBuyContractUserInfoByContractId(id));
+	}
+	
+	@RequestMapping(value = "download", method = RequestMethod.GET)
+	public void downloadAgreement(HttpServletResponse res,
+			@RequestParam(required = false, name = "file") String fileName) {
+		try {
+			if(!buyContractService.isExists(fileName)) {
+				throw new EemException("附件" + fileName + "不存在");
+			}
+			res.setStatus(HttpStatus.OK.value());
+			res.setContentType("application/octet-stream");
+			res.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+			res.setCharacterEncoding("utf-8");
+			buyContractService.downloadAgreement(res.getOutputStream(), fileName);
+		} catch (IOException e) {
+			throw new EemException("获取响应流失败");
+		} catch (EemException e) {
+			res.addHeader("Content-Disposition", "");
+			throw e;
+		}
 	}
 }

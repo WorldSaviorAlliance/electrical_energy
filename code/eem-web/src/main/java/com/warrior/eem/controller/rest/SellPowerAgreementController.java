@@ -22,7 +22,6 @@ import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementVo;
 import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.SellPowerAgreementService;
-import com.warrior.eem.util.FileUtil;
 
 /**
  * 售电合约 controller
@@ -75,7 +74,7 @@ public class SellPowerAgreementController extends AbstractController {
 	}
 
 	@RequestMapping(value = "download", method = RequestMethod.GET)
-	public void downloadSellPowerAgreement(HttpServletResponse res,
+	public void downloadAgreement(HttpServletResponse res,
 			@RequestParam(required = false, name = "file") String fileName) {
 		try {
 			if(!spaService.isExists(fileName)) {

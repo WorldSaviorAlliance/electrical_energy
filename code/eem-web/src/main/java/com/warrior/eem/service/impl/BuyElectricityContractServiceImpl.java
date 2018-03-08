@@ -1,6 +1,7 @@
 package com.warrior.eem.service.impl;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -293,5 +294,15 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		}
 		contractVo.setUserInfo(infos);
 		return contractVo;
+	}
+
+	@Override
+	public void downloadAgreement(OutputStream out, String fileName) {
+		FileUtil.downloadFile(baseDir + fileName, out);
+	}
+
+	@Override
+	public boolean isExists(String fileName) {
+		return FileUtil.isExists(baseDir + fileName);
 	}
 }
