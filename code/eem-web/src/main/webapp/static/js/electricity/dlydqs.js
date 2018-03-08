@@ -87,18 +87,19 @@ $(function()
 			{
 				var temp = datas[i];
 				trs += '<tr type="data">'+
-							'<td>' + getObjStr(temp.customer.name) + '</td>'+
+							'<td>' + getObjStr(temp.customerName) + '</td>'+
 							'<td>' + getObjStr(temp.customerNo) + '</td>'+
 							'<td>' + getObjStr(temp.emNo) + '</td>'+
 							'<td>' + getObjStr(temp.month) + '</td>'+
 							'<td>' + getObjStr(temp.voltageType) + '</td>'+
-							'<td>' + gettradeType(temp.tradeType) + '</td>'+					
-							'<td>' + parseInt(temp.peakKwh) + '万kWh</td>'+
-							'<td>' + parseInt(temp.flatKwh) + '万kWh</td>'+
-							'<td>' + parseInt(temp.troughKwh) + '万kWh</td>'+
-							'<td>' + parseInt(temp.idleKwh) + '万kWh</td>'+
-							'<td>' + (parseInt(temp.peakKwh) + parseInt(temp.flatKwh) + parseInt(temp.troughKwh) + parseInt(temp.idleKwh)) + '万kWh</td>'+
-							'<td>' + getObjStr(temp.createTime) + '</td>'+
+							'<td>' + gettradeType(temp.tradeType) + '</td>'+	
+							'<td>' + getObjStr(temp.tradePrice) + '</td>' +
+							'<td>' + parseInt(temp.peakPrice) + '万元</td>'+
+							'<td>' + parseInt(temp.flatPrice) + '万元</td>'+
+							'<td>' + parseInt(temp.troughPrice) + '万元</td>'+
+							'<td>' + (parseInt(temp.peakPrice) + parseInt(temp.flatPrice) + parseInt(temp.troughPrice)) + '万元</td>'+
+							'<td>' + parseInt(temp.validPrice) + '万元</td>'+
+							'<td>' + getObjStr(temp.totalPrice) + '万元</td>'+
 						'</tr>';
 			}
 			

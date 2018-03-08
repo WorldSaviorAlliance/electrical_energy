@@ -53,112 +53,34 @@
 						<th>月份</th>
 						<th>电压等级</th>
 						<th>交易品种</th>
-						<th>高峰用电量</th>
-						<th>平段用电量</th>
-						<th>低谷用电量</th>
-						<th>总计有功电量</th>
-						<th>无功电量</th>
-						<th>录入时间</th>
+						<th>交易价格</th>
+						<th>高峰电费</th>
+						<th>平段电费</th>
+						<th>低谷电费</th>
+						<th>有功电量总电费</th>
+						<th>无功电费</th>
+						<th>电费总计</th>
 					</tr>
-				</thead>				
+				</thead>
 				<tbody id="datas">
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
+					<tr type="empty_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray;height: 200px; background-color: #ffffff;">
+							<img src="<%=basePath%>static/images/window/info.png" width="16px" height="16px">
+							没有电量月度清算
+						</td>
 					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
+					<tr type="error_msg" style="display: none;">
+						<td colspan="12" style="text-align: center;color:gray">
+							<span style="color:red" type="error_detail"></span>
+						</td>
 					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
-					</tr>
-					<tr>
-						<td>测试电源商1</td>
-						<td>电源商1</td>
-						<td>四川成都</td>
-						<td>火电</td>
-						<td>2300万kWh</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>国营企业</td>					
-						<td>张三</td>
-						<td>张三</td>
-						<td>test@tttt.com</td>
-						<td>2017-04-17 15:11:05</td>
+					<tr type="loading_msg">
+						<td colspan="12">
+							<div style="text-align: center;color:gray;">
+							 	<img src="<%=basePath%>static/images/loading/loading_32.gif" width="16px" height="16px">
+							 	<span>正在获取数据中…….</span>
+							</div>
+						</td>
 					</tr>
 				</tbody>
 			</table>

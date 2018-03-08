@@ -458,7 +458,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		double totalPrice = validPrice.doubleValue() + calculateInvalidEnergyCharge(validKwh.doubleValue(),
 				invalidKwh.doubleValue(), validPrice.doubleValue());
 		PowerMonthPriceInfoItemVo item = new PowerMonthPriceInfoItemVo();
-		item.setCustomerName(data.getCustomer().getNickName());
+		item.setCustomerName(data.getCustomer().getName());
 		item.setCustomerNo(data.getCustomerNo());
 		item.setEmNo(data.getEmNo());
 		item.setFlatPrice(data.getFlatKwh());
