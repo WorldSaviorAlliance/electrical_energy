@@ -142,6 +142,7 @@ $(function()
 		$('#page').EemPage(opts);
 		
 		$('a[flag="view"]').unbind('click').click(function(){
+			$(this).blur();
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){

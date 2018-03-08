@@ -96,7 +96,7 @@ public class PowerDataController extends AbstractController {
 	@ResponseBody
 	public Result<Object> statisContractAndpracticalData(
 			@RequestBody(required = false) ContractAndPracticalReqVo param) {
-//		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		PageVo pv = pdService.listContractAndpracticalData(param);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}
@@ -112,7 +112,7 @@ public class PowerDataController extends AbstractController {
 	public Result<Object> listPowerMonthPriceData(
 			@RequestParam(name = "order", defaultValue = "DESC", required = false) String order,
 			@RequestBody(required = false) PowerMonthPriceReqVo param) {
-//		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
+		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
 		PageVo pv = pdService.listPowerMonthPriceData(param, order);
 		return Result.success(pv.getCount(), pv.getDatas());
 	}

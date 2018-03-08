@@ -23,6 +23,7 @@ $(function()
 			getAllData(FIRST_PAGE);
 		});
 		$('#add').unbind('click').click(function(){
+			$(this).blur();
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){
 				$(this).EemWindow({
@@ -147,6 +148,7 @@ $(function()
 		});
 		
 		$('a[flag="modify"]').unbind('click').click(function(){
+			$(this).blur();
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/contract/sdhyDetail.jsp', function(){
@@ -165,6 +167,7 @@ $(function()
 		});
 		
 		$('a[flag="modify_p"]').unbind('click').click(function(){
+			$(this).blur();
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
 			addDiv.load(rootpath + '/static/jsp/contract/sddjDetail.jsp', function(){
