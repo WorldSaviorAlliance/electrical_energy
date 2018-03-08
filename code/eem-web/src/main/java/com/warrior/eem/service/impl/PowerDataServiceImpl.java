@@ -541,13 +541,13 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		res.put("troughQuantity", BigDecimal.ZERO);
 		pds.forEach(pd -> {
 			// 平段电量
-			res.get("flatQuantity").add(pd.getFlatKwh());
+			res.put("flatQuantity", res.get("flatQuantity").add(pd.getFlatKwh()));
 
 			// 高峰电量
-			res.get("peakQuantity").add(pd.getPeakKwh());
+			res.put("peakQuantity", res.get("peakQuantity").add(pd.getPeakKwh()));
 
 			// 低谷电量
-			res.get("troughQuantity").add(pd.getTroughKwh());
+			res.put("troughQuantity", res.get("troughQuantity").add(pd.getTroughKwh()));
 
 		});
 		return res;
@@ -592,13 +592,13 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			BigDecimal unitPrice = new BigDecimal(spaPrices[index + 4] + adpPrices[index + 4]);
 
 			// 平段电费
-			res.get("flatPrice").add(pd.getIdleKwh().multiply(unitPrice));
+			res.put("flatPrice", res.get("flatPrice").add(pd.getIdleKwh().multiply(unitPrice)));
 
 			// 高峰电费
-			res.get("peakPrice").add(pd.getFlatKwh().multiply(unitPrice));
+			res.put("peakPrice", res.get("peakPrice").add(pd.getFlatKwh().multiply(unitPrice)));
 
 			// 低谷电费
-			res.get("troughPrice").add(pd.getPeakKwh().multiply(unitPrice));
+			res.put("troughPrice", res.get("troughPrice").add(pd.getPeakKwh().multiply(unitPrice)));
 		});
 		return res;
 	}
