@@ -20,6 +20,7 @@ import com.warrior.eem.dao.ElectricityAdjustmentDataDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
 import com.warrior.eem.dao.PowerDataDao;
+import com.warrior.eem.dao.PriceCoefficientDao;
 import com.warrior.eem.dao.SellPowerAgreementDao;
 import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
@@ -32,6 +33,7 @@ import com.warrior.eem.entity.ElectricityAdjustmentData;
 import com.warrior.eem.entity.ElectricityAdjustmentData.AdjustmentType;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.PowerData;
+import com.warrior.eem.entity.PriceCoefficient;
 import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.SellPowerAgreement.Sell_Power_Price_Type;
 import com.warrior.eem.entity.vo.PowerMonthPriceInfoItemVo;
@@ -67,6 +69,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 
 	@Autowired
 	private ElectricityAdjustmentDataDao eadDao;
+
+	@Autowired
+	private PriceCoefficientDao pcfDao;
 
 	@Override
 	IDao<PowerData> getDao() {
@@ -444,10 +449,10 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		}
 		// 单价
 		BigDecimal unitPrice = new BigDecimal(monthAdjustmentArr[index + 4] + monthSapqpArr[index + 4]);
-		// TODO 需要乘以系数
-		data.setFlatKwh(data.getFlatKwh().multiply(unitPrice)); // 平段
-		data.setPeakKwh(data.getPeakKwh().multiply(unitPrice)); // 高峰
-		data.setTroughKwh(data.getTroughKwh().multiply(unitPrice)); // 低谷
+		BigDecimal[] pcs = getPriceCoefficientInfos();
+		data.setFlatKwh(data.getFlatKwh().multiply(unitPrice).multiply(pcs[0])); // 平段
+		data.setPeakKwh(data.getPeakKwh().multiply(unitPrice).multiply(pcs[1])); // 高峰
+		data.setTroughKwh(data.getTroughKwh().multiply(unitPrice).multiply(pcs[2])); // 低谷
 
 		BigDecimal validPrice = data.getFlatKwh().add(data.getPeakKwh()).add(data.getTroughKwh());
 		double totalPrice = validPrice.doubleValue() + calculateInvalidEnergyCharge(validKwh.doubleValue(),
@@ -496,6 +501,9 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		res.put("invalidQuantity", BigDecimal.ZERO);
 		res.put("validQuantity", BigDecimal.ZERO);
 		res.put("totalPrice", BigDecimal.ZERO);
+
+		BigDecimal[] pcs = getPriceCoefficientInfos();
+
 		pds.forEach(pd -> {
 			int index = 3;
 			if (Sell_Power_Price_Type.Normal.getName().equals(pd.getTradeType())) {
@@ -511,11 +519,14 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			res.put("invalidQuantity", res.get("invalidQuantity").add(pd.getIdleKwh()));
 
 			// 有用功电量
-			res.put("validQuantity", res.get("validQuantity").add(pd.getFlatKwh().add(pd.getPeakKwh()).add(pd.getTroughKwh())));
+			res.put("validQuantity",
+					res.get("validQuantity").add(pd.getFlatKwh().add(pd.getPeakKwh()).add(pd.getTroughKwh())));
 
-			// 需要乘以系数
-			res.put("totalPrice", res.get("totalPrice").add((pd.getFlatKwh().multiply(unitPrice)).add(pd.getPeakKwh().multiply(unitPrice))
-					.add(pd.getTroughKwh().multiply(unitPrice))));
+			res.put("totalPrice",
+					res.get("totalPrice")
+							.add((pd.getFlatKwh().multiply(unitPrice).multiply(pcs[0]))
+									.add(pd.getPeakKwh().multiply(unitPrice).multiply(pcs[0]))
+									.add(pd.getTroughKwh().multiply(unitPrice).multiply(pcs[0]))));
 		});
 		res.put("totalPrice",
 				res.get("totalPrice")
@@ -580,6 +591,8 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		res.put("flatPrice", BigDecimal.ZERO);
 		res.put("peakPrice", BigDecimal.ZERO);
 		res.put("troughPrice", BigDecimal.ZERO);
+
+		BigDecimal[] pcs = getPriceCoefficientInfos();
 		pds.forEach(pd -> {
 			int index = 3;
 			if (Sell_Power_Price_Type.Normal.getName().equals(pd.getTradeType())) {
@@ -592,13 +605,13 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 			BigDecimal unitPrice = new BigDecimal(spaPrices[index + 4] + adpPrices[index + 4]);
 
 			// 平段电费
-			res.put("flatPrice", res.get("flatPrice").add(pd.getIdleKwh().multiply(unitPrice)));
+			res.put("flatPrice", res.get("flatPrice").add(pd.getFlatKwh().multiply(unitPrice).multiply(pcs[0])));
 
 			// 高峰电费
-			res.put("peakPrice", res.get("peakPrice").add(pd.getFlatKwh().multiply(unitPrice)));
+			res.put("peakPrice", res.get("peakPrice").add(pd.getPeakKwh().multiply(unitPrice).multiply(pcs[1])));
 
 			// 低谷电费
-			res.put("troughPrice", res.get("troughPrice").add(pd.getPeakKwh().multiply(unitPrice)));
+			res.put("troughPrice", res.get("troughPrice").add(pd.getTroughKwh().multiply(unitPrice).multiply(pcs[2])));
 		});
 		return res;
 	}
@@ -637,8 +650,7 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 	 * @return
 	 */
 	private double calculateInvalidEnergyCharge(double validKwh, double invalidKwh, double validEnergyCharge) {
-		if(Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2) == 0)
-		{
+		if (Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2) == 0) {
 			return 0;
 		}
 		double p = validKwh / Math.sqrt(Math.pow(validKwh, 2) + Math.pow(invalidKwh, 2));
@@ -656,5 +668,19 @@ public class PowerDataServiceImpl extends AbstractServiceImpl<PowerData> impleme
 		} else {
 			return 0;
 		}
+	}
+
+	/**
+	 * 获取电价系数数组 0: flat 1: peak 2: trough
+	 * 
+	 * @return
+	 */
+	private BigDecimal[] getPriceCoefficientInfos() {
+		PriceCoefficient pcf = pcfDao.getEntity(1L);
+		if (pcf == null) {
+			throw new EemException("获取电价系数失败");
+		}
+		return new BigDecimal[] { new BigDecimal(pcf.getFlat()), new BigDecimal(pcf.getPeak()),
+				new BigDecimal(pcf.getTrough()) };
 	}
 }
