@@ -10,6 +10,7 @@ import com.warrior.eem.entity.ElectricityAdjustmentData;
 import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.OperationLog;
 import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerData;
 import com.warrior.eem.entity.PowerSupplier;
 import com.warrior.eem.entity.PriceCoefficient;
 import com.warrior.eem.entity.Role;
@@ -88,6 +89,7 @@ public final class EntityFactory {
 		entities.add(ElectricityPackage.class.getSimpleName());
 		entities.add(OperationLog.class.getSimpleName());
 		entities.add(PowerCustomer.class.getSimpleName());
+		entities.add(PowerData.class.getSimpleName());
 		entities.add(PowerSupplier.class.getSimpleName());
 		entities.add(PriceCoefficient.class.getSimpleName());
 		entities.add(Role.class.getSimpleName());
