@@ -37,6 +37,7 @@ import com.warrior.eem.entity.BuyContractUserInfo;
 import com.warrior.eem.entity.BuyElectricityContract;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.PowerSupplier;
+import com.warrior.eem.entity.constant.PowerConsts;
 import com.warrior.eem.entity.vo.BuyContractSearchVo;
 import com.warrior.eem.entity.vo.BuyContractUserInfoUpdateVo;
 import com.warrior.eem.entity.vo.BuyElectricityContractUpdateVo;
@@ -195,7 +196,7 @@ public class BuyElectricityContractServiceImpl extends AbstractServiceImpl<BuyEl
 		BuyElectricityContract oldContract = null;
 		String fileName;
 		try {
-			fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
+			fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream(), PowerConsts.ALLOWED_UPLOAD_CONSTRACT_TYPES);
 		} catch (IOException e1) {
 			throw new EemException("文件读取失败，请联系管理员");
 		}

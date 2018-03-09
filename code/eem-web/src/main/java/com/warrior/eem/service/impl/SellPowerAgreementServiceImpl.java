@@ -33,6 +33,7 @@ import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.PowerCustomer;
 import com.warrior.eem.entity.SellPowerAgreement;
 import com.warrior.eem.entity.SellPowerAgreementMonthData;
+import com.warrior.eem.entity.constant.PowerConsts;
 import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.SellAgreementCdtVo;
 import com.warrior.eem.entity.vo.SellPowerAgreementMonthDataVo;
@@ -164,7 +165,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 			throw new EemException("解析参数失败");
 		}
 		try {
-			String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
+			String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream(), PowerConsts.ALLOWED_UPLOAD_CONSTRACT_TYPES);
 			((SellPowerAgreementVo) e).setAttachment(fileName);
 		} catch (IOException e1) {
 			throw new EemException("读取附件失败，请联系管理员");
@@ -228,7 +229,7 @@ public class SellPowerAgreementServiceImpl extends AbstractServiceImpl<SellPower
 		boolean hasAttachment = (file != null && file.getSize() > 0);
 		if (hasAttachment) { // 更新附件
 			try {
-				String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream());
+				String fileName = FileUtil.saveFile(baseDir, file.getOriginalFilename(), file.getInputStream(), PowerConsts.ALLOWED_UPLOAD_CONSTRACT_TYPES);
 				((SellPowerAgreementVo) e).setAttachment(fileName);
 			} catch (IOException e1) {
 				throw new EemException("读取附件失败，请联系管理员");

@@ -20,9 +20,12 @@ public class FileUtil {
 	/**
 	 * 保存合约
 	 */
-	public static String saveFile(String baseDir, String fileName, InputStream input) {
+	public static String saveFile(String baseDir, String fileName, InputStream input, String[] allowedFileTypes) {
 		FileOutputStream fis = null;
 		try {
+			if(!fileName.contains(".")) {
+				throw new EemException("无效的文件");
+			}
 			String fn = fileName.split("\\.")[0] + "-" + System.currentTimeMillis() + "." + fileName.split("\\.")[1];
 			File f = new File(baseDir + fn);
 			if (!f.getParentFile().exists()) {
@@ -36,6 +39,7 @@ public class FileUtil {
 				}
 			}
 			fis = new FileOutputStream(f);
+			checkFileHeader(input, allowedFileTypes);
 			byte[] bs = new byte[4096];
 			int readLen = -1;
 			while ((readLen = input.read(bs)) != -1) {
@@ -44,8 +48,8 @@ public class FileUtil {
 			}
 			return fn;
 		} catch (Exception e) {
-			if (e.getCause() instanceof EemException) {
-				throw new EemException(e.getMessage());
+			if (EemException.class.isInstance(e) || EemException.class.isInstance(e.getCause())) {
+				throw (EemException)e;
 			} else {
 				throw new EemException("上传文件（" + fileName + "" + "）失败");
 			}
@@ -59,6 +63,46 @@ public class FileUtil {
 		}
 
 	}
+	
+	/**
+	 * 检查文件头 判断文件是否有效
+	 * @param in
+	 * @param allowedFileTypes
+	 * @throws IOException
+	 */
+	private static void checkFileHeader(InputStream in, String[] allowedFileTypes) throws IOException {
+		byte[] buf = new byte[10];
+		in.read(buf, 0, buf.length);
+		String fileType = bytesToHexString(buf);
+		boolean isFind = false;
+		for(String allowedType : allowedFileTypes) {
+			if(allowedType.equalsIgnoreCase(fileType)) {
+				isFind = true;
+				break;
+			}
+		}
+		if(!isFind) {
+			throw new EemException("不允许的文件类型");
+		}
+	}
+	
+	private static String bytesToHexString(byte[] src) {  
+        StringBuilder builder = new StringBuilder();  
+        if (src == null || src.length <= 0) {  
+            return null;  
+        }  
+        String hv;  
+        for (int i = 0; i < src.length; i++) {  
+            // 以十六进制（基数 16）无符号整数形式返回一个整数参数的字符串表示形式，并转换为大写  
+            hv = Integer.toHexString(src[i] & 0xFF).toUpperCase();  
+            if (hv.length() < 2) {  
+                builder.append(0);  
+            }  
+            builder.append(hv);  
+        }  
+        //System.out.println(builder.toString());  
+        return builder.toString();  
+    }  
 
 	/**
 	 * 删除文件
