@@ -18,7 +18,12 @@ import com.warrior.eem.exception.EemException;
 public class FileUtil {
 
 	/**
-	 * 保存合约
+	 * 读取流保存文件
+	 * @param baseDir 
+	 * @param fileName
+	 * @param input
+	 * @param allowedFileTypes 限制允许的文件类型，可以为null，如果为null则为不限制文件类型
+	 * @return
 	 */
 	public static String saveFile(String baseDir, String fileName, InputStream input, String[] allowedFileTypes) {
 		FileOutputStream fis = null;
@@ -75,14 +80,16 @@ public class FileUtil {
 		in.read(buf, 0, buf.length);
 		String fileType = bytesToHexString(buf);
 		boolean isFind = false;
-		for(String allowedType : allowedFileTypes) {
-			if(allowedType.equalsIgnoreCase(fileType)) {
-				isFind = true;
-				break;
+		if(allowedFileTypes != null) {
+			for(String allowedType : allowedFileTypes) {
+				if(allowedType.equalsIgnoreCase(fileType)) {
+					isFind = true;
+					break;
+				}
 			}
-		}
-		if(!isFind) {
-			throw new EemException("不允许的文件类型");
+			if(!isFind) {
+				throw new EemException("不允许的文件类型");
+			}
 		}
 	}
 	
