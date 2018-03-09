@@ -53,7 +53,7 @@ public class Role implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public List<Authority> getAuthorities() {
 		List<Authority> list = new ArrayList<>();
 		for (RoleAuthority elem : authorities) {

@@ -18,6 +18,7 @@ var PATH_DJXS = 'price_coefficient';	//电价系数根路径
 var PATH_USER = 'user';		//用户管理根路径
 var PATH_WYBL = 'electricity_package'; //套餐根路径
 var PATH_NX = 'energy_consumpt';  //能效管理根路径
+var PATH_JSGL = 'role';		//角色管理
 var MESSAGE_TYPE_ERROR = 0;
 var MESSAGE_TYPE_INFO = 1;
 var MESSAGE_TYPE_QUESTION= 2;

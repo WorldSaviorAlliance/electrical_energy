@@ -133,8 +133,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 	Role convertVoToDoForUpdate(Serializable dbo, Serializable vo) {
 		RoleVo roleVo = (RoleVo) vo;
 		Role role = (Role) dbo;
-		updateAuthority(role, roleVo);
-		return role;
+		return updateAuthority(role, roleVo);
 	}
 
 	@Override
@@ -146,11 +145,10 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		}
 		Role role = new Role();
 		role.setName(name);
-		updateAuthority(role, roleVo);
-		return null;
+		return updateAuthority(role, roleVo);
 	}
 
-	private void updateAuthority(Role role, RoleVo roleVo) {
+	private Role updateAuthority(Role role, RoleVo roleVo) {
 		List<Long> authorityIds = roleVo.getAuthorityIds();
 		role.getAuthorities().clear();
 		if (null != authorityIds && !authorityIds.isEmpty()) {
@@ -158,10 +156,11 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 			for (Long id : authorityIds) {
 				authority = authorityDao.getEntity(id);
 				if (null != authority) {
-					role.getAuthorities().add(authority);
+					role.addAuthority(authority);
 				}
 			}
 		}
+		return role;
 	}
 
 	private boolean checkExist(String name) {

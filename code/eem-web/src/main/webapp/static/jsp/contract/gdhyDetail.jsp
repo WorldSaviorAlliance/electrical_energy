@@ -107,7 +107,7 @@
 	<div class="form-group" style="text-align: center;">
 		<button class="btn btn-primary" id="add_jy" type="button">添加交易电量</button>
 		<button class="btn btn-primary" style="margin-left: 15px;">保存</button>
-	    <button class="btn btn-default" type="button" style="margin-left: 15px;">取消</button>
+	    <button class="btn btn-default" type="button" style="margin-left: 15px;" id="cancel">取消</button>
 	</div>	
 </form>
 <script type="text/javascript" src="<%=basePath%>static/js/jquery/ajaxfileupload.js"></script>

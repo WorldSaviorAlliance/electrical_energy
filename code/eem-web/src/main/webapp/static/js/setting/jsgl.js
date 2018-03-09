@@ -1,7 +1,8 @@
-//@ sourceURL=dltz.js
-$(function()
-{
-	var g_page_dltz_detail = null;
+/**
+ * 角色管理
+ *///@ sourceURL=jsgl.js
+$(function(){
+	var g_page_jsgl_detail = null;
 	var g_all_data = null; // 当前所有的数据
 	var g_all_count = 0;  //当前所有数据的个数
 	init();
@@ -25,21 +26,19 @@ $(function()
 		$('#add').unbind('click').click(function(){
 			$(this).blur();
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/dltzDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/setting/jsglDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电量调整',
+		            title: '修改角色',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
-		            	g_page_dltz_detail = new DltzDetail(getAllData);
+		            	g_page_jsgl_detail = new JsglDetail(getAllData);
 		            }
 		        });	
 			});
 		});
-		
-		$('.search_select').niceSelect();
 	}
 	
 	/**
@@ -56,11 +55,12 @@ $(function()
 		$('#datas tr[type="empty_msg"]').hide();
 		$('#datas tr[type="data"]').remove();
 		var search = {
-			"name": $('#search_name').val(),
-	        "validYear": $('#search_year').val()
+			'name' : $('#search_name').val(),
+			'startPage' : curpage,
+			'perPageCnt' : PAGE_COUNT
 			};
 		$.ajax({
-			url: rootpath + '/' + PATH_DLTZ + '/list?page=' + curpage + '&per_page=' + PAGE_COUNT,
+			url: rootpath + '/' + PATH_JSGL + '/list',
 			type : 'POST', 
 			dataType: 'json',
 			data : JSON.stringify(search),
@@ -88,7 +88,6 @@ $(function()
 		});
 	}
 
-
 	/**
 	 * 初始化表格
 	 */
@@ -103,17 +102,7 @@ $(function()
 			{
 				var temp = datas[i];
 				trs += '<tr type="data">'+
-							'<td>' + getObjStr(temp.customerName) + '</td>'+
-							'<td>' + getObjStr(temp.customerNumber) + '</td>'+
-							'<td>' + getObjStr(temp.contractName) + '</td>'+
-							'<td>' + getObjStr(temp.contractNumber) + '</td>'+
-							'<td>' + getObjStr(temp.month) + '</td>'+
-							'<td>' + (temp.adjustmentType == 0 ? '调增' : '调减') + '</td>'+
-							'<td>' + getObjStr(temp.quantity) + '万kWh</td>'+
-							'<td>' + getObjStr(temp.voltageType) + '</td>'+
-							'<td>' + gettradeType(temp.tradeType)+ '</td>'+
-							'<td>' + getObjStr(temp.price) + '厘/kWh</td>'+
-							'<td>' + getObjStr(temp.createTime) + '</td>'+
+							'<td>' + getObjStr(temp.name) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+
 								'<a class="btn btn-danger btn-xs" flag="del" id="' + temp.id + '">删除</a>'+
@@ -142,7 +131,7 @@ $(function()
 		
 		$('a[flag="del"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
-			confirm('是否删除该电量调整？', function(){
+			confirm('是否删除该角色？', function(){
 				delDltz(id);
 				return true;
 			});
@@ -152,16 +141,16 @@ $(function()
 			$(this).blur();
 			var id = $(this).attr('id');
 			var addDiv = $('<div style="padding:0px 15px;overflow:auto;height:' + WINDOW_NO_BOTTOM_HEIGHT + 'px;"></div>');
-			addDiv.load(rootpath + '/static/jsp/contract/dltzDetail.jsp', function(){
+			addDiv.load(rootpath + '/static/jsp/setting/jsglDetail.jsp', function(){
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电量调整',
+		            title: '修改角色',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
 		            	var curData = getCurDataById(id, g_all_datas);
-		            	g_page_dltz_detail = new DltzDetail(getAllData, curData);
+		            	g_page_jsgl_detail = new JsglDetail(getAllData, curData);
 		            }
 		        });	
 			});
@@ -169,12 +158,12 @@ $(function()
 	}
 	
 	/*
-	 * 删除对应的电量调整
+	 * 删除对应的角色
 	 */
 	function delDltz(id)
 	{
 		$.ajax({
-			url: rootpath + '/' + PATH_DLTZ + '/info?id=' + id,
+			url: rootpath + '/' + PATH_JSGL + '/info?id=' + id,
 			type : 'DELETE', 
 			dataType: 'json',
 		    contentType: 'application/json',
@@ -184,12 +173,12 @@ $(function()
 					console.log(ar);
 					if(ar.code == 0)
 					{
-						showDynamicMessage(STR_CONFIRM, '删除电量调整成功', MESSAGE_TYPE_INFO);
+						showDynamicMessage(STR_CONFIRM, '删除角色成功', MESSAGE_TYPE_INFO);
 						getAllData();
 					}
 					else
 					{
-						showDynamicMessage(STR_CONFIRM, '删除电量调整失败', MESSAGE_TYPE_INFO);
+						showDynamicMessage(STR_CONFIRM, '删除角色失败', MESSAGE_TYPE_INFO);
 					}
 				}
 				else
@@ -199,4 +188,5 @@ $(function()
 			}
 		});
 	}
+	return this;	
 });
