@@ -63,7 +63,7 @@ public class UserManagerController extends AbstractController {
 	@ResponseBody
 	public Result<Object> getEntity(@RequestParam Long id) {
 		checkPerimisession(RES_NAME, ResourceOperation.READ, id);
-		UserVo userVo = (UserVo) service.getEntity(id);
+		UserVo userVo = service.getEntityVo(id);
 		return Result.success(userVo);
 	}
 

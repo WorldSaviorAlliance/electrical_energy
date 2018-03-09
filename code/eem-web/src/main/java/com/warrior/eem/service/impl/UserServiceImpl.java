@@ -54,7 +54,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 
 	@Autowired
 	private PowerCustomerDao customerDao;
-	
+
 	@Autowired
 	private ElectricityPackageDao pkgDao;
 
@@ -281,16 +281,6 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		}
 		return vos;
 	}
-	
-	@Override
-	@Transactional(readOnly = true)
-	public Serializable getEntity(Serializable id) {
-		User user = (User) super.getEntity(id);
-		if (null == user) {
-			throw new EemException("无效的用户id：" + id);
-		}
-		return user.convert();
-	}
 
 	@Override
 	@Transactional(readOnly = true)
@@ -310,5 +300,15 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 			user.getRole().getAuthorities();// 加载权限列表
 		}
 		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public UserVo getEntityVo(Long id) {
+		User user = userDao.getEntity(id);
+		if (null == user) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
+		}
+		return user.convert();
 	}
 }

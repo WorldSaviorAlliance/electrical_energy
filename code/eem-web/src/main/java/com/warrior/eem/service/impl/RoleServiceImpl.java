@@ -51,16 +51,6 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 	}
 	
 	@Override
-	@Transactional
-	public Serializable getEntity(Serializable id) {
-		Role role = (Role) super.getEntity(id);
-		if (null == role) {
-			throw new EemException("未找到id（" + id + "）对应的数据");
-		}
-		return role.convert2Desc();
-	}
-	
-	@Override
 	@Transactional(readOnly = true)
 	public PageVo listEntities(Serializable... conditions) {
 		PageVo pageVo = super.listEntities(conditions);
@@ -150,14 +140,42 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 
 	private Role updateAuthority(Role role, RoleVo roleVo) {
 		List<Long> authorityIds = roleVo.getAuthorityIds();
-		role.getAuthorities().clear();
-		if (null != authorityIds && !authorityIds.isEmpty()) {
-			Authority authority;
-			for (Long id : authorityIds) {
-				authority = authorityDao.getEntity(id);
-				if (null != authority) {
-					role.addAuthority(authority);
+		if (authorityIds.isEmpty()) {
+			return role;
+		}
+		if (!role.getAuthorities().isEmpty()) {
+			List<Authority> willRemoveAuthorities = new ArrayList<>();
+			boolean isFind;
+			// 统计将要被移除的权限列表
+			for (Authority authority : role.getAuthorities()) {
+				isFind = false;
+				for (Long id : authorityIds) {
+					if (id.longValue() == authority.getId().longValue()) {
+						isFind = true;
+						break;
+					}
 				}
+				if (!isFind) {
+					willRemoveAuthorities.add(authority);
+				}
+			}
+			// 移除不存在于UI端发送过来的权限列表中的权限
+			for (Authority authority : willRemoveAuthorities) {
+				role.removeAuthority(authority);
+			}
+			// 过滤掉已存在于角色权限列表中的权限
+			for (int i = authorityIds.size() - 1; i >= 0; --i) {
+				if (role.containsAuthority(authorityIds.get(i))) {
+					authorityIds.remove(i);
+				}
+			}
+		}
+		// 将新增的权限加入角色的权限列表中
+		Authority authority;
+		for (Long id : authorityIds) {
+			authority = authorityDao.getEntity(id);
+			if (null != authority) {
+				role.addAuthority(authority);
 			}
 		}
 		return role;
@@ -186,5 +204,15 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 			pageVo.setDatas(vos);
 		}
 		return pageVo;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public RoleVo getEntityVo(Long id) {
+		Role role = (Role) roleDao.getEntity(id);
+		if (null == role) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
+		}
+		return role.convert2Desc();
 	}
 }

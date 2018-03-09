@@ -98,4 +98,13 @@ public class Role implements Serializable {
 		vo.setAuthorities(authorities);
 		return vo;
 	}
+	
+	public boolean containsAuthority(Long authorityId) {
+		for (RoleAuthority elem : authorities) {
+			if (elem.getAuthority().getId().longValue() == authorityId.longValue()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

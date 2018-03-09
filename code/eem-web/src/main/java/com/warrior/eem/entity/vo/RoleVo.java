@@ -43,6 +43,14 @@ public final class RoleVo implements Serializable {
 	}
 
 	public List<Long> getAuthorityIds() {
+		if (null == authorityIds) {
+			return new ArrayList<>();
+		}
+		for (int i = authorityIds.size() - 1; i >= 0; --i) {
+			if (null == authorityIds.get(i)) {
+				authorityIds.remove(i);
+			}
+		}
 		return authorityIds;
 	}
 

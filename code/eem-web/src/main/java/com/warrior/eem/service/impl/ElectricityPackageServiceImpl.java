@@ -15,6 +15,7 @@ import com.warrior.eem.entity.ElectricityPackage;
 import com.warrior.eem.entity.constant.EntityFactory;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.PageVo;
+import com.warrior.eem.exception.EemException;
 import com.warrior.eem.service.ElectricityPackageService;
 
 /**
@@ -54,13 +55,6 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 	ElectricityPackage convertVoToDoForCreate(Serializable vo) {
 		return null;
 	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Serializable getEntity(Serializable id) {
-		ElectricityPackage pkg = (ElectricityPackage) dao.getEntity(id);
-		return pkg.convert();
-	}
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -84,5 +78,15 @@ public class ElectricityPackageServiceImpl extends AbstractServiceImpl<Electrici
 			dao.createDo(pkg);
 		}
 		return dao.countDos(null) > 0;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ElectricityPackageVo getEntityVo(Long id) {
+		ElectricityPackage pkg = (ElectricityPackage) dao.getEntity(id);
+		if (null == pkg) {
+			throw new EemException("未找到id（" + id + "）对应的数据");
+		}
+		return pkg.convert();
 	}
 }

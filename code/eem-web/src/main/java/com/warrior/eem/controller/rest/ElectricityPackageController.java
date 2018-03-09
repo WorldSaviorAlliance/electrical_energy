@@ -39,7 +39,7 @@ public class ElectricityPackageController extends AbstractController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	public @ResponseBody Result<Object> getEntity(@RequestParam Long pkgId) {
 		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
-		ElectricityPackageVo vo = (ElectricityPackageVo) service.getEntity(pkgId);
+		ElectricityPackageVo vo = service.getEntityVo(pkgId);
 		User user = EemSession.getCurrentUser();
 		if (null != user) {
 			vo.setHandled(userService.containsElectricityPackage(user.getId(), pkgId));

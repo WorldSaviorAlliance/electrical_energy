@@ -58,7 +58,7 @@ public class VoltageTypeController extends AbstractController {
 	@ResponseBody
 	public Result<Object> getEntity(@RequestParam Long id) {
 		checkPerimisession(RES_NAME, ResourceOperation.READ, null);
-		return Result.success(service.getEntity(id));
+		return Result.success(service.getEntityVo(id));
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.POST)

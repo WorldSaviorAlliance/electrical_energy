@@ -1,5 +1,7 @@
 package com.warrior.eem.dao;
 
+import java.util.List;
+
 import com.warrior.eem.entity.Province;
 
 /**
@@ -9,5 +11,5 @@ import com.warrior.eem.entity.Province;
  * @version 1.0.0
  */
 public interface ProvinceDao extends IDao<Province> {
-
+	List<Province> queryAll();
 }

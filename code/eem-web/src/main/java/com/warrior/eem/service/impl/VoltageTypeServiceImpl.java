@@ -45,7 +45,7 @@ public class VoltageTypeServiceImpl extends AbstractServiceImpl<VoltageType>impl
 
 	@Override
 	@Transactional(readOnly = true)
-	public Serializable getEntity(Serializable id) {
+	public BaseTypeVo getEntityVo(Long id) {
 		VoltageType type = (VoltageType) super.getEntity(id);
 		if (null == type) {
 			throw new EemException("未找到id（" + id + "）对应的数据");

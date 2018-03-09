@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
+import com.warrior.eem.entity.vo.UserVo;
 
 /**
  * 用户的服务接口
@@ -30,4 +31,6 @@ public interface UserService extends IService {
 	void cancelElectricityPackage(Long userId, Long pkgId);
 	
 	List<ElectricityPackageVo> getElectricityPackages(Long userId);
+	
+	UserVo getEntityVo(Long id);
 }

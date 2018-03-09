@@ -2,6 +2,7 @@ package com.warrior.eem.service;
 
 import com.warrior.eem.entity.Role;
 import com.warrior.eem.entity.vo.PageVo;
+import com.warrior.eem.entity.vo.RoleVo;
 
 /**
  * 
@@ -30,4 +31,6 @@ public interface RoleService extends IService {
 	 * @return
 	 */
 	PageVo listAuthorities();
+	
+	RoleVo getEntityVo(Long id);
 }
