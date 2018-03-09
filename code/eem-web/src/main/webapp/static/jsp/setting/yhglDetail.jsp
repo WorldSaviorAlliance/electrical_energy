@@ -31,10 +31,17 @@
 			</select>
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="dlyhDiv">
 		<label class="col-sm-2 control-label">电力用户<span	class="asterisk">*</span></label>
 		<div class="col-sm-7"> 
 			<select class="select" data-placeholder="请选择电力用户" id="customerId">
+			</select>
+		</div>
+	</div>
+	<div class="form-group" style="display: none" id="roleDiv">
+		<label class="col-sm-2 control-label">角色<span	class="asterisk">*</span></label>
+		<div class="col-sm-7"> 
+			<select class="select" data-placeholder="请选择角色" id="roleId">
 			</select>
 		</div>
 	</div>

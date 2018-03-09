@@ -1,3 +1,4 @@
+//@ sourceURL=yhglDetail.js
 function YhglDetail(afterSaveCallbk, curData)
 {
 	var g_afterSaveCallbk = afterSaveCallbk;
@@ -31,6 +32,7 @@ function YhglDetail(afterSaveCallbk, curData)
 		if(g_curData == null)
 		{
 			getAllDlyhSelecte('customerId');
+			getAllJsSelecte();
 			$('#pasword_div').show();
 		}
 		else
@@ -38,15 +40,34 @@ function YhglDetail(afterSaveCallbk, curData)
 			if(g_curData.type == 0) //电力用户
 			{
 				getAllDlyhSelecte('customerId', g_curData.customerId);
-				$('#customerId').show();
+				$('#dlyhDiv').show();
+				$('#roleDiv').hide();
 			}
-			else //系统用户 //TODO 还需要配置对应的权限
+			else //系统用户
 			{
-				$('#customerId').hide();
+				getAllJsSelecte(g_curData.roleId);
+				$('#dlyhDiv').hide();
+				$('#roleDiv').show();
 			}
 			$('#name').val(getObjStr(g_curData.name));
 			$('#pasword_div').hide();
 		}
+		$('#cancel').unbind('click').click(function(){
+			$('div.eem_window_close').click();
+		})
+		$('#userType').change(function(){
+			var userType = $(this).val();
+			if(userType == 0)
+			{
+				$('#dlyhDiv').show();
+				$('#roleDiv').hide();
+			}
+			else
+			{
+				$('#dlyhDiv').hide();
+				$('#roleDiv').show();
+			}
+		});
 	}
 	
 	function doSaveAction()
@@ -55,6 +76,7 @@ function YhglDetail(afterSaveCallbk, curData)
 		var name = $('#name').val();
 		var password = $('#password').val();
 		var userType = $('#userType').val();
+		var roleId = parseInt($('#roleId').val());
 		if(name == '')
 		{
 			showDynamicMessage(STR_CONFIRM, '用户名不能为空', MESSAGE_TYPE_ERROR);
@@ -86,12 +108,17 @@ function YhglDetail(afterSaveCallbk, curData)
 			showDynamicMessage(STR_CONFIRM, '请选择对应的电力用户', MESSAGE_TYPE_ERROR);
     		return false;
 		}
-		
+		else if(userType == 1 && roleId == -1)
+		{
+			showDynamicMessage(STR_CONFIRM, '请选择对应的角色', MESSAGE_TYPE_ERROR);
+    		return false;
+		}
 		var temp = {
 			name : name,
 			password : password,
 			type : userType,
-			customerId : customer
+			customerId : customer,
+			roleId : roleId
 		};
 		
 		var ajaxType = 'POST';
@@ -143,5 +170,54 @@ function YhglDetail(afterSaveCallbk, curData)
 		
 		return false;
 	}
+	
+	/**
+	 * 获取所有的角色下拉列表
+	 */
+	function getAllJsSelecte(valId)
+	{
+		$('#roleId').empty();
+		var search = {
+			'name' : $('#search_name').val(),
+			'startPage' : 1,
+			'perPageCnt' : 10000
+		};
+				
+		$.ajax({
+			url: rootpath + '/' + PATH_JSGL + '/list',
+			type : 'POST', 
+			dataType: 'json',
+		    contentType: 'application/json',
+		    data : JSON.stringify(search),
+			complete : function(XHR, TS) {
+				if (TS == "success") {
+					var ar = JSON.parse(XHR.responseText);
+					if(ar.code == 0)
+					{
+						var datas = ar.data;
+						if(datas != null && datas.length != 0)
+						{
+							var opts = '<option value="-1">--请选择角色--</option>';
+							for(var i = 0; i < datas.length; i++)
+							{
+								opts += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
+							}
+							$('#roleId').append(opts);
+							if(valId != null)
+							{
+								$('#roleId').val(valId);
+							}
+						}
+						$('#roleId').niceSelect();
+					}
+				}
+				else
+				{
+					showSystemError();
+				}
+			}
+		});
+	}
+
 	return this;
 }
