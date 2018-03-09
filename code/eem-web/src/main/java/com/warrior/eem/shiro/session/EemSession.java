@@ -63,7 +63,7 @@ public class EemSession {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Authority> getCurrentUserPermissions() {
-		return (List<Authority>) getSession().getAttribute("CUR_USER_PERMISSIONS");
+		return (List<Authority>) getSession().getAttribute(CUR_USER_PERMISSIONS);
 	}
 	
 	/**

@@ -1,3 +1,4 @@
+<%@page import="com.warrior.eem.util.HeaderUtil"%>
 <%@page import="com.warrior.eem.entity.constant.UserType"%>
 <%@page import="com.warrior.eem.shiro.session.EemSession"%>
 <%@page import="com.warrior.eem.util.Constant"%>
@@ -48,6 +49,7 @@
 	    		<%
 					if(EemSession.getCurrentUser().getType() == UserType.SYSTEM)
 					{
+						
 				%>
 	    		<li class="dropdown" id="header_change_password">
 					<a title="首页" href="<%=headerPath %>home" >
@@ -55,39 +57,11 @@
 						<span class="toptitle">首页</span>
 					</a>
 				</li>
-				<li class="dropdown" style="position: relative;">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fa fa-users fa-lg"></i>
-						<span class="toptitle">客户</span>
-					</a>
-					<ul class="dropdown-menu extended inbox" style="min-width: 150px;margin-left: 3px;height: auto;overflow: auto;">
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>dys"><i class="fa fa-user-circle"></i><span style="margin-left:5px;">电源商</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>dlyh"><i class="fa fa-user-o"></i><span style="margin-left:5px;">电力用户</span></a></li>
-					</ul>
-				</li>
-				<li class="dropdown" style="position: relative;">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fa fa-money fa-lg"></i>
-						<span class="toptitle">合约</span>
-					</a>
-					<ul class="dropdown-menu extended inbox eem-dropdown-menu" style="min-width: 150px;margin-left: 3px;height: auto;overflow: auto;">
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>sdhy"><i class="fa fa-id-card"></i><span style="margin-left:5px;">售电合约</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>gdhy"><i class="fa fa-id-card-o"></i><span style="margin-left:5px;">购电合约</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>dltz"><i class="fa fa-address-card-o"></i><span style="margin-left:5px;">电量调整</span></a></li>
-					</ul>
-				</li>
-				<li class="dropdown" style="position: relative;">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fa fa-stack-exchange fa-lg"></i>
-						<span class="toptitle">电量</span>
-					</a>
-					<ul class="dropdown-menu extended inbox eem-dropdown-menu" style="min-width: 150px;margin-left: 3px;height: auto;overflow: auto;">
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>yjsdl"><i class="fa fa-road"></i><span style="margin-left:5px;">月结算电量</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>dlydqs"><i class="fa fa-shield"></i><span style="margin-left:5px;">电量月度清算</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>yddlpc"><i class="fa fa-ship"></i><span style="margin-left:5px;">月度电量偏差</span></a></li>
-						<li class="eem-dropdown-menu"><a href="<%=headerPath%>nddlpc"><i class="fa fa-tasks"></i><span style="margin-left:5px;">年度电量偏差</span></a></li>
-					</ul>
-				</li>
+				<%=HeaderUtil.getSystemUserHeaderHtml() %>
+				<%
+					if(EemSession.getCurrentUser().getName().equals("admin"))
+					{
+				%>
 				<li class="dropdown" style="position: relative;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fa fa-cog fa-lg"></i>
@@ -100,8 +74,9 @@
 						<li class="eem-dropdown-menu"><a href="<%=headerPath%>jsgl"><i class="fa fa-id-badge"></i><span style="margin-left:5px;">角色管理</span></a></li>
 						<li class="eem-dropdown-menu"><a href="#" id="changePsw"><i class="fa fa-key"></i><span style="margin-left:5px;">修改密码</span></a></li>
 					</ul>
-				</li>
+				</li> 
 				<%
+					}
 					}
 				%>
 				<%
