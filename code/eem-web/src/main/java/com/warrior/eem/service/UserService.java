@@ -2,6 +2,7 @@ package com.warrior.eem.service;
 
 import java.util.List;
 
+import com.warrior.eem.common.LoginResult;
 import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.vo.ElectricityPackageVo;
 import com.warrior.eem.entity.vo.UserVo;
@@ -14,7 +15,7 @@ import com.warrior.eem.entity.vo.UserVo;
  */
 public interface UserService extends IService {
 	
-	User login(String name, String pwd);
+	LoginResult login(String name, String pwd);
 	
 	boolean createAdminIfAbsent();
 

@@ -11,7 +11,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.warrior.eem.entity.User;
+import com.warrior.eem.common.LoginResult;
 import com.warrior.eem.service.UserService;
 import com.warrior.eem.shiro.session.EemSession;
 
@@ -39,8 +39,9 @@ public class EemRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
-		User user = userService.login(upt.getUsername(), String.valueOf(upt.getPassword()));
-		EemSession.setCurrentUser(user);
+		LoginResult result = userService.login(upt.getUsername(), String.valueOf(upt.getPassword()));
+		EemSession.setCurrentUser(result.getUser());
+		EemSession.setCurrentUserPermissions(result.getAuthorities());
 		return new SimpleAuthenticationInfo(upt.getUsername(), upt.getPassword(), getName());
 	}
 }

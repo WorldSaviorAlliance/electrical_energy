@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.warrior.eem.common.LoginResult;
 import com.warrior.eem.dao.ElectricityPackageDao;
 import com.warrior.eem.dao.IDao;
 import com.warrior.eem.dao.PowerCustomerDao;
@@ -284,7 +285,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 
 	@Override
 	@Transactional(readOnly = true)
-	public User login(String name, String pwd) {
+	public LoginResult login(String name, String pwd) {
 		SqlRequest req = new SqlRequest();
 		LogicalCondition c = LogicalCondition.emptyOfTrue();
 		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, name));
@@ -295,11 +296,13 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		if (users == null || users.size() == 0) {
 			throw new EemException("用户名或者密码有误");
 		}
+		LoginResult result = new LoginResult();
 		User user = (User) users.get(0);
+		result.setUser(user);
 		if (null != user.getRole()) {
-			user.getRole().getAuthorities();// 加载权限列表
+			result.setAuthorities(user.getRole().getAuthorities());
 		}
-		return user;
+		return result;
 	}
 
 	@Override
