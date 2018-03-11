@@ -94,7 +94,7 @@ $(function()
 				var temp = datas[i];
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.time) + '</td>'+
+							'<td>' + getObjStr(temp.handleTime) + '</td>'+
 							'<td>' + getObjStr(temp.type) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="detail" id="' + temp.id + '">详情</a>'+

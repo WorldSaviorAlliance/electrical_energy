@@ -25,7 +25,7 @@ function PC(type)
 			customerNo : $('#customerNo').val(),
 			customerId : $('#customerId').val(),
 			voltageType : $('#voltageType').val(),
-			tradeType : $('#tradeType').val()
+			tradeType : $('#tradeType').val() == '-1' ? '' : $('#tradeType').val()
 		}
 		$.ajax({
 			url: rootpath + '/' + PATH_YJSDL + '/statis_list',

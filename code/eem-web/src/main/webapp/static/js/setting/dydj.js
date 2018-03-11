@@ -103,7 +103,7 @@ $(function()
 				
 				trs += '<tr type="data">'+
 							'<td>' + getObjStr(temp.name) + '</td>'+
-							'<td>' + getObjStr(temp.createTime) + '</td>'+
+							'<td>' + getObjStr(temp.date) + '</td>'+
 							'<td>'+
 								'<a class="btn btn-primary btn-xs" style="margin-right: 20px;" flag="modify" id="' + temp.id + '">修改</a>'+
 								'<a class="btn btn-danger btn-xs" flag="del" id="' + temp.id + '">删除</a>'+
