@@ -22,7 +22,7 @@
 			长度范围6到12个字符
 		</label>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="typeDiv">
 		<label class="col-sm-2 control-label">用户类型<span	class="asterisk">*</span></label>
 		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择用户类型" id="userType">

@@ -37,20 +37,28 @@ function YhglDetail(afterSaveCallbk, curData)
 		}
 		else
 		{
-			if(g_curData.type == 0) //电力用户
-			{
-				getAllDlyhSelecte('customerId', g_curData.customerId);
-				$('#dlyhDiv').show();
-				$('#roleDiv').hide();
-			}
-			else //系统用户
-			{
-				getAllJsSelecte(g_curData.roleId);
-				$('#dlyhDiv').hide();
-				$('#roleDiv').show();
-			}
+//			if(g_curData.type == 0) //电力用户
+//			{
+//				getAllDlyhSelecte('customerId', g_curData.customerId);
+//				$('#dlyhDiv').show();
+//				$('#roleDiv').hide();
+//				getAllJsSelecte();
+//			}
+//			else //系统用户
+//			{
+//				getAllJsSelecte(g_curData.roleId);
+//				$('#dlyhDiv').hide();
+//				$('#roleDiv').show();
+//				getAllDlyhSelecte('customerId');
+//			}
+//			$('#userType').val(g_curData.type);
+//			$('#userType').niceSelect('update');
 			$('#name').val(getObjStr(g_curData.name));
 			$('#pasword_div').hide();
+			$('#customerId').hide();
+			$('#dlyhDiv').hide();
+			$('#roleDiv').hide();
+			$('#typeDiv').hide();
 		}
 		$('#cancel').unbind('click').click(function(){
 			$('div.eem_window_close').click();
@@ -123,12 +131,12 @@ function YhglDetail(afterSaveCallbk, curData)
 		
 		var ajaxType = 'POST';
 		var msgTitle = '添加用户';
+		var params = '';
 		if(g_curData != null)
 		{
 			ajaxType = 'PUT';
 			msgTitle = '修改用户';
-			temp.userId = g_curData.id;
-			temp.newName = name;
+			params = '?userId=' + g_curData.id + '&newName=' + name;
 		}
 		else
 		{
@@ -139,7 +147,7 @@ function YhglDetail(afterSaveCallbk, curData)
     	var progress = showProgress('正在保存用户');
     	
 		$.ajax({
-			url: rootpath + '/' + PATH_USER + '/info',
+			url: rootpath + '/' + PATH_USER + '/info' + params,
 			type : ajaxType,
 			dataType: 'json',
 		    contentType: 'application/json',

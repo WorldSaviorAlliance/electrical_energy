@@ -35,7 +35,7 @@ public class SellPowerAgreementVo implements Serializable {
 
 	private String attachment; // 附件名
 	
-	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
+	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 15)
 	public String voltageType; // 电压类型
 	
 	@FieldChecker(name = "交易电量", minVal = 1, maxVal = PowerConsts.MAX_POWER_VALUE)

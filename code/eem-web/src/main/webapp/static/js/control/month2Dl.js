@@ -41,14 +41,27 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 			var stp = '';
 			var rtp = '';
 			var mtp = '';
+			
+			var dj_ntp = '';
+			var dj_stp = '';
+			var dj_rtp = '';
+			var dj_mtp = '';
+			
 			if(curData != null)
 			{
-				var temp = curData.substring(1, curData.length - 1).split(':');
+				var dj = curData.split(';');
+				var temp = dj[0].substring(1, dj[0].length - 1).split(':');
 				ntp = parseInt(temp[0]);
 				stp = parseInt(temp[1]);
 				rtp = parseInt(temp[2]);
 				mtp = parseInt(temp[3]);
 				total = ntp + stp + rtp + mtp;
+				
+				var temp1 = dj[1].substring(1, dj[1].length - 1).split(':');
+				dj_ntp = parseInt(temp1[0]);
+				dj_stp = parseInt(temp1[1]);
+				dj_rtp = parseInt(temp1[2]);
+				dj_mtp = parseInt(temp1[3]);
 			}
 			dlStr += '<tr>'+
 						'<td>'+
@@ -68,7 +81,6 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 							'</div>'+
 						'</td>'+
 						'<td>'+
-							
 							'<div class="form-group">'+
 								'<div class="col-sm-8">'+
 								'<input type="number" flag="stp" class="form-control" month="' + titleData[i].obj + '" value="' + stp + '"/>'+
@@ -104,16 +116,44 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 							titleData[i].name+
 						'</td>'+
 						'<td>'+
-							'<span flag="ntp" month="' + titleData[i].obj + '"></span>'+
+							'<div class="form-group">'+
+								'<div class="col-sm-8">'+
+									'<input type="number" flag="ntp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_ntp + '"/>'+
+								'</div>'+
+								'<label class="col-sm-4 control-label" style="text-align: left;">'+
+									'万元'+
+								'</label>'+
+							'</div>'+
 						'</td>'+
 						'<td>'+
-							'<span flag="stp" month="' + titleData[i].obj + '"></span>'+
+							'<div class="form-group">'+
+								'<div class="col-sm-8">'+
+									'<input type="number" flag="stp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_stp + '"/>'+
+								'</div>'+
+								'<label class="col-sm-4 control-label" style="text-align: left;">'+
+									'万元'+
+								'</label>'+
+							'</div>'+
 						'</td>'+
 						'<td>'+
-							'<span flag="rtp" month="' + titleData[i].obj + '"></span>'+
+							'<div class="form-group">'+
+								'<div class="col-sm-8">'+
+									'<input type="number" flag="rtp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_rtp + '"/>'+
+								'</div>'+
+								'<label class="col-sm-4 control-label" style="text-align: left;">'+
+									'万元'+
+								'</label>'+
+							'</div>'+
 						'</td>'+
 						'<td>'+
-							'<span flag="mtp" month="' + titleData[i].obj + '"></span>'+
+							'<div class="form-group">'+
+								'<div class="col-sm-8">'+
+									'<input type="number" flag="mtp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_mtp + '"/>'+
+								'</div>'+
+								'<label class="col-sm-4 control-label" style="text-align: left;">'+
+									'万元'+
+								'</label>'+
+							'</div>'+
 						'</td>'+
 					'</tr>';
 		}
@@ -146,33 +186,33 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 			$('span[flag="total"][month="' + titleData[i].obj + '"]').html(total + '万kWh');
 		}
 		
-		var $allInput = $('#' + dlTableId + ' input');
-		for(var i = 0; i < $allInput.length; i++)
-		{
-			var flag = $($allInput.get(i)).attr('flag');
-			var month = $($allInput.get(i)).attr('month');
-			var price = 0;
-			if($($allInput.get(i)).val() != '')
-			{
-				if(flag == 'ntp')
-				{
-					price = parseInt(p_ntp) * parseInt($($allInput.get(i)).val());
-				}
-				else if(flag == 'stp')
-				{
-					price = parseInt(p_stp) * parseInt($($allInput.get(i)).val());
-				}
-				else if(flag == 'rtp')
-				{
-					price = parseInt(p_rtp) * parseInt($($allInput.get(i)).val());
-				}
-				else if(flag == 'mtp')
-				{
-					price = parseInt(p_mtp) * parseInt($($allInput.get(i)).val());
-				}
-			}
-			$('span[flag="' + flag + '"][month="' + month + '"]').html(price);
-		}
+//		var $allInput = $('#' + dlTableId + ' input');
+//		for(var i = 0; i < $allInput.length; i++)
+//		{
+//			var flag = $($allInput.get(i)).attr('flag');
+//			var month = $($allInput.get(i)).attr('month');
+//			var price = 0;
+//			if($($allInput.get(i)).val() != '')
+//			{
+//				if(flag == 'ntp')
+//				{
+//					price = parseInt(p_ntp) * parseInt($($allInput.get(i)).val());
+//				}
+//				else if(flag == 'stp')
+//				{
+//					price = parseInt(p_stp) * parseInt($($allInput.get(i)).val());
+//				}
+//				else if(flag == 'rtp')
+//				{
+//					price = parseInt(p_rtp) * parseInt($($allInput.get(i)).val());
+//				}
+//				else if(flag == 'mtp')
+//				{
+//					price = parseInt(p_mtp) * parseInt($($allInput.get(i)).val());
+//				}
+//			}
+//			$('span[flag="' + flag + '"][month="' + month + '"]').html(price);
+//		}
 	}
 	
 	function initControlAction()
@@ -190,12 +230,17 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 		var data = {};
 		for(var i = 0; i < titleData.length; i++)
 		{
-			var ntp = $('input[flag="ntp"][month="' + titleData[i].obj + '"]').val();
-			var stp = $('input[flag="stp"][month="' + titleData[i].obj + '"]').val();
-			var rtp = $('input[flag="rtp"][month="' + titleData[i].obj + '"]').val();
-			var mtp = $('input[flag="mtp"][month="' + titleData[i].obj + '"]').val();
+			var ntp = $('#' + g_dlTableId + ' input[flag="ntp"][month="' + titleData[i].obj + '"]').val();
+			var stp = $('#' + g_dlTableId + ' input[flag="stp"][month="' + titleData[i].obj + '"]').val();
+			var rtp = $('#' + g_dlTableId + ' input[flag="rtp"][month="' + titleData[i].obj + '"]').val();
+			var mtp = $('#' + g_dlTableId + ' input[flag="mtp"][month="' + titleData[i].obj + '"]').val();
 			
-			data[titleData[i].obj] = '(' + ntp + ':' + stp + ':' + rtp + ':' + mtp + ')';
+			var dj_ntp = $('#' + g_djTableId + ' input[flag="ntp"][month="' + titleData[i].obj + '"]').val();
+			var dj_stp = $('#' + g_djTableId + ' input[flag="stp"][month="' + titleData[i].obj + '"]').val();
+			var dj_rtp = $('#' + g_djTableId + ' input[flag="rtp"][month="' + titleData[i].obj + '"]').val();
+			var dj_mtp = $('#' + g_djTableId + ' input[flag="mtp"][month="' + titleData[i].obj + '"]').val();
+			
+			data[titleData[i].obj] = '(' + ntp + ':' + stp + ':' + rtp + ':' + mtp + ');(' + dj_ntp + ':' + dj_stp + ':' + dj_rtp + ':' + dj_mtp + ')';
 		}
 		if(g_hyData != null)
 		{
@@ -210,6 +255,16 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 		for(var i = 0; i < monthdataInput.length; i++)
 		{
 			var temp = monthdataInput.get(i);
+			if($(temp).val() == '')
+			{
+				return false;
+			}
+		}
+		
+		var djInput = $('#' + g_djTableId + ' input');
+		for(var i = 0; i < djInput.length; i++)
+		{
+			var temp = djInput.get(i);
 			if($(temp).val() == '')
 			{
 				return false;

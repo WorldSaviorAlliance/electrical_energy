@@ -1,3 +1,4 @@
+console.log(11);
 function SdhyDetail(afterSaveCallbk, curData, onlyView)
 {
 	var g_table_month = null;
@@ -114,7 +115,7 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 							getAllDydjSelecte('voltageType', g_curData.voltageType);
 							$('#customerNo').val(g_curData.customerNo);
 							$('#name').val(g_curData.name);
-							$('#no').val(g_curData.No);
+							$('#no').val(g_curData.no);
 							$('#file_path').val(g_curData.attachment);//附件
 							$('#validYear').val(g_curData.validYear);
 							$('#validYear').niceSelect('update');
@@ -192,13 +193,21 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 				
 			},
 			error : function(data, status, e) {
-				showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+				if(data.responseText.indexOf('"code":0') == -1)
+				{
+					showDynamicMessage(STR_CONFIRM, msgTitle + '失败', MESSAGE_TYPE_INFO);
+				}
+				else
+				{
+					showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+					if(g_afterSaveCallbk != null)
+					{
+						g_afterSaveCallbk();
+					}
+				}
+				
 				$('div.eem_window_close').click();
 				hideProgress(progress);
-				if(g_afterSaveCallbk != null)
-				{
-					g_afterSaveCallbk();
-				}
 			}
 		});
 	}

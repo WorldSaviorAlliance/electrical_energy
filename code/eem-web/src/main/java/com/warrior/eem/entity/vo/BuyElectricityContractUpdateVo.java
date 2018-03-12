@@ -32,7 +32,7 @@ public class BuyElectricityContractUpdateVo implements Serializable {
 	@FieldChecker(name = "有效年份", minLen = 1, maxLen = 4)
 	private String validYear;
 
-	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 5)
+	@FieldChecker(name = "电压类型", minLen = 1, maxLen = 15)
 	private String voltageLevel;
 
 	@FieldChecker(name = "购电量", minVal = 0, maxVal = PowerConsts.MAX_POWER_VALUE)
