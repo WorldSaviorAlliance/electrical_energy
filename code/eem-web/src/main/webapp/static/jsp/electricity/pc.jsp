@@ -6,25 +6,28 @@
 <form class="form-horizontal">
 	<div class="form-group">
 		<div class="col-sm-12" style="padding: 0px;">
-			<div class="col-md-4">
+			<div class="col-md-4" id="yd_div">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">月份</label>
 	                  <div class="col-sm-4">
 		                   <select class="select detail_search" data-placeholder="请选择开始月份" id="startTime">
-							<option value="201801">201801</option>
-							<option value="201802">201802</option>
-							<option value="201803">201803</option>
-							<option value="201804">201804</option>
-							<option value="201805">201805</option>
 						</select> 
 					</div>
 					<div class="col-sm-4">
 		                   <select class="select detail_search" data-placeholder="请选择结束月份" id="endTime">
-							<option value="201801">201801</option>
-							<option value="201802">201802</option>
-							<option value="201803">201803</option>
-							<option value="201804">201804</option>
-							<option value="201805">201805</option>
+						</select> 
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4" id="nd_div">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">年份</label>
+	                  <div class="col-sm-4">
+		                   <select class="select detail_search" data-placeholder="请选择开始年份" id="startYear">
+						</select> 
+					</div>
+					<div class="col-sm-4">
+		                   <select class="select detail_search" data-placeholder="请选择结束年份" id="endYear">
 						</select> 
 					</div>
 				</div>

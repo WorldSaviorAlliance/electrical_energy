@@ -38,7 +38,8 @@ $(function()
 		        });	
 			});
 		});
-		
+		$('#beginMonth').append(getMonthSelectStr());
+		$('#endMonth').append(getMonthSelectStr());
 		$('.select').niceSelect();
 		
 		$('a[flag="del"]').unbind('click').click(function(){

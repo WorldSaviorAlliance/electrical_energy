@@ -83,8 +83,6 @@
 		<label class="col-sm-2 control-label">调整月份<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
 			<select class="select detail_search" data-placeholder="请选择调整月份" id="month">
-				<option value="201801">201801</option>
-				<option value="201802">201802</option>
 			</select>
 		</div>
 	</div>

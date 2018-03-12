@@ -21,7 +21,8 @@ $(function()
 		$('#do_search').unbind('click').click(function(){
 			getAllData(FIRST_PAGE);
 		});
-		
+		$('#startTime').append(getMonthSelectStr());
+		$('#endTime').append(getMonthSelectStr());
 		$('.select').niceSelect();
 	}
 	

@@ -329,10 +329,24 @@ function getIndustryTypeSelectStr()
  */
 function getYearSelectStr()
 {
-	var str = '<option></option>';
+	var str = '<option value="">--请选择年份--</option>';
 	for(var i = 0; i < 50; i++)
 	{
 		str += '<option value="' + (2018 + i) + '">' + (2018 + i) + '</option>';
+	}
+	return str;
+}
+
+function getMonthSelectStr()
+{
+	var str = '<option value="">--请选择月份--</option>';
+	for(var i = 0; i < 50; i++)
+	{
+		for(var j = 1; j < 13; j++)
+		{
+			var month = j < 10 ? ('0' + j) : j;
+			str += '<option value="' + (2018 + i) + month + '">' + (2018 + i) + month + '</option>';
+		}
 	}
 	return str;
 }

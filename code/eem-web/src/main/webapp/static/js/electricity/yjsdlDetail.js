@@ -49,7 +49,7 @@ function YjsdlDetail(afterSaveCallbk, curData)
 		$('#cancel').unbind('click').click(function(){
 			$('div.eem_window_close').click();
 		});
-		
+		$('#month').append(getMonthSelectStr());
 		$('#tradeType').append(getTradeTypeSelectStr());
 		$('.detail_search').niceSelect();
 		if(g_curData == null)

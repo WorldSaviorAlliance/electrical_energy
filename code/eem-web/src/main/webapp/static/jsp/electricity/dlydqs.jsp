@@ -21,20 +21,10 @@
 					<label class="col-sm-2 control-label">月份</label>
 	                <div class="col-sm-4">
 		                <select class="select search_select" data-placeholder="请选择开始月份" id="startTime">
-							<option value="">请选择开始月份</option>
-							<option value="201802">201802</option>
-							<option value="201803">201803</option>
-							<option value="201804">201804</option>
-							<option value="201805">201805</option>
 						</select> 
 					</div>
 					<div class="col-sm-4">
 		                <select class="select search_select" data-placeholder="请选择结束月份" id="endTime">
-							<option value="">请选择结束月份</option>
-							<option value="201802">201802</option>
-							<option value="201803">201803</option>
-							<option value="201804">201804</option>
-							<option value="201805">201805</option>
 						</select> 
 					</div>
 				</div>
