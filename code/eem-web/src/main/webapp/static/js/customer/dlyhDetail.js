@@ -7,10 +7,7 @@ function DlyhDetail(afterSaveCallbk, curData)
 	function init()
 	{
 		initControlAction();
-		if(g_curData != null)
-		{
-			inintControlVal();
-		}
+		inintControlVal();
 	}
 	
 	function initControlAction()
@@ -46,11 +43,6 @@ function DlyhDetail(afterSaveCallbk, curData)
 		{
 			$('#name').val(getObjStr(g_curData.name));
 			$('#nickName').val(getObjStr(g_curData.nickName));
-			
-			$('#province').val(g_curData.province);
-			$('#city').val(g_curData.city);
-			$('#province').niceSelect('update');
-			$('#city').niceSelect('update');
 			$('#address').val(getObjStr(g_curData.address));
 			$('#contactName').val(getObjStr(g_curData.contactName));
 			$('#contactPhone').val(getObjStr(g_curData.contactPhone));
@@ -61,6 +53,11 @@ function DlyhDetail(afterSaveCallbk, curData)
 			$('#natureType').niceSelect('update');
 			$('#industryType').val(g_curData.industryType);
 			$('#industryType').niceSelect('update');
+			getAllProvinceSelecte('province', g_curData.province, 'city', g_curData.city);
+		}
+		else
+		{
+			getAllProvinceSelecte('province', null, 'city');
 		}
 	}
 	

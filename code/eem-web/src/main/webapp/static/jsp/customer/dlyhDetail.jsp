@@ -29,19 +29,12 @@
 		<div class="col-sm-7">
 			<div class="form-group" style="margin: 0px;">
 				<div class="col-sm-6" style="padding-left: 0px;">
-					<select class="select detail_search" data-placeholder="请选择省份" id="province">
-						<option value="四川">四川</option>
-						<option value="北京">北京</option>
-						<option value="上海">上海</option>
-						<option value="云南">云南</option>
+					<select class="select" data-placeholder="请选择省份" id="province">
 					</select>
 				</div>
 				<div class="col-sm-6" style="padding-right: 0px;">
 					<select class="select detail_search" data-placeholder="请选择市区" id="city">
-						<option value="成都">成都</option>
-						<option value="德阳">德阳</option>
-						<option value="绵阳">绵阳</option>
-						<option value="宜宾">宜宾</option>
+						<option value="-1">--请选择城市--</option>
 					</select>
 				</div>
 			</div>

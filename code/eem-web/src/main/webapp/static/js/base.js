@@ -521,6 +521,110 @@ function getAllDydjSelecte(contorlId, valId)
 	});
 }
 
+/**
+ * 获取所有的省份的下拉列表
+ */
+var g_all_province;
+function getAllProvinceSelecte(contorlId, valId, cityControlId, cityValId)
+{
+	$('#' + contorlId).empty();
+	$.ajax({
+		url: rootpath + '/' + PATH_CITY + '/list',
+		type : 'POST', 
+		dataType: 'json',
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);
+				if(ar.code == 0)
+				{
+					var datas = ar.data;
+					g_all_province = datas;
+					if(datas != null && datas.length != 0)
+					{
+						var opts = '<option value="-1">--请选择省份--</option>';
+						for(var i = 0; i < datas.length; i++)
+						{
+							opts += '<option value="' + datas[i].name + '">' + datas[i].name + '</option>';
+						}
+						$('#' + contorlId).append(opts);
+						if(valId != null)
+						{
+							$('#' + contorlId).val(valId);
+							getCity(valId, cityValId, cityControlId);
+						}
+					}
+					$('#' + contorlId).niceSelect();
+				}
+			}
+			else
+			{
+				showSystemError();
+			}
+		}
+	});
+	
+	$('#' + contorlId).change(function(){
+		var name = $(this).val();
+		getCity(name, cityValId, cityControlId);
+	});
+}
+
+function getCity(province, curCity, cityControlId)
+{
+	if(g_all_province != null && g_all_province.length != 0)
+	{
+		for(var i = 0; i < g_all_province.length; i++)
+		{
+			if(g_all_province[i].name == province)
+			{
+				getAllCitySelecte(cityControlId, g_all_province[i].id, curCity);
+				return;
+			}
+		}
+	}
+}
+
+/**
+ * 获取所有的城市的下拉列表
+ */
+function getAllCitySelecte(contorlId, provinceVal, curCity)
+{
+	$('#' + contorlId).empty();
+	$.ajax({
+		url: rootpath + '/' + PATH_CITY + '/info?id=' + provinceVal,
+		type : 'GET', 
+		dataType: 'json',
+	    contentType: 'application/json',
+		complete : function(XHR, TS) {
+			if (TS == "success") {
+				var ar = JSON.parse(XHR.responseText);
+				if(ar.code == 0)
+				{
+					var datas = ar.data;
+					var opts = '<option value="-1">--请选择城市--</option>';
+					if(datas != null && datas.cities != null && datas.cities.length != 0)
+					{
+						for(var i = 0; i < datas.cities.length; i++)
+						{
+							opts += '<option value="' + datas.cities[i].name + '">' + datas.cities[i].name + '</option>';
+						}						
+					}
+					$('#' + contorlId).append(opts);
+					if(curCity != null)
+					{
+						$('#' + contorlId).val(curCity);
+					}
+					$('#' + contorlId).niceSelect('update');
+				}
+			}
+			else
+			{
+				showSystemError();
+			}
+		}
+	});
+}
 
 /**
  * 获得所有页数

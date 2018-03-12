@@ -21,23 +21,14 @@
 			
 			<div class="col-md-4">
 				<div class="form-group">
-                  <label class="col-sm-2 control-label">所在城市</label>
-                  <div class="col-sm-5">
-	                   <select class="select search_select" data-placeholder="请选择省份" id="search_province">
-						<option value=""></option>
-						<option value="四川">四川</option>
-						<option value="北京">北京</option>
-						<option value="上海">上海</option>
-						<option value="云南">云南</option>
-					</select> 
-				</div>
+                  	<label class="col-sm-2 control-label">所在城市</label>
+                  	<div class="col-sm-5">
+	                	<select class="select" data-placeholder="请选择省份" id="search_province">
+						</select> 
+					</div>
 				<div class="col-sm-5">	
 					<select class="select search_select" data-placeholder="请选择市区" id="search_city">
-						<option value=""></option>
-						<option value="成都">成都</option>
-						<option value="德阳">德阳</option>
-						<option value="绵阳">绵阳</option>
-						<option value="宜宾">宜宾</option>
+						<option value="-1">--请选择城市--</option>
 					</select>
                   </div>
                 </div>

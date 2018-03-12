@@ -12,6 +12,7 @@ $(function()
 	{
 		initControlAction();
 		getAllData(FIRST_PAGE);
+		getAllProvinceSelecte('search_province', null, 'search_city');
 	}
 	
 	/**
@@ -39,7 +40,6 @@ $(function()
 		        });	
 			});
 		});
-		
 		$('.search_select').niceSelect();
 	}
 	
@@ -58,8 +58,8 @@ $(function()
 		$('#datas tr[type="data"]').remove();
 		var search = {
 			"name": $('#search_name').val(),
-	        "province": $('#search_province').val(),
-	        "city": $('#search_city').val()
+	        "province": $('#search_province').val() == '-1' ? '' : $('#search_province').val(),
+	        "city": $('#search_city').val() == '-1' ? '' : $('#search_city').val()
 			};
 		$.ajax({
 			url: rootpath + '/' + PATH_DYS + '/list?page=' + curpage + '&per_page=' + PAGE_COUNT,

@@ -1,4 +1,3 @@
-//@ sourceURL=dysDetail.js
 function DysDetail(afterSaveCallbk, curData)
 {
 	var g_afterSaveCallbk = afterSaveCallbk;
@@ -7,10 +6,7 @@ function DysDetail(afterSaveCallbk, curData)
 	function init()
 	{
 		initControlAction();
-		if(g_curData != null)
-		{
-			inintControlVal();
-		}
+		inintControlVal();
 	}
 	
 	function initControlAction()
@@ -47,10 +43,6 @@ function DysDetail(afterSaveCallbk, curData)
 			$('#nickName').val(getObjStr(g_curData.nickName));
 			$('#powerType').val(g_curData.powerType);
 			$('#capacity').val(getObjStr(g_curData.capacity));
-			$('#province').val(g_curData.province);
-			$('#city').val(g_curData.city);
-			$('#province').niceSelect('update');
-			$('#city').niceSelect('update');
 			$('#address').val(getObjStr(g_curData.address));
 			$('#contactName').val(getObjStr(g_curData.contactName));
 			$('#contactPhone').val(getObjStr(g_curData.contactPhone));
@@ -59,6 +51,12 @@ function DysDetail(afterSaveCallbk, curData)
 			$('#fax').val(getObjStr(g_curData.fax));
 			$('#natureType').val(g_curData.natureType);
 			$('#natureType').niceSelect('update');
+			
+			getAllProvinceSelecte('province', g_curData.province, 'city', g_curData.city);
+		}
+		else
+		{
+			getAllProvinceSelecte('province', null, 'city');
 		}
 	}
 	
