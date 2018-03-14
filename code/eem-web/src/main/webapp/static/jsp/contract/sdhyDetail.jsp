@@ -48,9 +48,12 @@
 		</div>
 		<div class="col-sm-1" style="padding-left: 0px;">
 			<a href="javascript:;" class="file_upload">
-			    <input type="file" id="att_file" name="att_file">浏览
+			    <input type="file" id="att_file" name="att_file" accept=".xls,.xlsx,.doc,.docx">浏览
 			</a>
 		</div>
+		<label class="col-sm-2 control-label input_msg" style="text-align: left;display: block;">
+			只支持doc、docx和excel文件
+		</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">合同有效年份<span class="asterisk">*</span></label>
