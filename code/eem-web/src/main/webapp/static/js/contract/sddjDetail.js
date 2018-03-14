@@ -100,13 +100,21 @@ function SddjDetail(g_afterSaveCallbk, id)
 				}
 			},
 			error : function(data, status, e) {
-				showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+				if(data.responseText.indexOf('"code":0') == -1)
+				{
+					showDynamicMessage(STR_CONFIRM, msgTitle + '失败', MESSAGE_TYPE_INFO);
+				}
+				else
+				{
+					showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+					if(g_afterSaveCallbk != null)
+					{
+						g_afterSaveCallbk();
+					}
+				}
+				
 				$('div.eem_window_close').click();
 				hideProgress(progress);
-				if(g_afterSaveCallbk != null)
-				{
-					g_afterSaveCallbk();
-				}
 			}
 		});
 	}
