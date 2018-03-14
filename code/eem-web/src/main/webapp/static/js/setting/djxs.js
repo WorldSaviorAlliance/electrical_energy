@@ -53,8 +53,8 @@ $(function(){
 						if(temp != null && temp.length != 0)
 						{
 							$('#peak').val(temp[0].peak);
-							$('#flat').val(temp[0].peak);
-							$('#trough').val(temp[0].peak);
+							$('#flat').val(temp[0].flat);
+							$('#trough').val(temp[0].trough);
 							g_curData = temp[0];
 						}
 					}
