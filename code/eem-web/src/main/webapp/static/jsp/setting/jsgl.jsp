@@ -3,7 +3,7 @@
 <%
 	String basePath = ToolUtil.getBasePath(request);
 %>
-<h4 class="page-title detail_sub_title">当前位置：<span>电源商管理</span> / <span >电源商列表</span></h4>
+<h4 class="page-title detail_sub_title">当前位置：<span>系统设置</span> / <span >角色管理</span></h4>
 <div class="divider" style="margin-top: 6px;margin-bottom: 6px;"></div>
 <form class="form-horizontal">
 	<div class="form-group">
