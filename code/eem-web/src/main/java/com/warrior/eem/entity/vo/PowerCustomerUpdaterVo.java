@@ -46,13 +46,13 @@ public class PowerCustomerUpdaterVo implements EntityConvertor, Serializable {
 	@FieldChecker(name = "联系人电话", minLen = 1, maxLen = 64)
 	private String contactPhone;
 	
-	@FieldChecker(name = "联系人职位", minLen = 1, maxLen = 10)
+	@FieldChecker(name = "联系人职位", minLen = 0, maxLen = 10)
 	private String contactPosition;
 	
-	@FieldChecker(name = "联系人邮箱", minLen = 1, maxLen = 30)
+	@FieldChecker(name = "联系人邮箱", minLen = 0, maxLen = 30)
 	private String contactEmail;
 	
-	@FieldChecker(name = "传真", minLen = 1, maxLen = 10)
+	@FieldChecker(name = "传真", minLen = 0, maxLen = 10)
 	private String fax;
 	
 	public PowerCustomerUpdaterVo() {

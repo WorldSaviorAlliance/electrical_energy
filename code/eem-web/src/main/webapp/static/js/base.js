@@ -240,7 +240,7 @@ function showDynamicMessage(title, content, type)
 	            fade: true,
 	            speed: 'slow'
 	        });
-	    }, 10000);
+	    }, 2000);
 	}, 100);
 }
 

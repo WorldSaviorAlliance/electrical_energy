@@ -39,9 +39,9 @@
 		</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">地址 </label>
+			<label class="col-sm-2 control-label">地址 <span class="asterisk">*</span> </label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control" placeholder="请输入地址" id="address" maxlength="100"/>
+				<input type="text" class="form-control" placeholder="请输入地址" id="address" maxlength="100" required/>
 			</div>
 			<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="address">
 				最长100个字符

@@ -24,8 +24,7 @@ function DysDetail(afterSaveCallbk, curData)
 		      $(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
-		    	doSaveAction();
-		    	return false;
+		    	return doSaveAction();
 		    }
 		});
 		
@@ -101,7 +100,6 @@ function DysDetail(afterSaveCallbk, curData)
 			temp.id = g_curData.id;
 		}
 		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存电源商');
     	
 		$.ajax({
@@ -120,17 +118,21 @@ function DysDetail(afterSaveCallbk, curData)
 						if(g_afterSaveCallbk != null)
 						{
 							g_afterSaveCallbk();
+							$('div.eem_window_close').click();
+							return true;
 						}
 					}
 					else
 					{
-						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
+						alert(msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
+						//showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
 					}
 				}
 				else
 				{
 					showSystemError();
 				}
+				return false;
 			}
 		});
 	}

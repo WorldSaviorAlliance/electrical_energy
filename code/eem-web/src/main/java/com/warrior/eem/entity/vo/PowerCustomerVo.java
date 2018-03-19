@@ -32,7 +32,7 @@ public class PowerCustomerVo implements EntityConvertor, Serializable {
 	@FieldChecker(name = "所在城市", minLen = 1, maxLen = 10)
 	private String city;
 	
-	@FieldChecker(name = "地址", minLen = 1, maxLen = 100)
+	@FieldChecker(name = "地址", minLen = 0, maxLen = 100)
 	private String address;
 	
 	@FieldChecker(name = "企业性质", maxVal = 10)
@@ -44,13 +44,13 @@ public class PowerCustomerVo implements EntityConvertor, Serializable {
 	@FieldChecker(name = "联系人电话", minLen = 1, maxLen = 64)
 	private String contactPhone;
 	
-	@FieldChecker(name = "联系人职位", minLen = 1, maxLen = 10)
+	@FieldChecker(name = "联系人职位", minLen = 0, maxLen = 10)
 	private String contactPosition;
 	
-	@FieldChecker(name = "联系人邮箱", minLen = 1, maxLen = 30)
+	@FieldChecker(name = "联系人邮箱", minLen = 0, maxLen = 30)
 	private String contactEmail;
 	
-	@FieldChecker(name = "传真", minLen = 1, maxLen = 10)
+	@FieldChecker(name = "传真", minLen = 0, maxLen = 10)
 	private String fax;
 	
 	public PowerCustomerVo() {
