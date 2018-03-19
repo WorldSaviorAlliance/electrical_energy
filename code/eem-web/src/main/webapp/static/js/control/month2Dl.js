@@ -121,7 +121,7 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 									'<input type="number" flag="ntp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_ntp + '"/>'+
 								'</div>'+
 								'<label class="col-sm-4 control-label" style="text-align: left;">'+
-									'万元'+
+									'元'+
 								'</label>'+
 							'</div>'+
 						'</td>'+
@@ -131,7 +131,7 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 									'<input type="number" flag="stp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_stp + '"/>'+
 								'</div>'+
 								'<label class="col-sm-4 control-label" style="text-align: left;">'+
-									'万元'+
+									'元'+
 								'</label>'+
 							'</div>'+
 						'</td>'+
@@ -141,7 +141,7 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 									'<input type="number" flag="rtp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_rtp + '"/>'+
 								'</div>'+
 								'<label class="col-sm-4 control-label" style="text-align: left;">'+
-									'万元'+
+									'元'+
 								'</label>'+
 							'</div>'+
 						'</td>'+
@@ -151,7 +151,7 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 									'<input type="number" flag="mtp" class="form-control" month="' + titleData[i].obj + '" value="' + dj_mtp + '"/>'+
 								'</div>'+
 								'<label class="col-sm-4 control-label" style="text-align: left;">'+
-									'万元'+
+									'元'+
 								'</label>'+
 							'</div>'+
 						'</td>'+

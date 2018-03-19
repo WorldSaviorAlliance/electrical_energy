@@ -23,7 +23,7 @@
 			                        </tr>
 			                        <tr class="ie_hide">
 			                            <td class="title" style="height: 40px;">本月电费：</td>
-			                            <td><b id="totalPrice" style="color: #f7c31e;">0</b> 万元</td>
+			                            <td><b id="totalPrice" style="color: #f7c31e;">0</b> 元</td>
 			                        </tr>
 			                    </tbody>
 		                    </table>

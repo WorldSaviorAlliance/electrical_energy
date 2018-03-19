@@ -95,12 +95,12 @@ $(function()
 							'<td>' + getObjStr(temp.voltageType) + '</td>'+
 							'<td>' + gettradeType(temp.tradeType) + '</td>'+	
 							'<td>' + getObjStr(temp.tradePrice) + '</td>' +
-							'<td>' + parseInt(temp.peakPrice) + '万元</td>'+
-							'<td>' + parseInt(temp.flatPrice) + '万元</td>'+
-							'<td>' + parseInt(temp.troughPrice) + '万元</td>'+
-							'<td>' + (parseInt(temp.peakPrice) + parseInt(temp.flatPrice) + parseInt(temp.troughPrice)) + '万元</td>'+
-							'<td>' + parseInt(temp.validPrice) + '万元</td>'+
-							'<td>' + getObjStr(temp.totalPrice) + '万元</td>'+
+							'<td>' + parseInt(temp.peakPrice) + '元</td>'+
+							'<td>' + parseInt(temp.flatPrice) + '元</td>'+
+							'<td>' + parseInt(temp.troughPrice) + '元</td>'+
+							'<td>' + (parseInt(temp.peakPrice) + parseInt(temp.flatPrice) + parseInt(temp.troughPrice)) + '元</td>'+
+							'<td>' + parseInt(temp.validPrice) + '元</td>'+
+							'<td>' + getObjStr(temp.totalPrice) + '元</td>'+
 						'</tr>';
 			}
 			

@@ -62,7 +62,7 @@ $(function(){
 				var jsondata = {"powerdata":[{"name":"高峰","value":peakPrice},{"name":"平段","value":flatPrice},{"name":"低谷","value":troughPrice}],
 		    		    "color":["#f7c31e","#36cea2","#24b7e3"],
 		    		    "powertotal":(flatPrice + peakPrice + troughPrice)};
-				setChart('pie_day_2', jsondata.color, jsondata.powerdata, jsondata.powertotal, '万元');
+				setChart('pie_day_2', jsondata.color, jsondata.powerdata, jsondata.powertotal, '元');
 			}
 		}
 	});
