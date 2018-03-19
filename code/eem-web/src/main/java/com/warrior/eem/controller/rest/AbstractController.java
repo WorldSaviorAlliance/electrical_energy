@@ -1,6 +1,7 @@
 package com.warrior.eem.controller.rest;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.persistence.EntityExistsException;
 import javax.servlet.ServletOutputStream;
@@ -58,7 +59,7 @@ public class AbstractController {
 			} else {
 				logger.error(e.getMessage(), e);
 			}
-			out.write(res.getBytes());
+			out.write(res.getBytes(Charset.forName("UTF-8")));
 			out.flush();
 		} catch (IOException e1) {
 		}
