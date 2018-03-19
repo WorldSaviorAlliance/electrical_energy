@@ -21,6 +21,10 @@ $(function()
 	    }
 	});
 	
+	$('#cancel').unbind('click').click(function(){
+		$('div.eem_window_close').click();
+	});
+	
 	function doModifyPsw()
 	{
 		var oldpassword = $('#oldpassword').val();
