@@ -3,6 +3,7 @@ package com.warrior.eem.service.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ import com.warrior.eem.service.LocationService;
 
 @Service
 public class LocationServiceImpl extends AbstractServiceImpl<Province>implements LocationService {
-
+	private ConcurrentHashMap<Long, ProvinceVo> locationCache = new ConcurrentHashMap<>();
+	
 	@Autowired
 	private ProvinceDao dao;
 
@@ -55,11 +57,21 @@ public class LocationServiceImpl extends AbstractServiceImpl<Province>implements
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ProvinceVo> queryAll() {
-		List<Province> provinces = dao.queryAll();
-		List<ProvinceVo> vos = new ArrayList<>(provinces.size());
-		for (Province province : provinces) {
-			vos.add(new ProvinceVo(province.getId(), province.getName()));
+		List<ProvinceVo> vos;
+		if (locationCache.isEmpty()) {
+			List<Province> provinces = dao.queryAll();
+			vos = new ArrayList<>(provinces.size());
+			ProvinceVo vo;
+			for (Province province : provinces) {
+				vo = new ProvinceVo(province.getId(), province.getName());
+				vo.setCities(province.getCities());
+				vos.add(vo);
+				locationCache.put(province.getId(), vo);
+			}
+		} else {
+			vos = new ArrayList<>(locationCache.values());
 		}
 		return vos;
 	}
@@ -67,12 +79,19 @@ public class LocationServiceImpl extends AbstractServiceImpl<Province>implements
 	@Override
 	@Transactional(readOnly = true)
 	public ProvinceVo getEntityVo(Long id) {
-		Province province = dao.getEntity(id);
-		if (null == province) {
-			throw new EemException("未找到id（" + id + "）对应的数据");
+		if (null == id) {
+			throw new EemException("id不能为null");
 		}
-		ProvinceVo vo = new ProvinceVo(province.getId(), province.getName());
-		vo.setCities(province.getCities());
+		ProvinceVo vo = locationCache.get(id);
+		if (null == vo) {
+			Province province = dao.getEntity(id);
+			if (null == province) {
+				throw new EemException("未找到id（" + id + "）对应的数据");
+			}
+			vo = new ProvinceVo(province.getId(), province.getName());
+			vo.setCities(province.getCities());
+			locationCache.put(id, vo);
+		}
 		return vo;
 	}
 }
