@@ -60,9 +60,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">年均发电量<span class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">年均发电量</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control" placeholder="请输入年均发电量" required id="capacity"/>
+				<input type="number" class="form-control" placeholder="请输入年均发电量" id="capacity"/>
 			</div>
 			<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 		</div>
@@ -94,27 +94,27 @@
 			</label>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">联系人职务<span class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">联系人职务</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control" id="contactPosition" maxlength="10" required/>
+				<input type="text" class="form-control" id="contactPosition" maxlength="10"/>
 			</div>
 			<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="contactPosition">
 				最长10个字符
 			</label>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">联系邮箱<span class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">联系邮箱</label>
 			<div class="col-sm-7">
-				<input type="email" class="form-control" id="contactEmail" maxlength="30" required/>
+				<input type="email" class="form-control" id="contactEmail" maxlength="30"/>
 			</div>
 			<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="contactEmail">
 				最长30个字符
 			</label>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">传真<span class="asterisk">*</span></label>
+			<label class="col-sm-2 control-label">传真</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control" id="fax" maxlength="10" required/>
+				<input type="text" class="form-control" id="fax" maxlength="10"/>
 			</div>
 			<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="fax">
 				最长10个字符
