@@ -143,7 +143,6 @@ function YhglDetail(afterSaveCallbk, curData)
 			temp.password = $('#password').val();
 		}
 		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存用户');
     	
 		$.ajax({
@@ -163,6 +162,7 @@ function YhglDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

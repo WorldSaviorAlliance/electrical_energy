@@ -91,7 +91,6 @@ function WyblDetail(afterSaveCallbk, curData)
 			showDynamicMessage(STR_CONFIRM, '请选择套餐', MESSAGE_TYPE_ERROR);
     		return false;
 		}
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在办理套餐');
     	
 		$.ajax({
@@ -110,6 +109,7 @@ function WyblDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

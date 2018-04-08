@@ -118,9 +118,9 @@ function DysDetail(afterSaveCallbk, curData)
 						if(g_afterSaveCallbk != null)
 						{
 							g_afterSaveCallbk();
-							$('div.eem_window_close').click();
 							return true;
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

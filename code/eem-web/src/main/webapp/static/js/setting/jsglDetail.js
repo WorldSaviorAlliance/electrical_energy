@@ -151,8 +151,6 @@ function JsglDetail(afterSaveCallbk, curData)
 			msgTitle = '修改角色';
 			temp.id = g_curData.id;
 		}
-		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存角色');
     	
 		$.ajax({
@@ -172,6 +170,7 @@ function JsglDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

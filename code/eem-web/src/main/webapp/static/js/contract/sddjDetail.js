@@ -84,7 +84,6 @@ function SddjDetail(g_afterSaveCallbk, id)
 			dataType : 'json',
 			data : g_curData,
 			success : function(data, status) {
-				$('div.eem_window_close').click();
 				hideProgress(progress);
 				if(data.success)
 				{
@@ -93,6 +92,7 @@ function SddjDetail(g_afterSaveCallbk, id)
 					{
 						g_afterSaveCallbk();
 					}
+					$('div.eem_window_close').click();
 				}
 				else
 				{
@@ -111,9 +111,8 @@ function SddjDetail(g_afterSaveCallbk, id)
 					{
 						g_afterSaveCallbk();
 					}
+					$('div.eem_window_close').click();
 				}
-				
-				$('div.eem_window_close').click();
 				hideProgress(progress);
 			}
 		});

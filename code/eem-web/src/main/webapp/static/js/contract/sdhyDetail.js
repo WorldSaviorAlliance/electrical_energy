@@ -176,7 +176,6 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 			dataType : 'json',
 			data : temp,
 			success : function(data, status) {
-				$('div.eem_window_close').click();
 				hideProgress(progress);
 				if(data.success)
 				{
@@ -185,6 +184,7 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 					{
 						g_afterSaveCallbk();
 					}
+					$('div.eem_window_close').click();
 				}
 				else
 				{
@@ -204,9 +204,8 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 					{
 						g_afterSaveCallbk();
 					}
+					$('div.eem_window_close').click();
 				}
-				
-				$('div.eem_window_close').click();
 				hideProgress(progress);
 			}
 		});

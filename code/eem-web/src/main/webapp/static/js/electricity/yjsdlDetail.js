@@ -106,7 +106,6 @@ function YjsdlDetail(afterSaveCallbk, curData)
 			msgTitle = '修改月结算电量';
 			temp.id = g_curData.id;
 		}
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存月结算电量');
     	$.ajax({
 			url: rootpath + '/' + PATH_YJSDL + '/info',
@@ -125,6 +124,7 @@ function YjsdlDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

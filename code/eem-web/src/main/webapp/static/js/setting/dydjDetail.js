@@ -62,8 +62,6 @@ function DydjDetail(afterSaveCallbk, curData)
 			msgTitle = '修改电压等级';
 			temp.id = g_curData.id;
 		}
-		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存电压等级');
     	
 		$.ajax({
@@ -83,6 +81,7 @@ function DydjDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{

@@ -198,7 +198,6 @@ function DltzDetail(afterSaveCallbk, curData)
 			temp.id = g_curData.id;
 		}
 		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存电量调整');
     	
 		$.ajax({
@@ -218,6 +217,7 @@ function DltzDetail(afterSaveCallbk, curData)
 						{
 							g_afterSaveCallbk();
 						}
+						$('div.eem_window_close').click();
 					}
 					else
 					{
