@@ -44,11 +44,15 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 		} else if (e.getClass().getName().contains("com.warrior.eem.entity.vo")) {
 			targetEntity = convertVoToDoForCreate(e);
 		}
-		checkSameEntity(targetEntity);
+		existSameUKValEntity(targetEntity);
 		getDao().createDo((T) targetEntity);
 	}
 
-	void checkSameEntity(Serializable entity) {
+	/**
+	 * 存在具有相同唯一约束实体
+	 * @param entity
+	 */
+	void existSameUKValEntity(Serializable entity) {
 		Class<?> ec = entity.getClass();
 		EntityUniqueConstraint euc = entity.getClass().getDeclaredAnnotation(EntityUniqueConstraint.class);
 		if (euc != null) {
@@ -56,6 +60,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 			if (cols == null || cols.length == 0) {
 				return;
 			}
+			SqlRequest req = new SqlRequest();
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 			for (String col : cols) {
 				try {
@@ -68,7 +73,8 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 					throw new EemException("解析实体发生错误请联系管理员");
 				}
 			}
-			if (listEntities(sqlCdt).getCount() > 0) {
+			req.setCdt(sqlCdt);
+			if (countEntity(req) > 0) {
 				throw new EemException(euc.errorMessage());
 			}
 		}
@@ -100,6 +106,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 		if (dbEntity == null) {
 			throw new EemException("未找到id（" + id + "）对应的信息");
 		}
+		boolean hasChangeUkProperty = isChangedOnAnyUKProperties(e, dbEntity);
 		Serializable targetEntity = null;
 		if (e instanceof EntityConvertor) {
 			targetEntity = ((EntityConvertor) e).mergeProps(dbEntity);
@@ -108,8 +115,48 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 		} else {
 			targetEntity = e;
 		}
-		checkSameEntity(targetEntity);
+		if(hasChangeUkProperty) {
+			existSameUKValEntity(targetEntity);
+		}
 		getDao().updateDo((T) targetEntity);
+	}
+
+	/**
+	 * 唯一约束属性是否有发生变化
+	 * 
+	 * @param uiData：
+	 *            页面参数实体
+	 * @param dbData：
+	 *            数据库实体
+	 * @return
+	 */
+	boolean isChangedOnAnyUKProperties(Serializable uiData, Serializable dbData) {
+		EntityUniqueConstraint euc = dbData.getClass().getDeclaredAnnotation(EntityUniqueConstraint.class);
+		if (euc != null) {
+			String[] cols = euc.columns();
+			if (cols == null || cols.length == 0) {
+				return false;
+			}
+			for (String col : cols) {
+				try {
+					Field uf = uiData.getClass().getDeclaredField(col);
+					Field df = dbData.getClass().getDeclaredField(col);
+					uf.setAccessible(true);
+					df.setAccessible(true);
+					if (uf != null && df != null) {
+						if ((uf.get(uiData) != null && !uf.get(uiData).equals(df.get(dbData)))
+								|| (uf.get(uiData) == null && df.get(dbData) != null)) {
+							return true;
+						}
+					}
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+						| IllegalAccessException e) {
+					logger.error(e.getMessage(), e);
+					throw new EemException("解析实体发生错误请联系管理员!");
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
