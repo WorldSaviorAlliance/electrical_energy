@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.warrior.eem.annotation.EntityUniqueConstraint;
 import com.warrior.eem.dao.IDao;
+import com.warrior.eem.dao.support.Joiner;
 import com.warrior.eem.dao.support.LogicalCondition;
 import com.warrior.eem.dao.support.SimpleCondition;
 import com.warrior.eem.dao.support.SqlRequest;
@@ -50,6 +51,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 
 	/**
 	 * 存在具有相同唯一约束实体
+	 * 
 	 * @param entity
 	 */
 	void existSameUKValEntity(Serializable entity) {
@@ -64,9 +66,20 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 			LogicalCondition sqlCdt = LogicalCondition.emptyOfTrue();
 			for (String col : cols) {
 				try {
-					Field f = ec.getDeclaredField(col);
+					Field f = ec.getDeclaredField(col.split("\\.")[0]);
 					f.setAccessible(true);
-					sqlCdt = sqlCdt.and(SimpleCondition.equal(col, f.get(entity)));
+					Object val = f.get(entity);
+					if (f.getType().getName().contains("com.warrior.eem.entity")) {// 实体
+						Joiner joiner = new Joiner();
+						joiner.add(col.split("\\.")[0]);
+						req.setJoiner(joiner);
+						String propName = col.split("\\.")[1];
+						f = "id".equals(propName) ? val.getClass().getSuperclass().getDeclaredField(propName)
+								: val.getClass().getDeclaredField(propName);
+						f.setAccessible(true);
+						val = f.get(val);
+					}
+					sqlCdt = sqlCdt.and(SimpleCondition.equal(col, val));
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
 						| IllegalAccessException e) {
 					logger.error(e.getMessage(), e);
@@ -115,7 +128,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 		} else {
 			targetEntity = e;
 		}
-		if(hasChangeUkProperty) {
+		if (hasChangeUkProperty) {
 			existSameUKValEntity(targetEntity);
 		}
 		getDao().updateDo((T) targetEntity);
@@ -139,8 +152,10 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 			}
 			for (String col : cols) {
 				try {
-					Field uf = uiData.getClass().getDeclaredField(col);
-					Field df = dbData.getClass().getDeclaredField(col);
+					String[] propNames = col.split("\\.");
+					Field uf = uiData.getClass().getDeclaredField(col.replace(".id", "Id"));
+					Field df = propNames.length == 2 ? dbData.getClass().getSuperclass().getDeclaredField(propNames[1])
+							: dbData.getClass().getDeclaredField(col);
 					uf.setAccessible(true);
 					df.setAccessible(true);
 					if (uf != null && df != null) {

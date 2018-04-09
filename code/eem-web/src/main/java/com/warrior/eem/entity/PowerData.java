@@ -24,8 +24,8 @@ import com.warrior.eem.annotation.EntityUniqueConstraint;
  */
 @Entity
 @Table(name = "power_data")
-@EntityUniqueConstraint(columns = { "name", "customerNo", "emNo", "month", "voltageType",
-		"tradeType" }, errorMessage = "名称、户号、电表编号、月份、电压等级、交易品种不能重复")
+@EntityUniqueConstraint(columns = { "customer.id", "customerNo", "emNo", "month", "voltageType",
+		"tradeType" }, errorMessage = "电力用户名称、户号、电表编号、月份、电压等级、交易品种不能重复")
 public class PowerData extends AbstractEntity {
 
 	private static final long serialVersionUID = -7384329405698576481L;
