@@ -11,17 +11,19 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warrior.eem.annotation.EntityUniqueConstraint;
 
 /**
  * 电力用户
+ * 
  * @author seangan
  *
  */
 @Entity
 @Table(name = "power_customer")
+@EntityUniqueConstraint(columns = { "name" }, errorMessage = "名称不能重复")
 public class PowerCustomer extends AbstractEntity {
 
 	private static final long serialVersionUID = 8531812174486012714L;
@@ -29,65 +31,65 @@ public class PowerCustomer extends AbstractEntity {
 	// 电力用户名称
 	@Column(name = "name")
 	private String name;
-	
+
 	// 简称
 	@Column(name = "nick_name")
 	private String nickName;
-	
+
 	// 所属行业
 	@Column(name = "industry_type")
 	private int industryType;
-	
+
 	// 所在省份
 	@Column(name = "province")
 	private String province;
-	
+
 	// 所在城市
 	@Column(name = "city")
 	private String city;
-	
+
 	// 地址
 	@Column(name = "address")
 	private String address;
-	
+
 	// 企业性质
 	@Column(name = "nature_type")
 	private int natureType;
-	
+
 	// 联系人
 	@Column(name = "contact_name")
 	private String contactName;
-	
+
 	// 联系人电话
 	@Column(name = "contact_phone")
 	private String contactPhone;
-	
+
 	// 联系人职位
 	@Column(name = "contact_position")
 	private String contactPosition;
-	
+
 	// 联系人邮箱
 	@Column(name = "contact_email")
 	private String contactEmail;
-	
+
 	// 传真
 	@Column(name = "fax")
 	private String fax;
-	
+
 	// 录入时间
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
-	
+
 	// 录入人
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User creator;
-	
+
 	public PowerCustomer() {
-		
+
 	}
 
 	public String getName() {

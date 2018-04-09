@@ -14,69 +14,72 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warrior.eem.annotation.EntityUniqueConstraint;
 
 /**
  * 电力供应商
+ * 
  * @author seangan
  *
  */
 @Entity
 @Table(name = "power_supplier")
+@EntityUniqueConstraint(columns = { "name" }, errorMessage = "名称不能重复")
 public class PowerSupplier extends AbstractEntity {
 
 	private static final long serialVersionUID = 8531812174486012714L;
 
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "nick_name")
 	private String nickName;
-	
+
 	@Column(name = "power_type")
 	private int powerType;
-	
+
 	@Column(name = "capacity")
 	private BigDecimal capacity;
-	
+
 	@Column(name = "province")
 	private String province;
-	
+
 	@Column(name = "city")
 	private String city;
-	
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "nature_type")
 	private int natureType;
-	
+
 	@Column(name = "contact_name")
 	private String contactName;
-	
+
 	@Column(name = "contact_phone")
 	private String contactPhone;
-	
+
 	@Column(name = "contact_position")
 	private String contactPosition;
-	
+
 	@Column(name = "contact_email")
 	private String contactEmail;
-	
+
 	@Column(name = "fax")
 	private String fax;
-	
+
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User creator;
-	
+
 	public PowerSupplier() {
-		
+
 	}
 
 	public String getName() {

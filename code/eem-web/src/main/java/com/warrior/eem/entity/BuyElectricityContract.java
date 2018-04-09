@@ -16,13 +16,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.warrior.eem.annotation.EntityUniqueConstraint;
+
 /**
  * 购电合同实体
  * 
  */
 @Entity
 @Table(name = "buy_electricity_contract")
-public class BuyElectricityContract extends AbstractEntity implements Serializable{
+@EntityUniqueConstraint(columns = { "name" }, errorMessage = "名称不能重复")
+public class BuyElectricityContract extends AbstractEntity implements Serializable {
 
 	/**
 	 * 
@@ -36,24 +39,24 @@ public class BuyElectricityContract extends AbstractEntity implements Serializab
 	private Date createDate;
 
 	private String number;
-	
+
 	@Column(name = "valid_year")
 	private String validYear;
-	
+
 	@Column(name = "attachment_name")
 	private String attachmentName;
-	
+
 	@Column(name = "trade_electricity_quantity")
 	private BigDecimal tradeQuantity;
-	
+
 	private BigDecimal price;
-	
+
 	@Column(name = "trade_type")
 	private String tradeType;
-	
+
 	@Column(name = "voltage_type")
 	private String voltageType;
-	
+
 	@OneToOne
 	@JoinColumn(name = "supplier_id")
 	private PowerSupplier supplier;
@@ -65,7 +68,7 @@ public class BuyElectricityContract extends AbstractEntity implements Serializab
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User creator;
-	
+
 	public PowerSupplier getSupplier() {
 		return supplier;
 	}
@@ -129,6 +132,7 @@ public class BuyElectricityContract extends AbstractEntity implements Serializab
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+
 	public Set<BuyContractUserInfo> getContractUserInfos() {
 		return contractUserInfos;
 	}
@@ -160,5 +164,5 @@ public class BuyElectricityContract extends AbstractEntity implements Serializab
 	public void setCreator(User creator) {
 		this.creator = creator;
 	}
-	
+
 }

@@ -14,72 +14,76 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warrior.eem.annotation.EntityUniqueConstraint;
 
 /**
  * 电量数据
+ * 
  * @author seangan
  *
  */
 @Entity
 @Table(name = "power_data")
+@EntityUniqueConstraint(columns = { "name", "customerNo", "emNo", "month", "voltageType",
+		"tradeType" }, errorMessage = "名称、户号、电表编号、月份、电压等级、交易品种不能重复")
 public class PowerData extends AbstractEntity {
-	
+
 	private static final long serialVersionUID = -7384329405698576481L;
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private PowerCustomer customer;
-	
+
 	// 用户户号
 	@Column(name = "customer_no")
 	private String customerNo;
-	
+
 	// 电表编号
 	@Column(name = "em_no")
 	private String emNo;
-	
+
 	// 月份
 	@Column(name = "month")
 	private String month;
-	
+
 	// 电压
 	@Column(name = "voltage_type")
 	private String voltageType;
-	
+
 	// 高峰用电量
 	@Column(name = "peak_kwh")
 	private BigDecimal peakKwh;
-	
+
 	// 平段用电量
 	@Column(name = "flat_kwh")
 	private BigDecimal flatKwh;
-	
+
 	// 低谷用电量
 	@Column(name = "trough_kwh")
 	private BigDecimal troughKwh;
-	
+
 	// 无功电量
 	@Column(name = "idle_kwh")
 	private BigDecimal idleKwh;
-	
+
 	// 交易品种
 	@Column(name = "trade_type")
 	private String tradeType;
-	
+
 	// 创建时间
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
-	
+
 	// 创建人
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User creator;
-	
+
 	public PowerData() {
-		
+
 	}
 
 	public PowerCustomer getCustomer() {

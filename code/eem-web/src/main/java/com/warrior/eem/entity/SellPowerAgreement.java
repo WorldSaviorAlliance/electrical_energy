@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warrior.eem.annotation.EntityUniqueConstraint;
 import com.warrior.eem.exception.EemException;
 
 /**
@@ -26,6 +27,7 @@ import com.warrior.eem.exception.EemException;
  */
 @Entity
 @Table(name = "sell_power_agreement")
+@EntityUniqueConstraint(columns = { "name" }, errorMessage = "名称不能重复")
 public class SellPowerAgreement extends AbstractEntity {
 
 	/**
@@ -227,11 +229,12 @@ public class SellPowerAgreement extends AbstractEntity {
 
 	/**
 	 * 生成售电合约单价
+	 * 
 	 * @param sellTypeName
 	 * @return
 	 */
 	public BigDecimal createUnitPriceBySellType(String sellTypeName) {
-		
+
 		if (Sell_Power_Price_Type.Margin.getName().equals(sellTypeName)) {
 			return this.getMarginTradePrice();
 		} else if (Sell_Power_Price_Type.Normal.getName().equals(sellTypeName)) {
