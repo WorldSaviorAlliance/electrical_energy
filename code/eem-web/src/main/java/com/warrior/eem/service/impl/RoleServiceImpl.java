@@ -19,7 +19,14 @@ import com.warrior.eem.dao.support.SqlRequest;
 import com.warrior.eem.dao.support.Sql_Operator;
 import com.warrior.eem.dao.support.Order.Order_Type;
 import com.warrior.eem.entity.Authority;
+import com.warrior.eem.entity.ElectricityAdjustmentData;
+import com.warrior.eem.entity.ElectricityPackage;
+import com.warrior.eem.entity.PowerCustomer;
+import com.warrior.eem.entity.PowerData;
 import com.warrior.eem.entity.Role;
+import com.warrior.eem.entity.SellPowerAgreement;
+import com.warrior.eem.entity.SellPowerAgreementMonthData;
+import com.warrior.eem.entity.User;
 import com.warrior.eem.entity.constant.ResourceOperation;
 import com.warrior.eem.entity.vo.AuthorityVo;
 import com.warrior.eem.entity.vo.PageVo;
@@ -37,19 +44,31 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleService {
+	private static final String ROLE_SYSTEM = "管理员";
+	private static final String ROLE_COMMON = "#普通用户#";
+	private static final List<String> COMM_ROLE_RES = new ArrayList<String>();
+	static {
+		COMM_ROLE_RES.add(User.class.getSimpleName());
+		COMM_ROLE_RES.add(PowerCustomer.class.getSimpleName());
+		COMM_ROLE_RES.add(PowerData.class.getSimpleName());
+		COMM_ROLE_RES.add(SellPowerAgreement.class.getSimpleName());
+		COMM_ROLE_RES.add(SellPowerAgreementMonthData.class.getSimpleName());
+		COMM_ROLE_RES.add(ElectricityAdjustmentData.class.getSimpleName());
+		COMM_ROLE_RES.add(ElectricityPackage.class.getSimpleName());
+	}
 
 	@Autowired
 	private RoleDao roleDao;
 
 	@Autowired
 	private AuthorityDao authorityDao;
-	
+
 	@Override
 	IDao<Role> getDao() {
 		return roleDao;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public PageVo listEntities(Serializable... conditions) {
@@ -64,15 +83,15 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		}
 		return pageVo;
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean initAdminRole() {
-		if (checkExist("管理员")) {
+		if (checkExist(ROLE_SYSTEM)) {
 			return true;
 		}
 		Role admin = new Role();
-		admin.setName("管理员");
+		admin.setName(ROLE_SYSTEM);
 		SqlRequest request = new SqlRequest();
 		request.setCdt(SimpleCondition.equal("op", ResourceOperation.COM_CONTROL));
 		List<?> authorities = authorityDao.listDos(request);
@@ -80,14 +99,47 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 			admin.addAuthority((Authority) obj);
 		}
 		roleDao.createDo(admin);
-		return checkExist("管理员");
+		return checkExist(ROLE_SYSTEM);
 	}
-	
+
+	@Override
+	@Transactional
+	public boolean initCommonRole() {
+		if (checkExist(ROLE_COMMON)) {
+			return true;
+		}
+		Role common = new Role();
+		common.setName(ROLE_COMMON);
+		SqlRequest request = new SqlRequest();
+		request.setCdt(SimpleCondition.equal("op", ResourceOperation.COM_CONTROL));
+		List<?> authorities = authorityDao.listDos(request);
+		Authority authority;
+		for (String res : COMM_ROLE_RES) {
+			for (Object obj : authorities) {
+				authority = (Authority) obj;
+				if (authority.getRes().equals(res)) {
+					common.addAuthority(authority);
+				}
+			}
+		}
+		roleDao.createDo(common);
+		return checkExist(ROLE_COMMON);
+	}
+
 	@Override
 	@Transactional
 	public Role queryAdminRole() {
 		SqlRequest req = new SqlRequest();
-		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, "管理员"));
+		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, ROLE_SYSTEM));
+		List<?> roles = roleDao.listDos(req);
+		return roles.isEmpty() ? null : (Role) roles.get(0);
+	}
+	
+	@Override
+	@Transactional
+	public Role queryCommonRole() {
+		SqlRequest req = new SqlRequest();
+		req.setCdt(new SimpleCondition("name", Sql_Operator.EQ, ROLE_COMMON));
 		List<?> roles = roleDao.listDos(req);
 		return roles.isEmpty() ? null : (Role) roles.get(0);
 	}
@@ -110,6 +162,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role>implements RoleSer
 		if (!ToolUtil.isStringEmpty(cdt.getName())) {
 			sqlCdt = sqlCdt.and(SimpleCondition.like("name", "%" + cdt.getName() + "%"));
 		}
+		sqlCdt = sqlCdt.and(SimpleCondition.notEqual("name", ROLE_COMMON));
 		req.setCdt(sqlCdt);
 		return req;
 	}

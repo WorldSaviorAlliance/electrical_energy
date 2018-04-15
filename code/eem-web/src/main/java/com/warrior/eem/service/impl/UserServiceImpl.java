@@ -35,6 +35,7 @@ import com.warrior.eem.entity.vo.PageVo;
 import com.warrior.eem.entity.vo.UserCdtVo;
 import com.warrior.eem.entity.vo.UserVo;
 import com.warrior.eem.exception.EemException;
+import com.warrior.eem.service.RoleService;
 import com.warrior.eem.service.UserService;
 import com.warrior.eem.util.EntityValidator;
 import com.warrior.eem.util.ToolUtil;
@@ -46,12 +47,15 @@ import com.warrior.eem.util.ToolUtil;
  * @version 1.0.0
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User>implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	@Autowired
 	private UserDao userDao;
 
 	@Autowired
 	private RoleDao roleDao;
+
+	@Autowired
+	private RoleService roleService;
 
 	@Autowired
 	private PowerCustomerDao customerDao;
@@ -161,8 +165,11 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 			if (null != customer) {
 				user.setCustomer(customer);
 			}
-		}
-		if (-1 != userVo.getRoleId()) {
+			Role role = roleService.queryCommonRole();
+			if (null != role) {
+				user.setRole(role);
+			}
+		} else {
 			Role role = roleDao.getEntity(userVo.getRoleId());
 			if (null != role) {
 				user.setRole(role);
@@ -289,8 +296,8 @@ public class UserServiceImpl extends AbstractServiceImpl<User>implements UserSer
 		SqlRequest req = new SqlRequest();
 		LogicalCondition c = LogicalCondition.emptyOfTrue();
 		c = c.and(new SimpleCondition("name", Sql_Operator.EQ, name));
-		c = c.and(new SimpleCondition("password", Sql_Operator.EQ,
-				Base64AndMD5Util.encodeByBase64AndMd5(String.valueOf(pwd))));
+		c = c.and(new SimpleCondition("password", Sql_Operator.EQ, Base64AndMD5Util.encodeByBase64AndMd5(String
+				.valueOf(pwd))));
 		req.setCdt(c);
 		List<?> users = userDao.listDos(req);
 		if (users == null || users.size() == 0) {

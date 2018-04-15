@@ -19,18 +19,33 @@ public interface RoleService extends IService {
 	boolean initAdminRole();
 
 	/**
+	 * 初始化一个普通用户角色
+	 * 
+	 * @return 成功返回true,失败返回false
+	 * @throws IOException
+	 */
+	boolean initCommonRole();
+
+	/**
 	 * 查询管理员角色
 	 * 
 	 * @return
 	 */
 	Role queryAdminRole();
-	
+
+	/**
+	 * 查询普通角色
+	 * 
+	 * @return
+	 */
+	Role queryCommonRole();
+
 	/**
 	 * 列举权限列表
 	 * 
 	 * @return
 	 */
 	PageVo listAuthorities();
-	
+
 	RoleVo getEntityVo(Long id);
 }

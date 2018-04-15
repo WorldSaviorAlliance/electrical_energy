@@ -40,6 +40,9 @@ public class ApplicationInitializedListener implements ApplicationListener<Conte
 			if (!roleService.initAdminRole()) {// 初始化管理员角色
 				logger.info("Failed to initialize admin role.");
 			}
+			if (!roleService.initCommonRole()) {// 初始化普通用户角色
+				logger.info("Failed to initialize common role.");
+			}
 			if (!elecPkgService.initDefaultDataIfAbsent()) {// 初始化套餐
 				logger.info("Failed to initialize electricity packages.");
 			}
