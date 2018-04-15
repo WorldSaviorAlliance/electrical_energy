@@ -129,6 +129,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 			targetEntity = e;
 		}
 		if (hasChangeUkProperty) {
+			getDao().getEntityManager().detach(targetEntity);
 			existSameUKValEntity(targetEntity);
 		}
 		getDao().updateDo((T) targetEntity);
@@ -150,25 +151,39 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements ISe
 			if (cols == null || cols.length == 0) {
 				return false;
 			}
-			for (String col : cols) {
-				try {
+			try {
+				Field uf = null;
+				Field df = null;
+				Serializable tmpData = dbData;
+				for (String col : cols) {
 					String[] propNames = col.split("\\.");
-					Field uf = uiData.getClass().getDeclaredField(col.replace(".id", "Id"));
-					Field df = propNames.length == 2 ? dbData.getClass().getSuperclass().getDeclaredField(propNames[1])
-							: dbData.getClass().getDeclaredField(col);
+					uf = uiData.getClass().getDeclaredField(col.replace(".id", "Id"));
+					if (propNames.length == 2) {
+						Field tmpF = dbData.getClass().getDeclaredField(propNames[0]);
+						tmpF.setAccessible(true);
+						Serializable tmpP = (Serializable) tmpF.get(dbData);
+						if (tmpP != null) {
+							dbData = tmpP;
+							df = tmpP.getClass().getSuperclass().getDeclaredField(propNames[1]);
+						}
+					} else {
+						dbData = tmpData;
+						df = dbData.getClass().getDeclaredField(col);
+					}
+
 					uf.setAccessible(true);
 					df.setAccessible(true);
 					if (uf != null && df != null) {
-						if ((uf.get(uiData) != null && !uf.get(uiData).equals(df.get(dbData)))
-								|| (uf.get(uiData) == null && df.get(dbData) != null)) {
+						Object ufv = uf.get(uiData);
+						Object dfv = df.get(dbData);
+						if ((ufv != null && !ufv.equals(dfv)) || (ufv == null && dfv != null)) {
 							return true;
 						}
 					}
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-						| IllegalAccessException e) {
-					logger.error(e.getMessage(), e);
-					throw new EemException("解析实体发生错误请联系管理员!");
 				}
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				logger.error(e.getMessage(), e);
+				throw new EemException("解析实体发生错误请联系管理员!");
 			}
 		}
 		return false;
