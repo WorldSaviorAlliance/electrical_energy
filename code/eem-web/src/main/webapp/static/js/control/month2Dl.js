@@ -37,15 +37,15 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 		{
 			var curData = getData(i);
 			var total = 0;
-			var ntp = '';
-			var stp = '';
-			var rtp = '';
-			var mtp = '';
+			var ntp = '0';
+			var stp = '0';
+			var rtp = '0';
+			var mtp = '0';
 			
-			var dj_ntp = '';
-			var dj_stp = '';
-			var dj_rtp = '';
-			var dj_mtp = '';
+			var dj_ntp = '0';
+			var dj_stp = '0';
+			var dj_rtp = '0';
+			var dj_mtp = '0';
 			
 			if(curData != null)
 			{
@@ -257,6 +257,21 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 			var temp = monthdataInput.get(i);
 			if($(temp).val() == '')
 			{
+				showDynamicMessage(STR_CONFIRM, '月份电量不能为空', MESSAGE_TYPE_ERROR);
+				return false;
+			}
+		}
+		
+		for(var i = 0; i < titleData.length; i++)
+		{
+			var ntp = $('#' + g_dlTableId + ' input[flag="ntp"][month="' + titleData[i].obj + '"]').val();
+			var stp = $('#' + g_dlTableId + ' input[flag="stp"][month="' + titleData[i].obj + '"]').val();
+			var rtp = $('#' + g_dlTableId + ' input[flag="rtp"][month="' + titleData[i].obj + '"]').val();
+			var mtp = $('#' + g_dlTableId + ' input[flag="mtp"][month="' + titleData[i].obj + '"]').val();
+			
+			if(parseInt(ntp) <= 0 && parseInt(stp) <= 0 && parseInt(rtp) <= 0 && parseInt(mtp) <= 0)
+			{
+				showDynamicMessage(STR_CONFIRM, titleData[i].name + '不同类型的电量至少有一个大于0', MESSAGE_TYPE_ERROR);
 				return false;
 			}
 		}
@@ -267,6 +282,21 @@ function Month2DL(dlTableId, djTableId, ntpId, stpId, rtpId, mtpId, hyData)
 			var temp = djInput.get(i);
 			if($(temp).val() == '')
 			{
+				showDynamicMessage(STR_CONFIRM, '月份电价不能为空', MESSAGE_TYPE_ERROR);
+				return false;
+			}
+		}
+		
+		for(var i = 0; i < titleData.length; i++)
+		{
+			var ntp = $('#' + g_djTableId + ' input[flag="ntp"][month="' + titleData[i].obj + '"]').val();
+			var stp = $('#' + g_djTableId + ' input[flag="stp"][month="' + titleData[i].obj + '"]').val();
+			var rtp = $('#' + g_djTableId + ' input[flag="rtp"][month="' + titleData[i].obj + '"]').val();
+			var mtp = $('#' + g_djTableId + ' input[flag="mtp"][month="' + titleData[i].obj + '"]').val();
+			
+			if(parseInt(ntp) <= 0 && parseInt(stp) <= 0 && parseInt(rtp) <= 0 && parseInt(mtp) <= 0)
+			{
+				showDynamicMessage(STR_CONFIRM, titleData[i].name + '不同类型的电价至少有一个大于0', MESSAGE_TYPE_ERROR);
 				return false;
 			}
 		}

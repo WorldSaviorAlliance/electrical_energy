@@ -124,8 +124,8 @@ function DysDetail(afterSaveCallbk, curData)
 					}
 					else
 					{
-						alert(msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
-						//showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
+						//alert(msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
+						showDynamicMessage(STR_CONFIRM, msgTitle + '失败:' + ar.msg, MESSAGE_TYPE_ERROR);
 					}
 				}
 				else

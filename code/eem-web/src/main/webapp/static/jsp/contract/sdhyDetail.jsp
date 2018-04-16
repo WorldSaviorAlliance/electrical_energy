@@ -105,6 +105,9 @@
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">厘/kWh</label>
 	</div>
+	<div class="form-group" style="margin-bottom: 0px;">
+		<label class="col-sm-12 control-label" style="color: gray;text-align: left;">每个月不同类型的电量至少有一个大于0</label>
+	</div>
 	<div class="form-group">
 		<table class="table table-striped table-hover" style="margin-bottom:10px;border: 1px solid #ddd;background-color: #FFFFFF;">
 			<thead>
@@ -120,6 +123,9 @@
 			<tbody id="dl_datas">
 			</tbody>
 		</table>
+	</div>
+	<div class="form-group" style="margin-bottom: 0px;">
+		<label class="col-sm-12 control-label" style="color: gray;text-align: left;">每个月不同类型的电价至少有一个大于0</label>
 	</div>
 	<div class="form-group">
 		<table class="table table-striped table-hover" style="margin-bottom:10px;border: 1px solid #ddd;background-color: #FFFFFF;">

@@ -133,7 +133,6 @@ $(function()
 		$('a[flag="detail"]').unbind('click').click(function(){
 			var id = $(this).attr('id');
 			var curData = getCurDataById(id, g_all_datas);
-			alert(curData.desc);
 		});
 	}
 	

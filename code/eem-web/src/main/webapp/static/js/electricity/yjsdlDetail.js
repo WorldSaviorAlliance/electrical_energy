@@ -41,6 +41,31 @@ function YjsdlDetail(afterSaveCallbk, curData)
 		    		showDynamicMessage(STR_CONFIRM, '未选择交易品种', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
+		    	
+		    	if($('#flatKwh').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '平段用电量不能为空', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}	
+		    	
+		    	if($('#troughKwh').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '低估用电量不能为空', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	
+		    	if($('#idleKwh').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '无功电量不能为空', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	
+		    	if($('#peakKwh').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '高峰用电量不能为空', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+				
 		    	doSaveAction();
 		    	return false;
 		    }

@@ -66,9 +66,9 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 		    		showDynamicMessage(STR_CONFIRM, '富余电量交易价格不能为空', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
+		    	
 		    	if(!g_table_month.validate())
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '月份电量不能为空', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	doSaveAction();

@@ -53,7 +53,6 @@ function SddjDetail(g_afterSaveCallbk, id)
 		    submitHandler : function(){
 		    	if(!g_table_month.validate())
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '月份电量不能为空', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	doSaveAction();
