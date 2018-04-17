@@ -79,7 +79,6 @@ $(function()
 			userId : g_params.param
 		};
 			
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在修改密码');
     	
 		$.ajax({
@@ -94,6 +93,7 @@ $(function()
 					if(ar.code == 0)
 					{
 						showDynamicMessage(STR_CONFIRM, '修改密码成功', MESSAGE_TYPE_INFO);
+						$('div.eem_window_close').click();
 					}
 					else
 					{

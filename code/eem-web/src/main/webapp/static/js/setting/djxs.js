@@ -84,7 +84,6 @@ $(function(){
 			temp.id = g_curData.id;
 		}
 		
-		$('div.eem_window_close').click();
     	var progress = showProgress('正在保存电价系数');
     	
 		$.ajax({
@@ -100,6 +99,7 @@ $(function(){
 					if(ar.code == 0)
 					{
 						showDynamicMessage(STR_CONFIRM, msgTitle + '成功', MESSAGE_TYPE_INFO);
+						$('div.eem_window_close').click();
 					}
 					else
 					{
