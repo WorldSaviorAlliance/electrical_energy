@@ -33,16 +33,16 @@ public class PowerDataVo implements Serializable {
 	@FieldChecker(name = "电压", minLen = 1, maxLen = 10)
 	private String voltageType;
 
-	@FieldChecker(name = "高峰用电量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
+	@FieldChecker(name = "高峰用电量", minVal = 0.0001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal peakKwh;
 
-	@FieldChecker(name = "平段用电量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
+	@FieldChecker(name = "平段用电量", minVal = 0.0001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal flatKwh;
 
-	@FieldChecker(name = "低谷用电量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
+	@FieldChecker(name = "低谷用电量", minVal = 0.0001, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal troughKwh;
 
-	@FieldChecker(name = "无功电量", minVal = 0.000001, maxVal = PowerConsts.MAX_POWER_VALUE)
+	@FieldChecker(name = "无功电量", minVal = 0, maxVal = PowerConsts.MAX_POWER_VALUE)
 	private BigDecimal idleKwh;
 
 	@FieldChecker(name = "交易品种", minLen = 1, maxLen = 10)

@@ -8,7 +8,7 @@
 		<label class="col-sm-2 control-label">名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
 			<div class="col-sm-11">
-				<input type="text" class="form-control" placeholder="请输入名称" required id="name"  maxlength="20"/>
+				<input type="number" class="form-control" placeholder="请输入电压等级" required id="name"  maxlength="20"/>
 			</div>
 			<label class="col-sm-1 control-label" style="text-align: left;text-size: 14px;" id="unit">KV</label>
 		</div>

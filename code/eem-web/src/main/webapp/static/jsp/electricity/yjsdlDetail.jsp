@@ -53,28 +53,28 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">高峰用电量<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="number" class="form-control" placeholder="请输入高峰用电量" required id="peakKwh" />
+			<input type="number" class="form-control" placeholder="请输入高峰用电量" required id="peakKwh" min="0.0001"/>
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">平段用电量<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="number" class="form-control" placeholder="请输入平段用电量" required id="flatKwh" />
+			<input type="number" class="form-control" placeholder="请输入平段用电量" required id="flatKwh" min="0.0001"/>
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">低估用电量<span class="asterisk">*</span></label>
+		<label class="col-sm-2 control-label">低谷用电量<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="number" class="form-control" placeholder="请输入低估用电量" required id="troughKwh" />
+			<input type="number" class="form-control" placeholder="请输入低谷用电量" required id="troughKwh" min="0.0001"/>
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">无功电量<span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="number" class="form-control" placeholder="请输入无功电量" required id="idleKwh" />
+			<input type="number" class="form-control" placeholder="请输入无功电量" required id="idleKwh" min="0"/>
 		</div>
 		<label class="col-sm-1 control-label" style="color: gray;text-align: left;">万kWh</label>
 	</div>
