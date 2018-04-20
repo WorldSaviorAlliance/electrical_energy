@@ -83,23 +83,27 @@ public class PowerMonthPriceInfoItemVo implements Serializable {
 	}
 
 	public BigDecimal getPeakPrice() {
-		return peakPrice;
+		return convert(peakPrice);
 	}
 
 	public BigDecimal getFlatPrice() {
-		return flatPrice;
+		return convert(flatPrice);
 	}
 
 	public BigDecimal getTroughPrice() {
-		return troughPrice;
+		return convert(troughPrice);
 	}
 
 	public BigDecimal getValidPrice() {
-		return validPrice;
+		return convert(validPrice);
 	}
 
 	public double getTotalPrice() {
-		return totalPrice;
+		return convert(new BigDecimal(totalPrice)).doubleValue();
+	}
+	
+	private BigDecimal convert(BigDecimal bd) {
+		return bd.setScale(4, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
 	}
 
 	public void setCustomerName(String customerName) {
