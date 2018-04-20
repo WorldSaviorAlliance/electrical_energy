@@ -48,7 +48,7 @@ function DydjDetail(afterSaveCallbk, curData)
 	
 	function doSaveAction()
 	{
-		var name = $('#name').val();
+		var name = $('#name').val() + 'KV';
 
 		var temp = {
 			name : name

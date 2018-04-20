@@ -7,7 +7,10 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称 <span class="asterisk">*</span></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" placeholder="请输入名称" required id="name"  maxlength="20"/>
+			<div class="col-sm-11">
+				<input type="text" class="form-control" placeholder="请输入名称" required id="name"  maxlength="20"/>
+			</div>
+			<label class="col-sm-1 control-label" style="text-align: left;text-size: 14px;" id="unit">KV</label>
 		</div>
 		<label class="col-sm-3 control-label input_msg" style="text-align: left;" for="name">
 			最长20个字符
