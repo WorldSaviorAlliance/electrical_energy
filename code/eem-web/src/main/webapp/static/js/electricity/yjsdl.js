@@ -29,7 +29,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改月结算电量',
+		            title: '添加/修改月结算电量',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
@@ -55,7 +55,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改月结算电量',
+		            title: '添加/修改月结算电量',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            onOkBtnFn : function(){
@@ -185,7 +185,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改月结算电量',
+		            title: '添加/修改月结算电量',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){

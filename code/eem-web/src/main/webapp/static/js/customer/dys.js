@@ -31,7 +31,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '添加电源商',
+		            title: '添加/修改电源商',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
@@ -157,7 +157,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电源商',
+		            title: '添加/修改电源商',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){

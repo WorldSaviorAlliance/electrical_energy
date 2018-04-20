@@ -29,7 +29,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电量调整',
+		            title: '添加/修改电量调整',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
@@ -157,7 +157,7 @@ $(function()
 				$(this).EemWindow({
 					height : WINDOW_HEIGHT,
 					width : WINDOW_WIDTH,
-		            title: '修改电量调整',
+		            title: '添加/修改电量调整',
 		            content: addDiv,
 		            hasBottomBtn : false,
 		            afterShow : function(){
