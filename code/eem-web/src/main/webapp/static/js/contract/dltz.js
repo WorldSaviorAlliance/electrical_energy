@@ -38,8 +38,8 @@ $(function()
 		        });	
 			});
 		});
-		$('#search_start_month').append(getMonthSelectStr());
-		$('#search_end_month').append(getMonthSelectStr());
+		$('#search_start_month').append(getAfterCurMonthSelectStr());
+		$('#search_end_month').append(getAfterCurMonthSelectStr());
 		$('.search_select').niceSelect();
 	}
 	

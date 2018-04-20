@@ -351,6 +351,24 @@ function getMonthSelectStr()
 	return str;
 }
 
+function getAfterCurMonthSelectStr() {
+	var date = new Date();
+	var str = '<option value="">--请选择月份--</option>';
+	var curMonth = date.getMonth() + 1;
+	var curYear = date.getFullYear();
+	var endYear = curYear + 50;
+	var month;
+	for(var i = curYear; i < endYear; i++)
+	{
+		for(var j = curMonth + 1; j < 13; j++)
+		{
+			month = j < 10 ? ('0' + j) : j;
+			str += '<option value="' + i + month + '">' + i + month + '</option>';
+		}
+	}
+	return str;
+}
+
 var tradeType = ['常规直购电', '精准扶持直购电', '自备替代直购电'];
 /**
  * 获取交易品种数据

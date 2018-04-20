@@ -45,7 +45,7 @@ function DltzDetail(afterSaveCallbk, curData)
 			$('div.eem_window_close').click();
 		});
 		$('#tradeType').append(getTradeTypeSelectStr());
-		$('#month').append(getMonthSelectStr());
+		$('#month').append(getAfterCurMonthSelectStr());
 		$('.detail_search').niceSelect();
 		$('#customerId').change(function(){
 			initSdhyList(false, $(this).val());
