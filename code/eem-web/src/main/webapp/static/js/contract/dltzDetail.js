@@ -26,6 +26,11 @@ function DltzDetail(afterSaveCallbk, curData)
 		      $(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
+		    	if($('#customerNo').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入用户户名', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
 		    	if(parseInt($('#quantity').val()) <= 0)
 		    	{
 		    		showDynamicMessage(STR_CONFIRM, '调整电量不能小于0', MESSAGE_TYPE_ERROR);
@@ -34,6 +39,16 @@ function DltzDetail(afterSaveCallbk, curData)
 		    	if($('#tradeType').val() == '-1')
 		    	{
 		    		showDynamicMessage(STR_CONFIRM, '请选择交易品种', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#price').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '请输入交易价格', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#month').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '请选择调整月份', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	doSaveAction();

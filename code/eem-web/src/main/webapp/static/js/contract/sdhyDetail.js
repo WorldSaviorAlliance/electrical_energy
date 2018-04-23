@@ -36,9 +36,29 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 		      $(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
+		    	if($('#name').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入合约名称', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#no').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入合约编号', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
 		    	if($('#file_path').val() == '')
 		    	{
 		    		showDynamicMessage(STR_CONFIRM, '未选择合约附件', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#validYear').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未选择合同有效年份', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#voltageType').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未选择电压等级', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#tradePowerQuantity').val() == '')
