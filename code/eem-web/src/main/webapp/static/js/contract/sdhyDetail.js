@@ -41,6 +41,11 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 		    		showDynamicMessage(STR_CONFIRM, '未输入合约名称', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
+		    	if($('#customerNo').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入用户户号', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
 		    	if($('#no').val() == '')
 		    	{
 		    		showDynamicMessage(STR_CONFIRM, '未输入合约编号', MESSAGE_TYPE_ERROR);
@@ -63,27 +68,27 @@ function SdhyDetail(afterSaveCallbk, curData, onlyView)
 		    	}
 		    	if($('#tradePowerQuantity').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '交易电量不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未输入交易电量', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#normalTradePrice').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '常规直购电量交易价格不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未输入常规直购电量交易价格', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#supportTradePrice').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '精准扶持直购电量交易价格不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未输入精准扶持直购电量交易价格', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#replaceTradePrice').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '自备替代直购电交易价格不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未输入自备替代直购电交易价格', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#marginTradePrice').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '富余电量交易价格不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未输入富余电量交易价格', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	

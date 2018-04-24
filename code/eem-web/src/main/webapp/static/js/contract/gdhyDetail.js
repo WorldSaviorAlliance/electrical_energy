@@ -49,7 +49,7 @@ function GdhyDetail(afterSaveCallbk, curData)
 		    	}
 		    	if($('#tradeType').val() == '')
 		    	{
-		    		showDynamicMessage(STR_CONFIRM, '未选择交易品种不能为空', MESSAGE_TYPE_ERROR);
+		    		showDynamicMessage(STR_CONFIRM, '未选择交易品种', MESSAGE_TYPE_ERROR);
 		    		return false;
 		    	}
 		    	if($('#price').val() == '')

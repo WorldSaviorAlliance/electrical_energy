@@ -24,6 +24,31 @@ function DysDetail(afterSaveCallbk, curData)
 		      $(element).closest('.form-group').removeClass('has-error');
 		    },
 		    submitHandler : function(){
+		    	if($('#name').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入电源商名称', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#nickName').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入电源商简称', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#address').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入地址', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#contactName').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入联系人', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
+		    	if($('#contactPhone').val() == '')
+		    	{
+		    		showDynamicMessage(STR_CONFIRM, '未输入联系电话', MESSAGE_TYPE_ERROR);
+		    		return false;
+		    	}
 		    	return doSaveAction();
 		    }
 		});
